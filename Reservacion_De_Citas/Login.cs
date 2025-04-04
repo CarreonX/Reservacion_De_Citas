@@ -6,5 +6,10 @@ namespace Reservacion_De_Citas
         {
             InitializeComponent();
         }
+
+        private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
