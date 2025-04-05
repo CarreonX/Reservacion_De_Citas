@@ -218,7 +218,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(356, 0);
+            label1.Location = new Point(356, 9);
             label1.Name = "label1";
             label1.Size = new Size(127, 38);
             label1.TabIndex = 68;
@@ -259,21 +259,21 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(105, 397);
+            textBox3.Location = new Point(126, 400);
             textBox3.Multiline = true;
             textBox3.Name = "textBox3";
             textBox3.ScrollBars = ScrollBars.Vertical;
-            textBox3.Size = new Size(357, 120);
+            textBox3.Size = new Size(357, 117);
             textBox3.TabIndex = 92;
             // 
             // label13
             // 
             label13.AutoSize = true;
-            label13.Location = new Point(35, 397);
+            label13.Location = new Point(16, 401);
             label13.Name = "label13";
-            label13.Size = new Size(51, 20);
+            label13.Size = new Size(104, 20);
             label13.TabIndex = 91;
-            label13.Text = "Notas:";
+            label13.Text = "Notas Medica:";
             // 
             // dataGridView1
             // 
