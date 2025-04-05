@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Controles
 {
-    public partial class ucDentista: UserControl
+    public partial class ucOdontologo: UserControl
     {
-        public ucDentista()
+        public ucOdontologo()
         {
             InitializeComponent();
         }

@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace Controles
 {
-    public partial class ucCita : UserControl
+    public partial class ucPaciente: UserControl
     {
-        public ucCita()
+        public ucPaciente()
         {
             InitializeComponent();
-        }
-
-        private void ucCita_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }
