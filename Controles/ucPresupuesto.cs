@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace Controles
 {
-    public partial class ucPresupuesto: UserControl
+    public partial class ucPresupuesto : UserControl
     {
         public ucPresupuesto()
         {
             InitializeComponent();
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
