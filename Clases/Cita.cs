@@ -15,17 +15,18 @@ using System.IO;
 
 public class Cita {
 
-	private byte Duracion;
-	private string Estado;
-	private string Fecha;
-	private string FechaDeGeneracion;
-	private string Hora;
-	private string IDCita;
-	private string IDMedico;
-	private string IDPaciente;
-	private string MotivoDeCita;
-	private string Nota;
-	public ControlCita m_ControlCita;
+    public string IDCita { set; get; }
+    public byte Duracion { set; get; }
+    public string Estado { set; get; }
+    public string Fecha { set; get; }
+    public string FechaDeGeneracion { set; get; }
+    public string Hora { set; get; }
+    public string IDMedico { set; get; }
+    public string IDPaciente { set; get; }
+    public string MotivoDeCita { set; get; }
+    public string Nota { set; get; }
+
+    public ControlCita m_ControlCita;
 
 	public Cita(){
 

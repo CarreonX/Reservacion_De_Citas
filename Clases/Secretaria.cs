@@ -15,7 +15,7 @@ using System.IO;
 
 public class Secretaria : Usuario {
 
-	private string Turno;
+	public string Turno { set; get; }
 	public ControlSecretaria m_ControlSecretaria;
 
 	public Secretaria(){

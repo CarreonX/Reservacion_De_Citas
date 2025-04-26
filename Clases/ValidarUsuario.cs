@@ -10,30 +10,214 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Reflection.Metadata;
+using System.Diagnostics;
+using System.Data;
+using MySql.Data.MySqlClient;
 
 
 
-public class ValidarUsuario {
+public static class ValidarUsuario {
 
-	private Usuario Usuario;
-	public frmLogin m_frmLogin;
+	static MySqlCommand cmd = new MySqlCommand();
+    static MySqlConnection conn = new MySqlConnection();
+	static MySqlDataReader dr;
 
-	public ValidarUsuario(){
+	static string server = "192.168.1.74";
+	static string user = "prueba";
+    static string pwd = "Ztklwc1438";
+    static string database = "dbClinica_Dental";
+
+	public static int indice = -1;
+    public static string tipo = "null";
+    public static string mensaje = "";
+
+	private static void conectar()
+	{
+		conn.ConnectionString = $"Server={server};Database={database}; Uid={user};Pwd={pwd}";
+		conn.Open();
+    }
+
+    private static  void desconectar()
+	{
+		conn.Close();
+    }
+
+    public static bool validarUsuario(string nUsuario, string pass)
+    {
+        bool bandera = false;
+
+        // admin_, secre_, denta_ : sufijos para los nombres de usuario
+
+        string nueva = nUsuario.Substring(0, 4);
+
+        switch (nueva)
+        {
+            case "adm_":
+                try
+                {
+                    conectar();
+                    cmd = new MySqlCommand("uspValidarAdministrador", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    MySqlParameter a_usuario = new MySqlParameter("p_usuario", MySqlDbType.VarChar, 15);
+                    a_usuario.Value = nUsuario;
+                    cmd.Parameters.Add(a_usuario);
+
+                    MySqlParameter a_pass = new MySqlParameter("p_password", MySqlDbType.VarChar, 20);
+                    a_pass.Value = pass;
+                    cmd.Parameters.Add(a_pass);
+
+                    dr = cmd.ExecuteReader();
+
+                    if (dr.Read())
+                    {
+                        indice = dr.GetInt32(0);
+                        tipo = "admin";
+                        bandera = true;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    mensaje = ex.Message;
+                }
+                finally
+                {
+                    desconectar();
+                }
+                break;
+
+            case "sec_":
+
+                try
+                {
+                    conectar();
+                    cmd = new MySqlCommand("uspValidarSecretaria", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    MySqlParameter a_usuario = new MySqlParameter("p_usuario", MySqlDbType.VarChar, 15);
+                    a_usuario.Value = nUsuario;
+                    cmd.Parameters.Add(a_usuario);
+
+                    MySqlParameter a_pass = new MySqlParameter("p_password", MySqlDbType.VarChar, 20);
+                    a_pass.Value = pass;
+                    cmd.Parameters.Add(a_pass);
+
+                    dr = cmd.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        indice = dr.GetInt32(0);
+                        tipo = "secre";
+                        bandera = true;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    mensaje = ex.Message;
+                }
+                finally
+                {
+                    desconectar();
+
+                }
+                break;
+
+            case "den_":
+
+                try
+                {
+                    conectar();
+                    cmd = new MySqlCommand("uspValidarDentista", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    MySqlParameter a_usuario = new MySqlParameter("p_usuario", MySqlDbType.VarChar, 15);
+                    a_usuario.Value = nUsuario;
+                    cmd.Parameters.Add(a_usuario);
+
+                    MySqlParameter a_pass = new MySqlParameter("p_password", MySqlDbType.VarChar, 20);
+                    a_pass.Value = pass;
+                    cmd.Parameters.Add(a_pass);
+
+                    dr = cmd.ExecuteReader();
+                    if (dr.Read())
+                    {
+                        dr.GetInt32(0);
+                        tipo = "dent";
+                        bandera = true;
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    mensaje = ex.Message;
+                }
+                finally
+                {
+                    desconectar();
+                }
+                break;
+        }
+        if (dr != null)
+        {
+            dr.Close();
+        }
+        return bandera;
+    }
+    /*
+    public ValidarUsuario( string nUsuario, string pass ){
+
+            if( indice > -1)
+                {
+                    switch( tipo)
+                    {
+                        case "admin":
+                            try
+                            {
+                                conectar();
+                                cmd = new MySqlCommand("uspConsultarAdministrador", conn);
+                                cmd.CommandType = CommandType.StoredProcedure;
+
+                                MySqlParameter a_usuario = new MySqlParameter("p_idx", MySqlDbType.Int32);
+                                a_usuario.Value = indice;
+                                cmd.Parameters.Add(a_usuario);
+
+                                dr = cmd.ExecuteReader();
+
+                                Administrador administrador = new Administrador();
+                                if (dr.Read())
+                                {
+                                    administrador.idPersona = dr[0].ToString();
+                                    administrador.ApellidoM = dr[1].ToString();
+                                    administrador.ApellidoP = dr[2].ToString();
+                                    administrador.Direccion = dr[3].ToString();
+                                    administrador.DNI = dr[4].ToString();
+                                    administrador.Email = dr[5].ToString();
+                                    administrador.Nombre = dr[6].ToString();
+                                    administrador.TelefonoFijo = dr[7].ToString();
+                                    administrador.TelefonoMovil = dr[8].ToString();
+                                    administrador.NombreUsuario = dr[9].ToString();
+                                    administrador.Password = dr[10].ToString();
+                                }
+                            }
+
+                            break;
+                        case "secre":
+                            Console.WriteLine("Bienvenido Secretaria");
+                            break;
+                        case "dent":
+                            Console.WriteLine("Bienvenido Dentista");
+                            break;
+                    }
+                
+            ConsultarUsuario( nUsuario, pass );
+    }
+	
+
+	public static void CargarFormulario(){
 
 	}
 
-	~ValidarUsuario(){
+	public static Usuario ConsultarUsuario(string NombreUsuario, string password){
 
-	}
-
-	public void CargarFormulario(){
-
-	}
-
-	/// 
-	/// <param name="NombreUsuario"></param>
-	/// <param name="password"></param>
-	public Usuario ConsultarUsuario(string NombreUsuario, string password){
 
 		return null;
 	}
@@ -41,6 +225,6 @@ public class ValidarUsuario {
 	public bool GetAutorización(){
 
 		return false;
-	}
+	}*/
 
 }//end ValidarUsuario

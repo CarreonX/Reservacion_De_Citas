@@ -214,7 +214,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucPresupuesto";
-            Size = new Size(884, 502);
+            Size = new Size(884, 500);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

@@ -16,8 +16,6 @@ using System.IO;
 public class ControlCita {
 
 	public Reporte m_Reporte;
-	public frmSecretaria m_frmSecretaria;
-	public frmAdministrador m_frmAdministrador;
 
 	public ControlCita(){
 
@@ -59,7 +57,7 @@ public class ControlCita {
 
 	/// 
 	/// <param name="Cita"></param>
-	public bool GuardarCita(cita Cita){
+	public bool GuardarCita( Cita cita ){
 
 		return false;
 	}

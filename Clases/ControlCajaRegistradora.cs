@@ -17,7 +17,6 @@ public class ControlCajaRegistradora {
 
 	public ControlSecretaria m_ControlSecretaria;
 	public ControlReporte m_ControlReporte;
-	public frmSecretaria m_frmSecretaria;
 
 	public ControlCajaRegistradora(){
 
@@ -43,10 +42,10 @@ public class ControlCajaRegistradora {
 
 	/// 
 	/// <param name="idVenta"></param>
-	public Venta ConsultarVenta(string idVenta){
+	/*public Venta ConsultarVenta(string idVenta){
 
 		return null;
-	}
+	}*/
 
 	public void ConsultarVentas(){
 

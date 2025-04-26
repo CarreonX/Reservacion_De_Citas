@@ -56,7 +56,11 @@
             // 
             // btnCambiarPassword
             // 
-            btnCambiarPassword.BackColor = Color.Yellow;
+            btnCambiarPassword.BackColor = Color.CornflowerBlue;
+            btnCambiarPassword.FlatAppearance.BorderSize = 0;
+            btnCambiarPassword.FlatAppearance.MouseDownBackColor = Color.Red;
+            btnCambiarPassword.FlatAppearance.MouseOverBackColor = Color.FromArgb(255, 128, 128);
+            btnCambiarPassword.FlatStyle = FlatStyle.Flat;
             btnCambiarPassword.ForeColor = SystemColors.ControlText;
             btnCambiarPassword.Location = new Point(724, 394);
             btnCambiarPassword.Name = "btnCambiarPassword";
@@ -67,14 +71,17 @@
             // 
             // txtTurno
             // 
+            txtTurno.BackColor = SystemColors.ActiveCaption;
+            txtTurno.BorderStyle = BorderStyle.None;
             txtTurno.Location = new Point(679, 312);
             txtTurno.Name = "txtTurno";
-            txtTurno.Size = new Size(172, 27);
+            txtTurno.Size = new Size(172, 20);
             txtTurno.TabIndex = 89;
             // 
             // label10
             // 
             label10.AutoSize = true;
+            label10.ForeColor = Color.Navy;
             label10.Location = new Point(623, 312);
             label10.Name = "label10";
             label10.Size = new Size(50, 20);
@@ -83,14 +90,17 @@
             // 
             // txtNombreUsuario
             // 
+            txtNombreUsuario.BackColor = SystemColors.ActiveCaption;
+            txtNombreUsuario.BorderStyle = BorderStyle.None;
             txtNombreUsuario.Location = new Point(499, 409);
             txtNombreUsuario.Name = "txtNombreUsuario";
-            txtNombreUsuario.Size = new Size(174, 27);
+            txtNombreUsuario.Size = new Size(174, 20);
             txtNombreUsuario.TabIndex = 87;
             // 
             // label13
             // 
             label13.AutoSize = true;
+            label13.ForeColor = Color.Navy;
             label13.Location = new Point(372, 409);
             label13.Name = "label13";
             label13.Size = new Size(121, 20);
@@ -99,6 +109,8 @@
             // 
             // txtTelefonoMovil
             // 
+            txtTelefonoMovil.BackColor = SystemColors.ActiveCaption;
+            txtTelefonoMovil.BorderStyle = BorderStyle.None;
             txtTelefonoMovil.Location = new Point(434, 306);
             txtTelefonoMovil.Multiline = true;
             txtTelefonoMovil.Name = "txtTelefonoMovil";
@@ -108,6 +120,7 @@
             // label8
             // 
             label8.AutoSize = true;
+            label8.ForeColor = Color.Navy;
             label8.Location = new Point(317, 312);
             label8.Name = "label8";
             label8.Size = new Size(111, 20);
@@ -116,6 +129,8 @@
             // 
             // txtTelefonoFijo
             // 
+            txtTelefonoFijo.BackColor = SystemColors.ActiveCaption;
+            txtTelefonoFijo.BorderStyle = BorderStyle.None;
             txtTelefonoFijo.Location = new Point(132, 306);
             txtTelefonoFijo.Multiline = true;
             txtTelefonoFijo.Name = "txtTelefonoFijo";
@@ -125,6 +140,7 @@
             // label9
             // 
             label9.AutoSize = true;
+            label9.ForeColor = Color.Navy;
             label9.Location = new Point(28, 309);
             label9.Name = "label9";
             label9.Size = new Size(98, 20);
@@ -133,6 +149,8 @@
             // 
             // txtEmail
             // 
+            txtEmail.BackColor = SystemColors.ActiveCaption;
+            txtEmail.BorderStyle = BorderStyle.None;
             txtEmail.Location = new Point(563, 220);
             txtEmail.Multiline = true;
             txtEmail.Name = "txtEmail";
@@ -142,6 +160,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = Color.Navy;
             label5.Location = new Point(507, 227);
             label5.Name = "label5";
             label5.Size = new Size(49, 20);
@@ -150,14 +169,17 @@
             // 
             // txtDNI
             // 
+            txtDNI.BackColor = SystemColors.ActiveCaption;
+            txtDNI.BorderStyle = BorderStyle.None;
             txtDNI.Location = new Point(563, 166);
             txtDNI.Name = "txtDNI";
-            txtDNI.Size = new Size(305, 27);
+            txtDNI.Size = new Size(305, 20);
             txtDNI.TabIndex = 79;
             // 
             // label6
             // 
             label6.AutoSize = true;
+            label6.ForeColor = Color.Navy;
             label6.Location = new Point(511, 169);
             label6.Name = "label6";
             label6.Size = new Size(38, 20);
@@ -166,6 +188,8 @@
             // 
             // txtDireccion
             // 
+            txtDireccion.BackColor = SystemColors.ActiveCaption;
+            txtDireccion.BorderStyle = BorderStyle.None;
             txtDireccion.Location = new Point(90, 169);
             txtDireccion.Multiline = true;
             txtDireccion.Name = "txtDireccion";
@@ -175,6 +199,7 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.ForeColor = Color.Navy;
             label7.Location = new Point(17, 172);
             label7.Name = "label7";
             label7.Size = new Size(75, 20);
@@ -183,14 +208,17 @@
             // 
             // txtApellidoM
             // 
+            txtApellidoM.BackColor = SystemColors.ActiveCaption;
+            txtApellidoM.BorderStyle = BorderStyle.None;
             txtApellidoM.Location = new Point(694, 99);
             txtApellidoM.Name = "txtApellidoM";
-            txtApellidoM.Size = new Size(174, 27);
+            txtApellidoM.Size = new Size(174, 20);
             txtApellidoM.TabIndex = 75;
             // 
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = Color.Navy;
             label4.Location = new Point(563, 102);
             label4.Name = "label4";
             label4.Size = new Size(129, 20);
@@ -199,14 +227,17 @@
             // 
             // txtApellidoP
             // 
+            txtApellidoP.BackColor = SystemColors.ActiveCaption;
+            txtApellidoP.BorderStyle = BorderStyle.None;
             txtApellidoP.Location = new Point(387, 99);
             txtApellidoP.Name = "txtApellidoP";
-            txtApellidoP.Size = new Size(170, 27);
+            txtApellidoP.Size = new Size(170, 20);
             txtApellidoP.TabIndex = 73;
             // 
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = Color.Navy;
             label3.Location = new Point(267, 99);
             label3.Name = "label3";
             label3.Size = new Size(123, 20);
@@ -215,14 +246,19 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(90, 93);
+            txtNombre.BackColor = SystemColors.ActiveCaption;
+            txtNombre.BorderStyle = BorderStyle.None;
+            txtNombre.ForeColor = Color.FromArgb(0, 0, 64);
+            txtNombre.Location = new Point(90, 95);
             txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(174, 27);
+            txtNombre.Size = new Size(174, 20);
             txtNombre.TabIndex = 71;
+            txtNombre.Text = "gfhsgfhgfhgfhgfhf";
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.ForeColor = Color.Navy;
             label2.Location = new Point(17, 96);
             label2.Name = "label2";
             label2.Size = new Size(67, 20);
@@ -233,6 +269,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.Navy;
             label1.Location = new Point(354, 23);
             label1.Name = "label1";
             label1.Size = new Size(176, 38);
@@ -241,14 +278,17 @@
             // 
             // textBox1
             // 
+            textBox1.BackColor = SystemColors.ActiveCaption;
+            textBox1.BorderStyle = BorderStyle.None;
             textBox1.Location = new Point(141, 409);
             textBox1.Name = "textBox1";
-            textBox1.Size = new Size(174, 27);
+            textBox1.Size = new Size(174, 20);
             textBox1.TabIndex = 92;
             // 
             // label11
             // 
             label11.AutoSize = true;
+            label11.ForeColor = Color.Navy;
             label11.Location = new Point(38, 409);
             label11.Name = "label11";
             label11.Size = new Size(88, 20);
@@ -259,7 +299,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = Color.LightBlue;
             Controls.Add(textBox1);
             Controls.Add(label11);
             Controls.Add(btnCambiarPassword);
@@ -285,7 +325,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucOdontologo";
-            Size = new Size(884, 472);
+            Size = new Size(884, 500);
             ResumeLayout(false);
             PerformLayout();
         }

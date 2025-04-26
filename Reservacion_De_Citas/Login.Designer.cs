@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             btnIniciarSesion = new Button();
-            textBox1 = new TextBox();
+            txtPass = new TextBox();
             pictureBox1 = new PictureBox();
             btnCerrar = new Button();
             label1 = new Label();
             label2 = new Label();
-            textBox2 = new TextBox();
+            txtUsuario = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -47,13 +47,14 @@
             btnIniciarSesion.TabIndex = 0;
             btnIniciarSesion.Text = "Iniciar Sesión";
             btnIniciarSesion.UseVisualStyleBackColor = false;
+            btnIniciarSesion.Click += btnIniciarSesion_Click;
             // 
-            // textBox1
+            // txtPass
             // 
-            textBox1.Location = new Point(213, 285);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(213, 27);
-            textBox1.TabIndex = 1;
+            txtPass.Location = new Point(213, 285);
+            txtPass.Name = "txtPass";
+            txtPass.Size = new Size(213, 27);
+            txtPass.TabIndex = 1;
             // 
             // pictureBox1
             // 
@@ -92,12 +93,12 @@
             label2.TabIndex = 6;
             label2.Text = "Usuario:";
             // 
-            // textBox2
+            // txtUsuario
             // 
-            textBox2.Location = new Point(213, 226);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(213, 27);
-            textBox2.TabIndex = 5;
+            txtUsuario.Location = new Point(213, 226);
+            txtUsuario.Name = "txtUsuario";
+            txtUsuario.Size = new Size(213, 27);
+            txtUsuario.TabIndex = 5;
             // 
             // Login
             // 
@@ -106,11 +107,11 @@
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(566, 502);
             Controls.Add(label2);
-            Controls.Add(textBox2);
+            Controls.Add(txtUsuario);
             Controls.Add(label1);
             Controls.Add(btnCerrar);
             Controls.Add(pictureBox1);
-            Controls.Add(textBox1);
+            Controls.Add(txtPass);
             Controls.Add(btnIniciarSesion);
             Name = "Login";
             Text = "Form1";
@@ -123,11 +124,11 @@
         #endregion
 
         private Button btnIniciarSesion;
-        private TextBox textBox1;
+        private TextBox txtPass;
         private PictureBox pictureBox1;
         private Button btnCerrar;
         private Label label1;
         private Label label2;
-        private TextBox textBox2;
+        private TextBox txtUsuario;
     }
 }

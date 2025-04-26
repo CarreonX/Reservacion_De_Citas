@@ -15,17 +15,17 @@ using System.IO;
 
 public class Medicamento {
 
-	private byte Cantidad;
-	private string DivicionPisoEstante;
-	private string Estante;
-	private string IDMedicamento;
-	private string Nombre;
-	private int PisoEstante;
-	private double Precio;
-	private string Seccion;
-	private double Subtotal;
-	private string UnidadDeMedida;
-	public ControlMedicamento m_ControlMedicamento;
+    public string IDMedicamento { set; get; }
+    public byte Cantidad { set; get; }
+    public string DivicionPisoEstante { set; get; }
+    public string Estante { set; get; }
+    public string Nombre { set; get; }
+    public int PisoEstante { set; get; }
+    public double Precio { set; get; }
+    public string Seccion { set; get; }
+    public double Subtotal { set; get; }
+    public string UnidadDeMedida { set; get; }
+    public ControlMedicamento m_ControlMedicamento;
 
 	public Medicamento(){
 

@@ -281,7 +281,7 @@
             dataGridView1.Location = new Point(11, 551);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(851, 185);
+            dataGridView1.Size = new Size(859, 185);
             dataGridView1.TabIndex = 93;
             // 
             // label14
@@ -403,7 +403,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucPaciente";
-            Size = new Size(882, 749);
+            Size = new Size(884, 749);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

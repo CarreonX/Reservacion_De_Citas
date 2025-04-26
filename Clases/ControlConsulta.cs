@@ -10,14 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+//using Clases;
 
 
 public class ControlConsulta {
 
 	public ControlMedico m_ControlMedico;
+	/*
 	public frmDentista m_frmDentista;
-	public frmAdministrador m_frmAdministrador;
+	public frmAdministrador m_frmAdministrador;*/
 
 	public ControlConsulta(){
 
@@ -33,7 +34,7 @@ public class ControlConsulta {
 
 	/// 
 	/// <param name="string"></param>
-	public List<ConsultaMedica> ConsultarConsultasMedicas(idDentista string){
+	public List<ConsultaMedica> ConsultarConsultasMedicas( string idDentista ){
 
 		return null;
 	}

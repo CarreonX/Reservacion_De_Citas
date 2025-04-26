@@ -1,4 +1,6 @@
-﻿namespace Controles
+﻿
+
+namespace Controles
 {
     public partial class ucAdministrador : UserControl
     {

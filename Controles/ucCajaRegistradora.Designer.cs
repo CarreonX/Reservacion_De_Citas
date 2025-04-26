@@ -151,7 +151,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucCajaRegistradora";
-            Size = new Size(884, 492);
+            Size = new Size(884, 500);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

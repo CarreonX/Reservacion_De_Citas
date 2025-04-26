@@ -12,7 +12,7 @@ namespace Formularios
 {
     public partial class frmDentista: Form
     {
-        public frmDentista()
+        public frmDentista( int idx )
         {
             InitializeComponent();
         }

@@ -15,9 +15,9 @@ using System.IO;
 
 public class Usuario : Persona {
 
-	private string NombreUsuario;
-	private string Password;
-	public ValidarUsuario m_ValidarUsuario;
+	public string NombreUsuario { set; get; }
+    public string Password { set; get; }
+
 
 	public Usuario(){
 

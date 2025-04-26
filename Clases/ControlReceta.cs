@@ -16,8 +16,6 @@ using System.IO;
 public class ControlReceta {
 
 	public ControlMedico m_ControlMedico;
-	public frmDentista m_frmDentista;
-	public frmAdministrador m_frmAdministrador;
 
 	public ControlReceta(){
 

@@ -12,7 +12,7 @@ namespace Formularios
 {
     public partial class frmSecretaria: Form
     {
-        public frmSecretaria()
+        public frmSecretaria( int idx )
         {
             InitializeComponent();
         }

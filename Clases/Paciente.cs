@@ -15,13 +15,14 @@ using System.IO;
 
 public class Paciente : Persona {
 
-	private string Alergias;
-	private string FechaNacimiento;
-	private string IDPreguntasHistoria;
-	private string Notas;
-	private float Peso;
-	private float Talla;
-	public ControlPaciente m_ControlPaciente;
+	public string Alergias { set; get; }
+    public string FechaNacimiento { set; get; }
+    public string IDPreguntasHistoria { set; get; }
+    public string Notas { set; get; }
+    public float Peso { set; get; }
+    public float Talla { set; get; }
+
+    public ControlPaciente m_ControlPaciente;
 
 	public Paciente(){
 

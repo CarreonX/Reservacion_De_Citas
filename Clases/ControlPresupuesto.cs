@@ -16,8 +16,6 @@ using System.IO;
 public class ControlPresupuesto {
 
 	public ControlReporte m_ControlReporte;
-	public frmDentista m_frmDentista;
-	public frmAdministrador m_frmAdministrador;
 
 	public ControlPresupuesto(){
 

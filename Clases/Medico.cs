@@ -15,9 +15,9 @@ using System.IO;
 
 public class Medico : Usuario {
 
-	private string IDConsultorio;
-	private string Turno;
-	public ControlMedico m_ControlMedico;
+	public string IDConsultorio { set; get; }
+    public string Turno { set; get; }
+    public ControlMedico m_ControlMedico;
 
 	public Medico(){
 

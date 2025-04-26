@@ -46,7 +46,7 @@
             // 
             // textBox7
             // 
-            textBox7.Location = new Point(131, 369);
+            textBox7.Location = new Point(131, 386);
             textBox7.Multiline = true;
             textBox7.Name = "textBox7";
             textBox7.ScrollBars = ScrollBars.Vertical;
@@ -56,7 +56,7 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(28, 369);
+            label11.Location = new Point(28, 386);
             label11.Name = "label11";
             label11.Size = new Size(94, 20);
             label11.TabIndex = 94;
@@ -64,7 +64,7 @@
             // 
             // textBox6
             // 
-            textBox6.Location = new Point(131, 86);
+            textBox6.Location = new Point(131, 103);
             textBox6.Name = "textBox6";
             textBox6.Size = new Size(289, 27);
             textBox6.TabIndex = 93;
@@ -72,7 +72,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(32, 89);
+            label10.Location = new Point(32, 106);
             label10.Name = "label10";
             label10.Size = new Size(94, 20);
             label10.TabIndex = 92;
@@ -81,7 +81,7 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.Location = new Point(12, 187);
+            label9.Location = new Point(12, 204);
             label9.Name = "label9";
             label9.Size = new Size(110, 20);
             label9.TabIndex = 90;
@@ -89,7 +89,7 @@
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(553, 138);
+            textBox4.Location = new Point(553, 155);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(299, 27);
             textBox4.TabIndex = 89;
@@ -97,7 +97,7 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.Location = new Point(480, 138);
+            label8.Location = new Point(480, 155);
             label8.Name = "label8";
             label8.Size = new Size(67, 20);
             label8.TabIndex = 88;
@@ -105,7 +105,7 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(120, 138);
+            textBox3.Location = new Point(120, 155);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(312, 27);
             textBox3.TabIndex = 87;
@@ -113,7 +113,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(22, 138);
+            label7.Location = new Point(22, 155);
             label7.Name = "label7";
             label7.Size = new Size(94, 20);
             label7.TabIndex = 86;
@@ -121,7 +121,7 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(553, 89);
+            txtNombre.Location = new Point(553, 106);
             txtNombre.Name = "txtNombre";
             txtNombre.Size = new Size(307, 27);
             txtNombre.TabIndex = 77;
@@ -129,7 +129,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(446, 92);
+            label2.Location = new Point(446, 109);
             label2.Name = "label2";
             label2.Size = new Size(101, 20);
             label2.TabIndex = 76;
@@ -139,7 +139,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.Location = new Point(390, 20);
+            label1.Location = new Point(390, 31);
             label1.Name = "label1";
             label1.Size = new Size(103, 38);
             label1.TabIndex = 75;
@@ -148,7 +148,7 @@
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(128, 187);
+            dataGridView1.Location = new Point(128, 204);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 51;
             dataGridView1.Size = new Size(732, 176);
@@ -173,7 +173,7 @@
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucReceta";
-            Size = new Size(884, 472);
+            Size = new Size(884, 500);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ResumeLayout(false);
             PerformLayout();

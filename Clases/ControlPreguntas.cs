@@ -16,7 +16,6 @@ using System.IO;
 public class ControlPreguntas {
 
 	public ControlMedico m_ControlMedico;
-	public frmDentista m_frmDentista;
 
 	public ControlPreguntas(){
 

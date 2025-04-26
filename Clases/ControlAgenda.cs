@@ -16,7 +16,7 @@ using System.IO;
 public class ControlAgenda {
 
 	public ControlMedico m_ControlMedico;
-	public frmDentista m_frmDentista;
+	//public frmDentista m_frmDentista;
 
 	public ControlAgenda(){
 

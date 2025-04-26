@@ -8,6 +8,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clases", "Clases\Clases.csproj", "{45E22E1C-0399-4A17-BFDD-377671339DAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controles", "Controles\Controles.csproj", "{A9271191-4EDD-4A3B-B2FC-CA8CFA1A3569}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45E22E1C-0399-4A17-BFDD-377671339DAA} = {45E22E1C-0399-4A17-BFDD-377671339DAA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

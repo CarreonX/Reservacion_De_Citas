@@ -29,7 +29,7 @@ public class ControlAdministrador {
 
 	/// 
 	/// <param name="id"></param>
-	public Administrador ConsultarAdministrador(String id){
+	public Administrador ConsultarAdministrador( int id){
 
 		return null;
 	}

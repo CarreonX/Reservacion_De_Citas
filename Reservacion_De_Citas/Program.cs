@@ -1,3 +1,5 @@
+using Formularios;
+
 namespace Reservacion_De_Citas
 {
     internal static class Program

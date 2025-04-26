@@ -15,7 +15,7 @@ using System.IO;
 
 public class Agenda {
 
-	private string IDMedico;
+	public string IDMedico { set; get; }
 	public ControlAgenda m_ControlAgenda;
 
 	public Agenda(){

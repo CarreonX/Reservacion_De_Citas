@@ -16,9 +16,6 @@ using System.IO;
 public class ControlMedicamento {
 
 	public Reporte m_Reporte;
-	public frmSecretaria m_frmSecretaria;
-	public frmAlmacen m_frmAlmacen;
-	public frmAdministrador m_frmAdministrador;
 
 	public ControlMedicamento(){
 

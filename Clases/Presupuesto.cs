@@ -15,15 +15,15 @@ using System.IO;
 
 public class Presupuesto {
 
-	private string HoraFechaPresupuesto;
-	private string IDMedico;
-	private string IDPaciente;
-	private string IDPresupuesto;
-	private string IDTratamaiento;
-	private double MontoTotal;
-	private string TipoTrabajo;
-	private string UbicacionBoca;
-	public ControlPresupuesto m_ControlPresupuesto;
+    public string IDPresupuesto { set; get; }
+    public string HoraFechaPresupuesto { set; get; }
+    public string IDMedico { set; get; }
+    public string IDPaciente { set; get; }
+    public string IDTratamaiento { set; get; }
+    public double MontoTotal { set; get; }
+    public string TipoTrabajo { set; get; }
+    public string UbicacionBoca { set; get; }
+    public ControlPresupuesto m_ControlPresupuesto;
 
 	public Presupuesto(){
 

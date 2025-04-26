@@ -15,17 +15,17 @@ using System.IO;
 
 public class Persona {
 
-	private string ApellidoM;
-	private string ApellidoP;
-	private string Direccion;
-	private string DNI;
-	private string Email;
-	private string idPersona;
-	private string Nombre;
-	private string TelefonoFijo;
-	private string TelefonoMovil;
+    public string idPersona { set; get; }
+    public string ApellidoM { set; get; }
+	public string ApellidoP { set; get; }
+    public string Direccion { set; get; }
+    public string DNI { set; get; }
+    public string Email { set; get; }
+    public string Nombre { set; get; }
+    public string TelefonoFijo { set; get; }
+    public string TelefonoMovil { set; get; }
 
-	public Persona(){
+    public Persona(){
 
 	}
 

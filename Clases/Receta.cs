@@ -15,13 +15,13 @@ using System.IO;
 
 public class Receta {
 
-	private string Fecha;
-	private string IDMedico;
-	private string IDPaciente;
-	private string IDReceta;
-	private string Indicaciones;
-	private List<Medicamento> Medicamentos;
-	public ControlReceta m_ControlReceta;
+    public string idReceta { get; set; }
+    public string Fecha { set; get; }
+    public string IDMedico { set; get; }
+    public string IDPaciente { set; get; }
+    public string Indicaciones { set; get; }
+    public List<Medicamento> Medicamentos { set; get; }
+    public ControlReceta m_ControlReceta;
 
 	public Receta(){
 
