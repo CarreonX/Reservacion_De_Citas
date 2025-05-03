@@ -10,52 +10,291 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlMedico {
 
-	public ControlMedico(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlMedico(){
 
 	}
 
-	~ControlMedico(){
+	public bool AgregarMedico(Medico medico){
+		bool bandera = false;
 
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter m_apellidoM = new MySqlParameter("m_apellidoM", MySqlDbType.VarChar, 20);
+            m_apellidoM.Value = medico.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(m_apellidoM);
+
+            MySqlParameter m_apellidoP = new MySqlParameter("m_apellidoP", MySqlDbType.VarChar, 20);
+            m_apellidoP.Value = medico.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(m_apellidoP);
+
+            MySqlParameter m_direccion = new MySqlParameter("m_direccion", MySqlDbType.VarChar, 50);
+            m_direccion.Value = medico.Direccion;
+            validarUsuario.cmd.Parameters.Add(m_direccion);
+
+            MySqlParameter m_dni = new MySqlParameter("m_dni", MySqlDbType.VarChar, 8);
+            m_dni.Value = medico.DNI;
+            validarUsuario.cmd.Parameters.Add(m_dni);
+
+            MySqlParameter m_email = new MySqlParameter("m_email", MySqlDbType.VarChar, 50);
+            m_email.Value = medico.Email;
+            validarUsuario.cmd.Parameters.Add(m_email);
+
+            MySqlParameter m_nombre = new MySqlParameter("m_nombre", MySqlDbType.VarChar, 20);
+            m_nombre.Value = medico.Nombre;
+            validarUsuario.cmd.Parameters.Add(m_nombre);
+
+            MySqlParameter m_telF = new MySqlParameter("m_telF", MySqlDbType.VarChar, 15);
+            m_telF.Value = medico.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(m_telF);
+
+            MySqlParameter m_telM = new MySqlParameter("m_telM", MySqlDbType.VarChar, 15);
+            m_telM.Value = medico.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(m_telM);
+
+            MySqlParameter m_usuario = new MySqlParameter("m_usuario", MySqlDbType.VarChar, 20);
+            m_usuario.Value = medico.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(m_usuario);
+
+            MySqlParameter m_pass = new MySqlParameter("m_pass", MySqlDbType.VarChar, 20);
+            m_pass.Value = medico.Password;
+            validarUsuario.cmd.Parameters.Add(m_pass);
+
+            MySqlParameter m_turno = new MySqlParameter("m_turno", MySqlDbType.VarChar, 20);
+            m_turno.Value = medico.Turno;
+            validarUsuario.cmd.Parameters.Add(m_turno);
+
+            MySqlParameter m_idConsultorio = new MySqlParameter("m_idConsultorio", MySqlDbType.VarChar, 20);
+            m_idConsultorio.Value = medico.IDConsultorio;
+            validarUsuario.cmd.Parameters.Add(m_idConsultorio);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public Medico ConsultarMedico( int IDMedico){
+
+        Medico medico = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter m_idx = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            m_idx.Value = IDMedico;
+            validarUsuario.cmd.Parameters.Add(m_idx);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            if (validarUsuario.dr.Read())
+            {
+                int idx = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string apellidoM = validarUsuario.dr["apellidoM"].ToString();
+                string apellidoP = validarUsuario.dr["apellidoP"].ToString();
+                string direccion = validarUsuario.dr["direccion"].ToString();
+                string dni = validarUsuario.dr["DNI"].ToString();
+                string email = validarUsuario.dr["email"].ToString();
+                string nombre = validarUsuario.dr["nombre"].ToString();
+                string telF = validarUsuario.dr["telefonoFijo"].ToString();
+                string telM = validarUsuario.dr["telefonoMovil"].ToString();
+                string usuario = validarUsuario.dr["usuario"].ToString();
+                string pass = validarUsuario.dr["password"].ToString(); 
+                string turno = validarUsuario.dr["turno"].ToString();
+                string idConsultorio = validarUsuario.dr["idConsultorio"].ToString();
+
+                medico = new Medico(idx, apellidoM, apellidoP, direccion, dni, email, nombre, telF, telM, usuario, pass, turno, idConsultorio);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return medico;
+    }
+
+	public List<Medico> ConsultarMedicos(){
+
+        List<Medico> listaMedicos = new List<Medico>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarMedicos", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                int idx = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string apellidoM = validarUsuario.dr["apellidoM"].ToString();
+                string apellidoP = validarUsuario.dr["apellidoP"].ToString();
+                string direccion = validarUsuario.dr["direccion"].ToString();
+                string dni = validarUsuario.dr["DNI"].ToString();
+                string email = validarUsuario.dr["email"].ToString();
+                string nombre = validarUsuario.dr["nombre"].ToString();
+                string telF = validarUsuario.dr["telefonoFijo"].ToString();
+                string telM = validarUsuario.dr["telefonoMovil"].ToString();
+                string usuario = validarUsuario.dr["usuario"].ToString();
+                string pass = validarUsuario.dr["password"].ToString();
+                string turno = validarUsuario.dr["turno"].ToString();
+                string idConsultorio = validarUsuario.dr["idConsultorio"].ToString();
+
+                Medico medico = new Medico(idx, apellidoM, apellidoP, direccion, dni, email, nombre, telF, telM, usuario, pass, turno, idConsultorio);
+                listaMedicos.Add(medico);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaMedicos;
+    }
+
+	public bool EliminarMedico( int IDMedico){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter m_idx = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            m_idx.Value = IDMedico;
+            validarUsuario.cmd.Parameters.Add(m_idx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
-	/// 
-	/// <param name="medico"></param>
-	public void AgregarMedico(Medico medico){
+	public bool ModificarMedico( Medico medico ){
 
-	}
+        bool bandera = false;
 
-	/// 
-	/// <param name="medico"></param>
-	public void CarcargMedico(Medico medico){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter m_idx = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            m_idx.Value = medico.IdPersona;
+            validarUsuario.cmd.Parameters.Add(m_idx);
 
-	/// 
-	/// <param name="IDMedico"></param>
-	public void ConsultarMedico(string IDMedico){
+            MySqlParameter m_apellidoM = new MySqlParameter("m_apellidoM", MySqlDbType.VarChar, 20);
+            m_apellidoM.Value = medico.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(m_apellidoM);
 
-	}
+            MySqlParameter m_apellidoP = new MySqlParameter("m_apellidoP", MySqlDbType.VarChar, 20);
+            m_apellidoP.Value = medico.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(m_apellidoP);
 
-	public void ConsultarMedicos(){
+            MySqlParameter m_direccion = new MySqlParameter("m_direccion", MySqlDbType.VarChar, 50);
+            m_direccion.Value = medico.Direccion;
+            validarUsuario.cmd.Parameters.Add(m_direccion);
 
-	}
+            MySqlParameter m_dni = new MySqlParameter("m_dni", MySqlDbType.VarChar, 8);
+            m_dni.Value = medico.DNI;
+            validarUsuario.cmd.Parameters.Add(m_dni);
 
-	/// 
-	/// <param name="IDMedico"></param>
-	public bool EliminarMedico(string IDMedico){
+            MySqlParameter m_email = new MySqlParameter("m_email", MySqlDbType.VarChar, 50);
+            m_email.Value = medico.Email;
+            validarUsuario.cmd.Parameters.Add(m_email);
 
-		return false;
-	}
+            MySqlParameter m_nombre = new MySqlParameter("m_nombre", MySqlDbType.VarChar, 20);
+            m_nombre.Value = medico.Nombre;
+            validarUsuario.cmd.Parameters.Add(m_nombre);
 
-	/// 
-	/// <param name="IDMedico"></param>
-	public void ModificarMedico(string IDMedico){
+            MySqlParameter m_telF = new MySqlParameter("m_telF", MySqlDbType.VarChar, 15);
+            m_telF.Value = medico.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(m_telF);
 
-	}
+            MySqlParameter m_telM = new MySqlParameter("m_telM", MySqlDbType.VarChar, 15);
+            m_telM.Value = medico.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(m_telM);
+
+            MySqlParameter m_usuario = new MySqlParameter("m_usuario", MySqlDbType.VarChar, 20);
+            m_usuario.Value = medico.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(m_usuario);
+
+            MySqlParameter m_pass = new MySqlParameter("m_pass", MySqlDbType.VarChar, 20);
+            m_pass.Value = medico.Password;
+            validarUsuario.cmd.Parameters.Add(m_pass);
+
+            MySqlParameter m_turno = new MySqlParameter("m_turno", MySqlDbType.VarChar, 20);
+            m_turno.Value = medico.Turno;
+            validarUsuario.cmd.Parameters.Add(m_turno);
+
+            MySqlParameter m_idConsultorio = new MySqlParameter("m_idConsultorio", MySqlDbType.VarChar, 20);
+            m_idConsultorio.Value = medico.IDConsultorio;
+            validarUsuario.cmd.Parameters.Add(m_idConsultorio);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlMedico

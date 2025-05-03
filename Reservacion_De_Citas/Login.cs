@@ -4,6 +4,7 @@ namespace Reservacion_De_Citas
 {
     public partial class Login : Form
     {
+        ValidarUsuario validarUsuario = new ValidarUsuario();
         public Login()
         {
             InitializeComponent();
@@ -16,36 +17,38 @@ namespace Reservacion_De_Citas
 
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
-            if( ValidarUsuario.validarUsuario(txtUsuario.Text, txtPass.Text))
+            if (validarUsuario.validar(txtUsuario.Text, txtPass.Text))
             {
-                switch( ValidarUsuario.tipo )
+                switch (validarUsuario.tipo)
                 {
                     case "admin":
                         // Abrir formulario de administrador
-                        frmAdmin_ adminForm = new frmAdmin_(ValidarUsuario.indice);
+                        frmAdmin_ adminForm = new frmAdmin_(validarUsuario.indice);
                         adminForm.ShowDialog();
-                        this.Hide();
                         break;
 
                     case "secre":
                         // Abrir formulario de secretaria
-                        frmSecretaria secreForm = new frmSecretaria(ValidarUsuario.indice);
+                        frmSecretaria secreForm = new frmSecretaria(validarUsuario.indice);
                         secreForm.ShowDialog();
-                        this.Hide();
                         break;
 
                     case "dent":
                         // Abrir formulario de dentista
-                        frmDentista dentForm = new frmDentista(ValidarUsuario.indice);
+                        frmDentista dentForm = new frmDentista(validarUsuario.indice);
                         dentForm.ShowDialog();
-                        this.Hide();
                         break;
                 }
             }
             else
             {
-                MessageBox.Show(ValidarUsuario.mensaje);
+                MessageBox.Show(validarUsuario.mensaje);
             }
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
         }
     }
 }

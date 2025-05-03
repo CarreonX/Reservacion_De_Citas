@@ -15,24 +15,45 @@ using System.IO;
 
 public class Medicamento {
 
-    public string IDMedicamento { set; get; }
-    public byte Cantidad { set; get; }
+    public int IDMedicamento { set; get; }
+    public int Cantidad { set; get; }
     public string DivicionPisoEstante { set; get; }
     public string Estante { set; get; }
     public string Nombre { set; get; }
     public int PisoEstante { set; get; }
-    public double Precio { set; get; }
+    public float Precio { set; get; }
     public string Seccion { set; get; }
-    public double Subtotal { set; get; }
+    public float Subtotal { set; get; }
     public string UnidadDeMedida { set; get; }
+
+
     public ControlMedicamento m_ControlMedicamento;
 
-	public Medicamento(){
+    public Medicamento(int idMedicamento, int cantidad, string divicionPisoEstante, string estante, string nombre, int pisoEstante, float precio, string seccion, string unidadDeMedida)
+    {
+        IDMedicamento = idMedicamento;
+        Cantidad = cantidad;
+        DivicionPisoEstante = divicionPisoEstante;
+        Estante = estante;
+        Nombre = nombre;
+        PisoEstante = pisoEstante;
+        Precio = precio;
+        Seccion = seccion;
+        UnidadDeMedida = unidadDeMedida;
+        Subtotal = precio * cantidad;
+    }
 
-	}
-
-	~Medicamento(){
-
-	}
+    public Medicamento(int cantidad, string divicionPisoEstante, string estante, string nombre, int pisoEstante, float precio, string seccion, string unidadDeMedida)
+    {
+        Cantidad = cantidad;
+        DivicionPisoEstante = divicionPisoEstante;
+        Estante = estante;
+        Nombre = nombre;
+        PisoEstante = pisoEstante;
+        Precio = precio;
+        Seccion = seccion;
+        UnidadDeMedida = unidadDeMedida;
+        Subtotal = precio * cantidad;
+    }
 
 }//end Medicamento

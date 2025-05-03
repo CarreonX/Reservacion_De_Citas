@@ -15,62 +15,15 @@ using System.IO;
 
 public class Administrador : Usuario {
 
-	public ControlAdministrador m_ControlAdministrador;
-
-	public Administrador(){
-
-	}
-
-	~Administrador(){
+	public Administrador(int idx, string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass)
+		: base(idx, apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass )
+    {
 
 	}
 
-	public void AgregarDentista(){
+    public Administrador( string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass)
+        : base( apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass)
+    {
 
-	}
-
-	public void AgregarSecretaria(){
-
-	}
-
-	public void ConsultarDentistas(){
-
-	}
-
-	public void ConsultarEstadisticasDeNegocio(){
-
-	}
-
-	public void ConsultarHistorialDeCitas(){
-
-	}
-
-	public void ConsultarPacientes(){
-
-	}
-
-	public void ConsultarReportes(){
-
-	}
-
-	public void ConsultarSecretarias(){
-
-	}
-
-	public void EliminarDentista(){
-
-	}
-
-	public void EliminarSecretaria(){
-
-	}
-
-	public void ModificarDentista(){
-
-	}
-
-	public void ModificarSecretaria(){
-
-	}
-
+    }
 }//end Administrador

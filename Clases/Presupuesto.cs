@@ -10,27 +10,52 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Clases;
 
 
 
 public class Presupuesto {
 
-    public string IDPresupuesto { set; get; }
-    public string HoraFechaPresupuesto { set; get; }
-    public string IDMedico { set; get; }
-    public string IDPaciente { set; get; }
-    public string IDTratamaiento { set; get; }
-    public double MontoTotal { set; get; }
+    public int IDPresupuesto { set; get; }
+    public DateTime HoraFechaPresupuesto { set; get; }
+    public int IDMedico { set; get; }
+    public int IDPaciente { set; get; }
+    public int IDTratamaiento { set; get; }
+    public float MontoTotal { set; get; }
     public string TipoTrabajo { set; get; }
     public string UbicacionBoca { set; get; }
-    public ControlPresupuesto m_ControlPresupuesto;
 
-	public Presupuesto(){
+    ControlTratamiento controlTratamiento = new ControlTratamiento();
+    public Presupuesto( int idx, DateTime horafesha, int idmedico, int idpaciente, int idtratamiento, string tipo, string ubicacion){
+        IDPresupuesto = idx;
+        HoraFechaPresupuesto = horafesha;
+        IDMedico = idmedico;
+        IDPaciente = idpaciente;
+        IDTratamaiento = idtratamiento;
+        TipoTrabajo = tipo;
+        UbicacionBoca = ubicacion;
+        MontoTotal = TotalTratamiento();
+    }
 
-	}
+    public Presupuesto(DateTime horafesha, int idmedico, int idpaciente, int idtratamiento, string tipo, string ubicacion)
+    {
+        HoraFechaPresupuesto = horafesha;
+        IDMedico = idmedico;
+        IDPaciente = idpaciente;
+        IDTratamaiento = idtratamiento;
+        TipoTrabajo = tipo;
+        UbicacionBoca = ubicacion;
+        MontoTotal = TotalTratamiento();
+    }
 
-	~Presupuesto(){
-
-	}
-
+    public float TotalTratamiento()
+    {
+        List<Tratamiento> tratamientos = controlTratamiento.ConsultarTratamiento( IDTratamaiento );
+        float total = 0;
+        foreach (Tratamiento t in tratamientos)
+        {
+            total += t.SubTotal;
+        }
+        return total;
+    }
 }//end Presupuesto

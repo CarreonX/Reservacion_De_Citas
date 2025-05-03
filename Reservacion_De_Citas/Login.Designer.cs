@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             btnIniciarSesion = new Button();
             txtPass = new TextBox();
             pictureBox1 = new PictureBox();
@@ -40,7 +41,13 @@
             // 
             // btnIniciarSesion
             // 
-            btnIniciarSesion.BackColor = Color.Lime;
+            btnIniciarSesion.BackColor = Color.SteelBlue;
+            btnIniciarSesion.FlatAppearance.BorderSize = 0;
+            btnIniciarSesion.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
+            btnIniciarSesion.FlatAppearance.MouseDownBackColor = Color.Gray;
+            btnIniciarSesion.FlatAppearance.MouseOverBackColor = Color.Teal;
+            btnIniciarSesion.FlatStyle = FlatStyle.Flat;
+            btnIniciarSesion.ForeColor = SystemColors.ButtonHighlight;
             btnIniciarSesion.Location = new Point(114, 366);
             btnIniciarSesion.Name = "btnIniciarSesion";
             btnIniciarSesion.Size = new Size(94, 55);
@@ -59,21 +66,29 @@
             // pictureBox1
             // 
             pictureBox1.BackColor = SystemColors.ButtonHighlight;
-            pictureBox1.Location = new Point(62, 28);
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(101, 35);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(457, 161);
+            pictureBox1.Size = new Size(350, 150);
             pictureBox1.TabIndex = 2;
             pictureBox1.TabStop = false;
             // 
             // btnCerrar
             // 
-            btnCerrar.BackColor = Color.Red;
+            btnCerrar.BackColor = Color.SteelBlue;
+            btnCerrar.FlatAppearance.BorderSize = 0;
+            btnCerrar.FlatAppearance.CheckedBackColor = Color.FromArgb(64, 64, 64);
+            btnCerrar.FlatAppearance.MouseDownBackColor = Color.Gray;
+            btnCerrar.FlatAppearance.MouseOverBackColor = Color.Teal;
+            btnCerrar.FlatStyle = FlatStyle.Flat;
+            btnCerrar.ForeColor = SystemColors.ButtonHighlight;
             btnCerrar.Location = new Point(332, 366);
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(94, 55);
             btnCerrar.TabIndex = 3;
             btnCerrar.Text = "Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // label1
             // 
@@ -114,7 +129,8 @@
             Controls.Add(txtPass);
             Controls.Add(btnIniciarSesion);
             Name = "Login";
-            Text = "Form1";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Bienvenido";
             Load += Login_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ResumeLayout(false);

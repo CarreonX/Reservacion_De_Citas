@@ -16,56 +16,18 @@ using System.IO;
 public class Secretaria : Usuario {
 
 	public string Turno { set; get; }
-	public ControlSecretaria m_ControlSecretaria;
 
-	public Secretaria(){
+	public Secretaria(int idx, string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass, string turno )
+        : base(idx, apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass) 
+	{
+        Turno = turno;
+    }
 
-	}
+    public Secretaria(string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass, string turno)
+        : base(apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass)
+    {
+        Turno = turno;
+    }
 
-	~Secretaria(){
-
-	}
-
-	/// 
-	/// <param name="IDCita"></param>
-	public void CancelarCita(string IDCita){
-
-	}
-
-	public void ConsultarAgenda(){
-
-	}
-
-	/// 
-	/// <param name="IDMedico"></param>
-	public void ConsultarMedico(string IDMedico){
-
-	}
-
-	public void ConsultarMedicos(){
-
-	}
-
-	/// 
-	/// <param name="IDReceta"></param>
-	public void ConsultarReceta(string IDReceta){
-
-	}
-
-	public void CrearCita(){
-
-	}
-
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void EnviarRecordatorio(string IDPaciente){
-
-	}
-
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void ModificarPaciente(string IDPaciente){
-
-	}
 
 }//end Secretaria

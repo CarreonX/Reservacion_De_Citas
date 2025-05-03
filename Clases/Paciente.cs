@@ -15,31 +15,51 @@ using System.IO;
 
 public class Paciente : Persona {
 
-	public string Alergias { set; get; }
-    public string FechaNacimiento { set; get; }
-    public string IDPreguntasHistoria { set; get; }
+    public DateOnly FechaNacimiento { set; get; }
+    public int IDPreguntasHistoria { set; get; }
     public string Notas { set; get; }
     public float Peso { set; get; }
     public float Talla { set; get; }
+    public int Edad { get; set; }
+    public float IMC { get; set; }
 
     public ControlPaciente m_ControlPaciente;
 
-	public Paciente(){
+	public Paciente(int idx, string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla)
+        : base(idx, apellidoM, apellidoP, direc, email, nombre, telF, telM ) 
+    { 
 
-	}
+        FechaNacimiento = nacimiento;
+        IDPreguntasHistoria = idRespestas;
+        Notas = notas;
+        Peso = peso;
+        Talla = talla;
+        Edad = CalcularEdad();
+        IMC = CalcularIMC();
+    }
 
-	~Paciente(){
-
-	}
+    public Paciente(string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla)
+        : base(apellidoM, apellidoP, direc, email, nombre, telF, telM) 
+    {
+        FechaNacimiento = nacimiento;
+        IDPreguntasHistoria = idRespestas;
+        Notas = notas;
+        Peso = peso;
+        Talla = talla;
+        Edad = CalcularEdad();
+        IMC = CalcularIMC();
+    }
 
 	public int CalcularEdad(){
 
-		return 0;
+        DateOnly hoy = DateOnly.FromDateTime(DateTime.Now);
+        int edad = hoy.Year - FechaNacimiento.Year;
+        return edad;
 	}
 
 	public float CalcularIMC(){
 
-		return 0;
-	}
+		return (float)( Peso / (Talla * Talla));
+    }
 
 }//end Paciente

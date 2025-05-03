@@ -14,34 +14,42 @@ namespace Formularios
     {
 
         ControlAdministrador controlAdmin = new ControlAdministrador();
-        Administrador Administrador = new Administrador();
-
-        public frmAdmin_( int idx )
+        private Administrador Administrador { get; set; }
+        public frmAdmin_(int idx)
         {
             InitializeComponent();
             perzonalizarDiseño();
-            Administrador = controlAdmin.ConsultarAdministrador( idx );
+            Administrador = controlAdmin.ConsultarAdministrador(idx);
+            if (Administrador != null)
+            {
+                lblBienvenida.Text = "Bienvenido " + Administrador.Nombre;
+            }
+            else
+            {
+                MessageBox.Show(controlAdmin.validarUsuario.mensaje);
+            }
+            lblFechaHota.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
         }
 
         private void perzonalizarDiseño()
         {
             panelSubMenuReportes.Visible = false;
-            panelSubMenuSeguridad.Visible = false;
+            panelSubMenuUsuarios.Visible = false;
         }
 
-        private void ocultarSubMenu()
+        private void ocultarSubMenu( Panel panel )
         {
-            if (panelSubMenuReportes.Visible == true)
-                panelSubMenuReportes.Visible = false;
-            if (panelSubMenuSeguridad.Visible == true)
-                panelSubMenuSeguridad.Visible = false;
+            if (panel.Visible == true)
+                panel.Visible = false;
+            if (panel.Visible == true)
+                panel.Visible = false;
         }
 
         private void mostrarSubMenu(Panel subMenu)
         {
             if (!subMenu.Visible)
             {
-                ocultarSubMenu();
+                ocultarSubMenu( subMenu );
                 subMenu.Visible = true;
             }
             else
@@ -54,32 +62,34 @@ namespace Formularios
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
-            mostrarSubMenu(panelSubMenuReportes);
+            ocultarSubMenu( panelSubMenuReportes);
 
+        }
+        private void button6_Click(object sender, EventArgs e)
+        {
+            ocultarSubMenu(panelSubMenuUsuarios);
+            mostrarSubMenu(panelSubMenuReportes);
         }
 
         private void btnCitas_Click(object sender, EventArgs e)
         {
-            abrirFormularioHijo(new frmPrueba( 0 ));
-            ocultarSubMenu();
+            abrirFormularioHijo(new frmPrueba(0));
+            ocultarSubMenu( panelSubMenuReportes );
         }
 
         private void btnConsultasMedicas_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Consultas Medicas");
-            ocultarSubMenu();
         }
 
         private void btnAlmacen_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Almacen");
-            ocultarSubMenu();
         }
 
         private void btnFinanzas_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Finanzas");
-            ocultarSubMenu();
         }
         #endregion 
 
@@ -87,33 +97,30 @@ namespace Formularios
 
         private void btnSubMenuSeguridad_Click(object sender, EventArgs e)
         {
-            mostrarSubMenu(panelSubMenuSeguridad);
+            mostrarSubMenu(panelSubMenuUsuarios);
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Usuarios");
-            ocultarSubMenu();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Roles");
-            ocultarSubMenu();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Permisos");
-            ocultarSubMenu();
         }
         #endregion
 
         private Form formularioActivo = null;
 
-        private void abrirFormularioHijo( Form frmHijo )
+        private void abrirFormularioHijo(Form frmHijo)
         {
-            if(formularioActivo != null)
+            if (formularioActivo != null)
             {
                 formularioActivo.Close();
             }
@@ -126,6 +133,23 @@ namespace Formularios
             panelFormulario.Tag = frmHijo;
             frmHijo.BringToFront();
             frmHijo.Show();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            ocultarSubMenu(panelSubMenuReportes);
+            mostrarSubMenu( panelSubMenuUsuarios);
+
         }
     }
 }

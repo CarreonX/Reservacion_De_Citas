@@ -10,42 +10,180 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlPreguntas {
 
-	public ControlMedico m_ControlMedico;
-
-	public ControlPreguntas(){
-
-	}
-
-	~ControlPreguntas(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlPreguntas(){
 
 	}
+	public bool AgregarPregunta( PreguntaHistoriaClinica pregunta ){
 
-	public void AgregarPregunta(){
+		bool bandera = false;
 
-	}
+		try
+		{
+			validarUsuario.conectar();
+			validarUsuario.cmd = new MySqlCommand("uspAgregarPreguntaHC", validarUsuario.conn);
+			validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+			MySqlParameter paramPregunta = new MySqlParameter("p_pregunta", MySqlDbType.VarChar, 30);
+			paramPregunta.Value = pregunta.Pregunta;
+			validarUsuario.cmd.Parameters.Add(paramPregunta);
+
+			if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+			{
+				bandera = true;
+			}
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 	public List<PreguntaHistoriaClinica> ConsultarPreguntas(){
 
-		return null;
-	}
+        List<PreguntaHistoriaClinica> listaPreguntas = new List<PreguntaHistoriaClinica>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPreguntasHC", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	/// 
-	/// <param name="IDPregunta"></param>
-	public bool EliminarPregunta(string IDPregunta){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
 
-		return false;
-	}
+            while ( validarUsuario.dr.Read())
+            {
+                PreguntaHistoriaClinica pregunta = new PreguntaHistoriaClinica(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                validarUsuario.dr["pregunta"].ToString()
+                );
+                listaPreguntas.Add(pregunta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaPreguntas;
+    }
 
-	/// 
-	/// <param name="IDPregunta"></param>
-	public bool ModificarPregunta(string IDPregunta){
+    public PreguntaHistoriaClinica ConsultarPregunta( int p_idx)
+    {
+        PreguntaHistoriaClinica pregunta = null;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPreguntaHC", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-		return false;
-	}
+            MySqlParameter paramIdx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            paramIdx.Value = p_idx;
+            validarUsuario.cmd.Parameters.Add(paramIdx);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                pregunta = new PreguntaHistoriaClinica(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                validarUsuario.dr["pregunta"].ToString()
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return pregunta;
+    }
+
+	public bool EliminarPregunta( int p_idx ){
+
+		bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarPreguntaHC", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIdx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            paramIdx.Value = p_idx;
+            validarUsuario.cmd.Parameters.Add(paramIdx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarPregunta( PreguntaHistoriaClinica pregunta ){
+
+        bool bandera = false;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarPreguntaHC", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIdx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            paramIdx.Value = pregunta.IdPregunta;
+            validarUsuario.cmd.Parameters.Add(paramIdx);
+
+            MySqlParameter paramPregunta = new MySqlParameter("p_pregunta", MySqlDbType.VarChar, 30);
+            paramPregunta.Value = pregunta.Pregunta;
+            validarUsuario.cmd.Parameters.Add(paramPregunta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlPreguntas

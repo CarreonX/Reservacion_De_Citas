@@ -10,24 +10,56 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Clases;
 
 
 
 public class CajaRegistradora {
 
-	private double DineroAlDia;
-	private string Fecha;
-	private string idCaja;
-	private List<Medicamento> ProductosVendidosAlDia;
-	private double Total;
-	public ControlCajaRegistradora m_ControlCajaRegistradora;
+    public int IdCaja { set; get; }
+    public string Nombre { get; set; }
+    public string Ubicacion { get; set; }
+    public DateTime FechaHoraApertura { set; get; }
+    public DateTime FechaHoraCierre { get; set; }
+    public string Estado { get; set; }
+    public int IdUsuario { get; set; }
+    public decimal SaldoInicial { get; set; }
+    public decimal SaldoFinal { get; set; }
+    public List<Venta> Ventas { set; get; }
+    public float Total { set; get; }
 
-	public CajaRegistradora(){
+    ControlVentas controlVentas = new ControlVentas();
 
-	}
+    public CajaRegistradora( string nombre, string ubicacion, int idx_usuario, decimal saldoI )
+    {
+        Nombre = nombre;
+        Ubicacion = ubicacion;
+        IdUsuario = idx_usuario;
+        SaldoInicial = saldoI;
+    }
 
-	~CajaRegistradora(){
+    private float CalcularTotal()
+    {
+        float total = 0;
+        foreach (Venta venta in Ventas)
+        {
+            total += (float)venta.subtotal;
+        }
+        return total;
+    }
 
-	}
-
+    public CajaRegistradora( int idx, string nombre, string ubicacion, DateTime fhApert, DateTime fhCierr, string edo, int idx_usuario, decimal saldoI, decimal saldoF )
+    {
+        IdCaja = idx;
+        Nombre = nombre;
+        Ubicacion = ubicacion;
+        FechaHoraApertura = fhApert;
+        FechaHoraCierre = fhCierr;
+        Estado = edo;
+        IdUsuario = idx_usuario;
+        SaldoInicial = saldoI;
+        SaldoFinal = saldoF;
+        Ventas = controlVentas.consultarVentas(IdCaja);
+        Total = CalcularTotal();
+    }
 }//end CajaRegistradora

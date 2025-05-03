@@ -15,17 +15,15 @@ using System.IO;
 
 public class RespuestasClinicas {
 
-	private string IDPaciente;
-	private string IDRespuestas;
-	private List<PreguntaHistoriaClinica> Respuestas;
-	public ControlRespuestasClinicas m_ControlRespuestasClinicas;
+    public int IdPaciente { get; set; }
+    public string Respuesta { get; set; }
+    public int IdPregunta { get; set; }
 
-	public RespuestasClinicas(){
+	public RespuestasClinicas( int idx, string resp, int idpregunta ){
+        IdPaciente = idx;
+        Respuesta = resp;
+        IdPregunta = idpregunta;
+    }
 
-	}
-
-	~RespuestasClinicas(){
-
-	}
 
 }//end RespuestasClinicas

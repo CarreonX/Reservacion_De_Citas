@@ -15,22 +15,34 @@ using System.IO;
 
 public class ConsultaMedica {
 
-	private string Diagnostico;
-	private string Fecha;
-	private string IDConsulta;
-	private string IDDentista;
-	private string IDPaciente;
-	private string IDProximaCita;
-	private string IDReceta;
-	private string MotivoDeConsulta;
-	public ControlConsulta m_ControlConsulta;
+    public int IDConsulta { set; get; }
+    public string Diagnostico { set; get; }
+    public DateOnly Fecha { set; get; }
+    public int IDDentista { set; get; }
+    public int IDPaciente { set; get; }
+    public int IDProximaCita { set; get; }
+    public int IDReceta { set; get; }
+    public string MotivoDeConsulta { set; get; }
 
-	public ConsultaMedica(){
+    public ConsultaMedica( int idConsulta, string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta)
+    {
+        IDConsulta = idConsulta;
+        Diagnostico = diagnostico;
+        Fecha = fecha;
+        IDDentista = idDentista;
+        IDPaciente = idPaciente;
+        IDReceta = idReceta;
+        MotivoDeConsulta = motivoDeConsulta;
+    }
 
-	}
-
-	~ConsultaMedica(){
-
-	}
+    public ConsultaMedica(string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta)
+    {
+        Diagnostico = diagnostico;
+        Fecha = fecha;
+        IDDentista = idDentista;
+        IDPaciente = idPaciente;
+        IDReceta = idReceta;
+        MotivoDeConsulta = motivoDeConsulta;
+    }
 
 }//end ConsultaMedica

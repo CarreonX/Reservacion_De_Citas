@@ -15,20 +15,48 @@ using System.IO;
 
 public class Reporte {
 
-	private string Fecha;
-	private string IDReporte;
-	private List<Cita> InformacionCitas;
-	private List<ConsultaMedica> InformacionConsultas;
-	private List<Medicamento> InformacionMedicamentoVendido;
-	private List<Presupuesto> InformacionPresupuestos;
-	public ControlReporte m_ControlReporte;
+    public int IdReporte { get; set; }
+    public DateOnly Fecha { get; set; }
 
-	public Reporte(){
+    ControlPresupuesto controlPresupuesto = new ControlPresupuesto();
+    ControlReceta controlReceta = new ControlReceta();
+    ControlConsulta controlConsulta = new ControlConsulta();
+    ControlCajaRegistradora controlCajaRegistradora = new ControlCajaRegistradora();
 
-	}
+    public Reporte(int idx, DateOnly fesha ){
+        IdReporte = idx;
+        Fecha = fesha;
+    }
 
-	~Reporte(){
+    public Reporte(DateOnly fesha)
+    {
+        Fecha = fesha;
+    }
 
-	}
+    public Reporte()
+    {
+        Fecha = DateOnly.FromDateTime(DateTime.Now);
+    }
+
+    public List<Receta> ConsultarRecetas( DateOnly date)
+    {
+        return controlReceta.ConsultarRecetasPorFecha(date);
+    }
+
+    public List<Presupuesto> ConsultarPresupuestos(DateOnly date)
+    {
+        return controlPresupuesto.ConsultarPresupuestosPorFecha(date);
+    }
+
+    public List<ConsultaMedica> ConsultarConsultasMedicas(DateOnly date)
+    {
+        return controlConsulta.ConsultarConsultasMedicasPorFecha(date);
+    }
+
+    public List<CajaRegistradora> ConsultarCajasRegistradoras(DateOnly date)
+    {
+        return controlCajaRegistradora.ConsultarCajasPorFecha(date);
+    }
+
 
 }//end Reporte

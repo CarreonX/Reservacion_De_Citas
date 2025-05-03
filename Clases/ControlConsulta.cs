@@ -10,45 +10,370 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-//using Clases;
+using MySql.Data.MySqlClient;
+using System.Data;
+using Clases;
 
 
 public class ControlConsulta {
 
-	public ControlMedico m_ControlMedico;
-	/*
-	public frmDentista m_frmDentista;
-	public frmAdministrador m_frmAdministrador;*/
-
-	public ControlConsulta(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlConsulta(){
 
 	}
 
-	~ControlConsulta(){
+	public bool AgregarConsulta(ConsultaMedica consulta)
+    {
 
-	}
+		bool bandera = false;
 
-	public void AgregarConsulta(){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarConsultaMedica", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter cm_diagnostico = new MySqlParameter("cm_diagnostico", MySqlDbType.Text);
+            cm_diagnostico.Value = consulta.Diagnostico;
+            validarUsuario.cmd.Parameters.Add(cm_diagnostico);
 
-	/// 
-	/// <param name="string"></param>
-	public List<ConsultaMedica> ConsultarConsultasMedicas( string idDentista ){
+            MySqlParameter cm_fecha = new MySqlParameter("cm_fecha", MySqlDbType.Date);
+            cm_fecha.Value = consulta.Fecha;
+            validarUsuario.cmd.Parameters.Add(cm_fecha);
 
-		return null;
-	}
+            MySqlParameter cm_idMedico = new MySqlParameter("cm_idMedico", MySqlDbType.Int32);
+            cm_idMedico.Value = consulta.IDDentista;
+            validarUsuario.cmd.Parameters.Add(cm_idMedico);
 
-	/// 
-	/// <param name="IDConsulta"></param>
-	public void EliminarConsultar(string IDConsulta){
+            MySqlParameter cm_idPaciente = new MySqlParameter("cm_idPaciente", MySqlDbType.Int32);
+            cm_idPaciente.Value = consulta.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(cm_idPaciente);
 
-	}
+            MySqlParameter cm_idReceta = new MySqlParameter("cm_idReceta", MySqlDbType.Int32);
+            cm_idReceta.Value = consulta.IDReceta;
+            validarUsuario.cmd.Parameters.Add(cm_idReceta);
 
-	/// 
-	/// <param name="IDConsulta"></param>
-	public void ModificarConsulta(string IDConsulta){
+            MySqlParameter cm_motivoConsulta = new MySqlParameter("cm_motivoConsulta", MySqlDbType.Text);
+            cm_motivoConsulta.Value = consulta.MotivoDeConsulta;
+            validarUsuario.cmd.Parameters.Add(cm_motivoConsulta);
 
-	}
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public List<ConsultaMedica> ConsultarConsultasMedicas(){
+
+		List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarConsultasMedicas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                ConsultaMedica consulta = new ConsultaMedica(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["diagnostico"].ToString(),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    Convert.ToInt32(validarUsuario.dr["idReceta"]),
+                    validarUsuario.dr["motivoConsulta"].ToString()
+                );
+                listaConsultas.Add(consulta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaConsultas;
+    }
+
+    public List<ConsultaMedica> ConsultarConsultasMedicasPorMedico( int m_idx )
+    {
+
+        List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarConsultasMedicasPorMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idMedico = new MySqlParameter("cm_idMedico", MySqlDbType.Int32);
+            cm_idMedico.Value = m_idx;
+            validarUsuario.cmd.Parameters.Add(cm_idMedico);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                ConsultaMedica consulta = new ConsultaMedica(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["diagnostico"].ToString(),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    Convert.ToInt32(validarUsuario.dr["idReceta"]),
+                    validarUsuario.dr["motivoConsulta"].ToString()
+                );
+                listaConsultas.Add(consulta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaConsultas;
+    }
+
+    public List<ConsultaMedica> ConsultarConsultasMedicasPorFecha( DateOnly fesha )
+    {
+
+        List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarConsultasMedicasPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idMedico = new MySqlParameter("cm_fecha", MySqlDbType.Date);
+            cm_idMedico.Value = fesha;
+            validarUsuario.cmd.Parameters.Add(cm_idMedico);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                ConsultaMedica consulta = new ConsultaMedica(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["diagnostico"].ToString(),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    Convert.ToInt32(validarUsuario.dr["idReceta"]),
+                    validarUsuario.dr["motivoConsulta"].ToString()
+                );
+                listaConsultas.Add(consulta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaConsultas;
+    }
+
+    public List<ConsultaMedica> ConsultarConsultasMedicasPorPaciente(int m_idx)
+    {
+
+        List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarConsultasMedicasPorPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idMedico = new MySqlParameter("cm_idPaciente", MySqlDbType.Int32);
+            cm_idMedico.Value = m_idx;
+            validarUsuario.cmd.Parameters.Add(cm_idMedico);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                ConsultaMedica consulta = new ConsultaMedica(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["diagnostico"].ToString(),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    Convert.ToInt32(validarUsuario.dr["idReceta"]),
+                    validarUsuario.dr["motivoConsulta"].ToString()
+                );
+                listaConsultas.Add(consulta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaConsultas;
+    }
+
+    public ConsultaMedica ConsultarConsultaMedica( int idx)
+    {
+        ConsultaMedica consulta = null;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarConsultaMedica", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idConsulta = new MySqlParameter("cm_idx", MySqlDbType.Int32);
+            cm_idConsulta.Value = idx;
+            validarUsuario.cmd.Parameters.Add(cm_idConsulta);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                consulta = new ConsultaMedica(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["diagnostico"].ToString(),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    Convert.ToInt32(validarUsuario.dr["idReceta"]),
+                    validarUsuario.dr["motivoConsulta"].ToString()
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return consulta;
+    }
+    public bool EliminarConsulta( int c_idx ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarConsultaMedica", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idConsulta = new MySqlParameter("cm_idx", MySqlDbType.Int32);
+            cm_idConsulta.Value = c_idx;
+            validarUsuario.cmd.Parameters.Add(cm_idConsulta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarConsulta(ConsultaMedica consulta ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarConsultaMedica", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cm_idConsulta = new MySqlParameter("cm_idx", MySqlDbType.Int32);
+            cm_idConsulta.Value = consulta.IDConsulta;
+            validarUsuario.cmd.Parameters.Add(cm_idConsulta);
+
+            MySqlParameter cm_diagnostico = new MySqlParameter("cm_diagnostico", MySqlDbType.Text);
+            cm_diagnostico.Value = consulta.Diagnostico;
+            validarUsuario.cmd.Parameters.Add(cm_diagnostico);
+
+            MySqlParameter cm_fecha = new MySqlParameter("cm_fecha", MySqlDbType.Date);
+            cm_fecha.Value = consulta.Fecha;
+            validarUsuario.cmd.Parameters.Add(cm_fecha);
+
+            MySqlParameter cm_idMedico = new MySqlParameter("cm_idMedico", MySqlDbType.Int32);
+            cm_idMedico.Value = consulta.IDDentista;
+            validarUsuario.cmd.Parameters.Add(cm_idMedico);
+
+            MySqlParameter cm_idPaciente = new MySqlParameter("cm_idPaciente", MySqlDbType.Int32);
+            cm_idPaciente.Value = consulta.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(cm_idPaciente);
+
+            MySqlParameter cm_idReceta = new MySqlParameter("cm_idReceta", MySqlDbType.Int32);
+            cm_idReceta.Value = consulta.IDReceta;
+            validarUsuario.cmd.Parameters.Add(cm_idReceta);
+
+            MySqlParameter cm_motivoConsulta = new MySqlParameter("cm_motivoConsulta", MySqlDbType.Text);
+            cm_motivoConsulta.Value = consulta.MotivoDeConsulta;
+            validarUsuario.cmd.Parameters.Add(cm_motivoConsulta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlConsulta

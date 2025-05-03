@@ -10,41 +10,160 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlRespuestasClinicas {
 
-	public ControlReporte m_ControlReporte;
-
-	public ControlRespuestasClinicas(){
-
-	}
-
-	~ControlRespuestasClinicas(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlRespuestasClinicas(){
 
 	}
 
-	public void AgregarRespuestas(){
+	public bool AgregarRespuestas( RespuestasClinicas respuestas ){
 
+		bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarRespuestasClinicas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idRespuestas = new MySqlParameter("r_respuesta", MySqlDbType.VarChar, 50);
+            t_idRespuestas.Value = respuestas.Respuesta;
+            validarUsuario.cmd.Parameters.Add(t_idRespuestas);
+
+            MySqlParameter t_idPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            t_idPaciente.Value = respuestas.IdPaciente;
+            validarUsuario.cmd.Parameters.Add(t_idPaciente);
+
+            MySqlParameter t_idPregunta = new MySqlParameter("r_idPregunta", MySqlDbType.Int32);
+            t_idPregunta.Value = respuestas.IdPregunta;
+            validarUsuario.cmd.Parameters.Add(t_idPregunta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void ConsultarRespuestas(string IDPaciente){
+	public List<RespuestasClinicas> ConsultarRespuestas( int p_idx ){
 
-	}
+        List<RespuestasClinicas> respuestas = new List<RespuestasClinicas>();
 
-	/// 
-	/// <param name="IDRespuestas"></param>
-	public void EliminarRespuestas(string IDRespuestas){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarRespuestasPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter t_idx = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            t_idx.Value = p_idx;
+            validarUsuario.cmd.Parameters.Add(t_idx);
 
-	/// 
-	/// <param name="IDRespuestas"></param>
-	public void ModificarRespuestas(string IDRespuestas){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
 
-	}
+            while (validarUsuario.dr.Read())
+            {
+                RespuestasClinicas respuesta = new RespuestasClinicas(
+                    validarUsuario.dr.GetInt32(0),
+                    validarUsuario.dr.GetString(1),
+                    validarUsuario.dr.GetInt32(2)
+                );
+                respuestas.Add(respuesta);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return respuestas;
+    }
+
+	public bool EliminarRespuestas( int r_idPaciente, int r_idPregunta ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarRespuesta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            t_idPaciente.Value = r_idPaciente;
+            validarUsuario.cmd.Parameters.Add(t_idPaciente);
+
+            MySqlParameter t_idPregunta = new MySqlParameter("r_idPregunta", MySqlDbType.Int32);
+            t_idPregunta.Value = r_idPregunta;
+            validarUsuario.cmd.Parameters.Add(t_idPregunta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarRespuestas( RespuestasClinicas respuestas ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarRespuestasClinicas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idRespuestas = new MySqlParameter("r_respuesta", MySqlDbType.VarChar, 50);
+            t_idRespuestas.Value = respuestas.Respuesta;
+            validarUsuario.cmd.Parameters.Add(t_idRespuestas);
+
+            MySqlParameter t_idPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            t_idPaciente.Value = respuestas.IdPaciente;
+            validarUsuario.cmd.Parameters.Add(t_idPaciente);
+
+            MySqlParameter t_idPregunta = new MySqlParameter("r_idPregunta", MySqlDbType.Int32);
+            t_idPregunta.Value = respuestas.IdPregunta;
+            validarUsuario.cmd.Parameters.Add(t_idPregunta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlRespuestasClinicas

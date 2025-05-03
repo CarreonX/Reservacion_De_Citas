@@ -10,51 +10,221 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using Clases;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlCajaRegistradora {
 
-	public ControlSecretaria m_ControlSecretaria;
-	public ControlReporte m_ControlReporte;
-
-	public ControlCajaRegistradora(){
-
-	}
-
-	~ControlCajaRegistradora(){
+	private ControlVentas controlVentas = new ControlVentas();
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlCajaRegistradora(){
 
 	}
 
-	/// 
-	/// <param name="medicamento"></param>
-	public void AgregarMedicamentoAVenta(Medicamento medicamento){
+    public CajaRegistradora ConsultarCajaRegistradora( int idx )
+    {
+        CajaRegistradora caja = null;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCajaRegistradora", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter cr_idx = new MySqlParameter("cr_idx", MySqlDbType.Int32);
+            cr_idx.Value = idx;
+            validarUsuario.cmd.Parameters.Add(cr_idx);
 
-	public void ConsultarMedicamentos(){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            if (validarUsuario.dr.Read())
+            {
+                int id = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string nombre = validarUsuario.dr["nombre"].ToString();
+                string ubicacion = validarUsuario.dr["ubicacion"].ToString();
+                DateTime fhApertura = Convert.ToDateTime(validarUsuario.dr["fechaHoraApertura"]);
+                DateTime fhCierre = Convert.ToDateTime(validarUsuario.dr["fechaHoraCierre"]);
+                string estado = validarUsuario.dr["estado"].ToString();
+                int idx_usuario = Convert.ToInt32(validarUsuario.dr["idUsuario"]);
+                decimal saldoI = Convert.ToDecimal(validarUsuario.dr["saldoInicial"]);
+                decimal saldoF = Convert.ToDecimal(validarUsuario.dr["saldoFinal"]);
 
-	}
+                caja = new CajaRegistradora(id, nombre, ubicacion, fhApertura, fhCierre, estado, idx_usuario, saldoI, saldoF);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return caja;
+    }
 
-	public void ConsultarMedicamentosVendidosHOY(){
+    public List<CajaRegistradora> ConsultarCajasRegistradoras()
+    {
+        List<CajaRegistradora> listaCajas = new List<CajaRegistradora>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCajas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
 
-	/// 
-	/// <param name="idVenta"></param>
-	/*public Venta ConsultarVenta(string idVenta){
+            while (validarUsuario.dr.Read())
+            {
+                int id = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string nombre = validarUsuario.dr["nombre"].ToString();
+                string ubicacion = validarUsuario.dr["ubicacion"].ToString();
+                DateTime fhApertura = Convert.ToDateTime(validarUsuario.dr["fechaHoraApertura"]);
+                DateTime fhCierre = Convert.ToDateTime(validarUsuario.dr["fechaHoraCierre"]);
+                string estado = validarUsuario.dr["estado"].ToString();
+                int idx_usuario = Convert.ToInt32(validarUsuario.dr["idUsuario"]);
+                decimal saldoI = Convert.ToDecimal(validarUsuario.dr["saldoInicial"]);
+                decimal saldoF = Convert.ToDecimal(validarUsuario.dr["saldoFinal"]);
 
-		return null;
-	}*/
+                CajaRegistradora caja = new CajaRegistradora(id, nombre, ubicacion, fhApertura, fhCierre, estado, idx_usuario, saldoI, saldoF);
+                listaCajas.Add(caja);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaCajas;
+    }
 
-	public void ConsultarVentas(){
+    public List<CajaRegistradora> ConsultarCajasPorFecha( DateOnly cr_fecha)
+    {
+        List<CajaRegistradora> listaCajas = new List<CajaRegistradora>();
 
-	}
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCajasPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	/// 
-	/// <param name="IDMedicamento"></param>
-	public void EliminarMedicamento(string IDMedicamento){
+            MySqlParameter cr_fechaParam = new MySqlParameter("cr_fecha", MySqlDbType.Date);
+            cr_fechaParam.Value = cr_fecha;
+            validarUsuario.cmd.Parameters.Add(cr_fechaParam);
 
-	}
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                int id = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string nombre = validarUsuario.dr["nombre"].ToString();
+                string ubicacion = validarUsuario.dr["ubicacion"].ToString();
+                DateTime fhApertura = Convert.ToDateTime(validarUsuario.dr["fechaHoraApertura"]);
+                DateTime fhCierre = Convert.ToDateTime(validarUsuario.dr["fechaHoraCierre"]);
+                string estado = validarUsuario.dr["estado"].ToString();
+                int idx_usuario = Convert.ToInt32(validarUsuario.dr["idUsuario"]);
+                decimal saldoI = Convert.ToDecimal(validarUsuario.dr["saldoInicial"]);
+                decimal saldoF = Convert.ToDecimal(validarUsuario.dr["saldoFinal"]);
+                CajaRegistradora caja = new CajaRegistradora(id, nombre, ubicacion, fhApertura, fhCierre, estado, idx_usuario, saldoI, saldoF);
+                listaCajas.Add(caja);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaCajas;
+    }
+    public bool CerrarCaja( int idx, decimal cierre )
+    {
+        bool bandera = false;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspCerrarCaja", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter cr_idx = new MySqlParameter( "cr_idx", MySqlDbType.Int32);
+            cr_idx.Value = idx;
+            validarUsuario.cmd.Parameters.Add(cr_idx);
+
+            MySqlParameter cr_saldoF = new MySqlParameter("cr_saldoFinal", MySqlDbType.Decimal);
+            cr_saldoF.Value = cierre;
+            validarUsuario.cmd.Parameters.Add(cr_saldoF);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+    public bool AgregarCajaRegistradora(string nombre, string ubicacion, int idx_usuario, decimal saldoI)
+    {
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarCajaRegistradora", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            MySqlParameter v_nombre = new MySqlParameter("cr_nombre", MySqlDbType.VarChar);
+            v_nombre.Value = nombre;
+            validarUsuario.cmd.Parameters.Add(v_nombre);
+
+            MySqlParameter v_ubicacion = new MySqlParameter("cr_ubicacion", MySqlDbType.VarChar);
+            v_ubicacion.Value = ubicacion;
+            validarUsuario.cmd.Parameters.Add(v_ubicacion);
+
+            MySqlParameter v_idx_usuario = new MySqlParameter("cr_idUsuario", MySqlDbType.Int32);
+            v_idx_usuario.Value = idx_usuario;
+            validarUsuario.cmd.Parameters.Add(v_idx_usuario);
+
+            MySqlParameter v_saldoI = new MySqlParameter("cr_saldoInicial", MySqlDbType.Decimal);
+            v_saldoI.Value = saldoI;
+            validarUsuario.cmd.Parameters.Add(v_saldoI);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0 ) { 
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlCajaRegistradora

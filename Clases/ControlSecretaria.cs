@@ -10,45 +10,283 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlSecretaria {
-
-	public ControlSecretaria(){
-
-	}
-
-	~ControlSecretaria(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlSecretaria(){
 
 	}
 
-	/// 
-	/// <param name="secretaria"></param>
-	public void AgregarSecretaria(Secretaria secretaria){
+	public bool AgregarSecretaria(Secretaria secretaria){
 
-	}
+		bool bandera = false;
 
-	/// 
-	/// <param name="IDSecretaria"></param>
-	public void ConsultarSecretaria(string IDSecretaria){
+		try
+		{
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarSecretaria", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-	}
+            MySqlParameter v_apellidoM = new MySqlParameter("a_apellidoM", MySqlDbType.VarChar);
+            v_apellidoM.Value = secretaria.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(v_apellidoM);
 
-	public void ConsultarSecretarias(){
+            MySqlParameter v_apellidoP = new MySqlParameter("a_apellidoP", MySqlDbType.VarChar);
+            v_apellidoP.Value = secretaria.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(v_apellidoP);
 
-	}
+            MySqlParameter v_direccion = new MySqlParameter("a_direccion", MySqlDbType.VarChar);
+            v_direccion.Value = secretaria.Direccion;
+            validarUsuario.cmd.Parameters.Add(v_direccion);
 
-	/// 
-	/// <param name="IDSecretaria"></param>
-	public void EliminarSecretaria(string IDSecretaria){
+            MySqlParameter v_dni = new MySqlParameter("a_DNI", MySqlDbType.VarChar);
+            v_dni.Value = secretaria.DNI;
+            validarUsuario.cmd.Parameters.Add(v_dni);
 
-	}
+            MySqlParameter v_email = new MySqlParameter("a_email", MySqlDbType.VarChar);
+            v_email.Value = secretaria.Email;
+            validarUsuario.cmd.Parameters.Add(v_email);
 
-	/// 
-	/// <param name="IDSecretaria"></param>
-	public void ModificarSecretaria(string IDSecretaria){
+            MySqlParameter v_nombre = new MySqlParameter("a_nombre", MySqlDbType.VarChar);
+            v_nombre.Value = secretaria.Nombre;
+            validarUsuario.cmd.Parameters.Add(v_nombre);
 
-	}
+            MySqlParameter v_telFijo = new MySqlParameter("a_telefonoFijo", MySqlDbType.VarChar);
+            v_telFijo.Value = secretaria.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(v_telFijo);
+
+            MySqlParameter v_telMovil = new MySqlParameter("a_telefonoMovil", MySqlDbType.VarChar);
+            v_telMovil.Value = secretaria.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(v_telMovil);
+
+            MySqlParameter v_usuario = new MySqlParameter("a_usuario", MySqlDbType.VarChar);
+            v_usuario.Value = secretaria.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(v_usuario);
+
+            MySqlParameter v_pass = new MySqlParameter("a_password", MySqlDbType.VarChar);
+            v_pass.Value = secretaria.Password;
+            validarUsuario.cmd.Parameters.Add(v_pass);
+
+            MySqlParameter v_turno = new MySqlParameter("a_turno", MySqlDbType.VarChar);
+            v_turno.Value = secretaria.Turno;
+            validarUsuario.cmd.Parameters.Add(v_turno);
+
+            if(validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public Secretaria ConsultarSecretaria( int IDSecretaria){
+
+        Secretaria secretaria = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarSecretaria", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            MySqlParameter v_idx = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            v_idx.Value = IDSecretaria;
+            validarUsuario.cmd.Parameters.Add(v_idx);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                int idx = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string apellidoM = Convert.ToString(validarUsuario.dr["apellidoM"]);
+                string apellidoP = Convert.ToString(validarUsuario.dr["apellidoP"]);
+                string direccion = Convert.ToString(validarUsuario.dr["direccion"]);
+                string dni = Convert.ToString(validarUsuario.dr["DNI"]);
+                string email = Convert.ToString(validarUsuario.dr["email"]);
+                string nombre = Convert.ToString(validarUsuario.dr["nombre"]);
+                string telFijo = Convert.ToString(validarUsuario.dr["telefonoFijo"]);
+                string telMovil = Convert.ToString(validarUsuario.dr["telefonoMovil"]);
+                string usuario = Convert.ToString(validarUsuario.dr["usuario"]);
+                string pass = Convert.ToString(validarUsuario.dr["password"]);
+                string turno = Convert.ToString(validarUsuario.dr["turno"]);
+
+                secretaria = new Secretaria(idx, apellidoM, apellidoP, direccion, dni, email, nombre, telFijo, telMovil, usuario, pass, turno);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return secretaria;
+    }
+
+	public List<Secretaria> ConsultarSecretarias(){
+
+        List<Secretaria> listaSecretarias = new List<Secretaria>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarSecretarias", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                int idx = Convert.ToInt32(validarUsuario.dr["idx"]);
+                string apellidoM = Convert.ToString(validarUsuario.dr["apellidoM"]);
+                string apellidoP = Convert.ToString(validarUsuario.dr["apellidoP"]);
+                string direccion = Convert.ToString(validarUsuario.dr["direccion"]);
+                string dni = Convert.ToString(validarUsuario.dr["DNI"]);
+                string email = Convert.ToString(validarUsuario.dr["email"]);
+                string nombre = Convert.ToString(validarUsuario.dr["nombre"]);
+                string telFijo = Convert.ToString(validarUsuario.dr["telefonoFijo"]);
+                string telMovil = Convert.ToString(validarUsuario.dr["telefonoMovil"]);
+                string usuario = Convert.ToString(validarUsuario.dr["usuario"]);
+                string pass = Convert.ToString(validarUsuario.dr["password"]);
+                string turno = Convert.ToString(validarUsuario.dr["turno"]);
+
+                Secretaria secretaria = new Secretaria(idx, apellidoM, apellidoP, direccion, dni, email, nombre, telFijo, telMovil, usuario, pass, turno);
+                listaSecretarias.Add(secretaria);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaSecretarias;
+    }
+
+	public bool EliminarSecretaria( int IDSecretaria){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarSecretaria", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter v_idx = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            v_idx.Value = IDSecretaria;
+            validarUsuario.cmd.Parameters.Add(v_idx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarSecretaria( Secretaria secretaria ){
+
+        bool bandera = false;
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarSecretaria", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter v_idx = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            v_idx.Value = secretaria.IdPersona;
+            validarUsuario.cmd.Parameters.Add(v_idx);
+
+            MySqlParameter v_apellidoM = new MySqlParameter("a_apellidoM", MySqlDbType.VarChar);
+            v_apellidoM.Value = secretaria.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(v_apellidoM);
+
+            MySqlParameter v_apellidoP = new MySqlParameter("a_apellidoP", MySqlDbType.VarChar);
+            v_apellidoP.Value = secretaria.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(v_apellidoP);
+
+            MySqlParameter v_direccion = new MySqlParameter("a_direccion", MySqlDbType.VarChar);
+            v_direccion.Value = secretaria.Direccion;
+            validarUsuario.cmd.Parameters.Add(v_direccion);
+
+            MySqlParameter v_dni = new MySqlParameter("a_DNI", MySqlDbType.VarChar);
+            v_dni.Value = secretaria.DNI;
+            validarUsuario.cmd.Parameters.Add(v_dni);
+
+            MySqlParameter v_email = new MySqlParameter("a_email", MySqlDbType.VarChar);
+            v_email.Value = secretaria.Email;
+            validarUsuario.cmd.Parameters.Add(v_email);
+
+            MySqlParameter v_nombre = new MySqlParameter("a_nombre", MySqlDbType.VarChar);
+            v_nombre.Value = secretaria.Nombre;
+            validarUsuario.cmd.Parameters.Add(v_nombre);
+
+            MySqlParameter v_telFijo = new MySqlParameter("a_telefonoFijo", MySqlDbType.VarChar);
+            v_telFijo.Value = secretaria.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(v_telFijo);
+
+            MySqlParameter v_telMovil = new MySqlParameter("a_telefonoMovil", MySqlDbType.VarChar);
+            v_telMovil.Value = secretaria.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(v_telMovil);
+
+            MySqlParameter v_usuario = new MySqlParameter("a_usuario", MySqlDbType.VarChar);
+            v_usuario.Value = secretaria.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(v_usuario);
+
+            MySqlParameter v_pass = new MySqlParameter("a_password", MySqlDbType.VarChar);
+            v_pass.Value = secretaria.Password;
+            validarUsuario.cmd.Parameters.Add(v_pass);
+
+            MySqlParameter v_turno = new MySqlParameter("a_turno", MySqlDbType.VarChar);
+            v_turno.Value = secretaria.Turno;
+            validarUsuario.cmd.Parameters.Add(v_turno);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlSecretaria

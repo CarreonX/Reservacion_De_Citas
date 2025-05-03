@@ -15,17 +15,17 @@ using System.IO;
 
 public class PreguntaHistoriaClinica {
 
-	private string IDPregunta;
-	private string Pregunta;
-	private string Respuesta;
-	public ControlPreguntas m_ControlPreguntas;
+    public int IdPregunta { get; set; }
+    public string Pregunta { get; set; }
 
-	public PreguntaHistoriaClinica(){
+	public PreguntaHistoriaClinica( int idx, string preg){
 
-	}
+        IdPregunta = idx;
+        Pregunta = preg;
+    }
 
-	~PreguntaHistoriaClinica(){
-
-	}
-
+    public PreguntaHistoriaClinica( string preg)
+    {
+        Pregunta = preg;
+    }
 }//end PreguntaHistoriaClinica

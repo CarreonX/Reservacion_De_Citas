@@ -19,44 +19,19 @@ public class Medico : Usuario {
     public string Turno { set; get; }
     public ControlMedico m_ControlMedico;
 
-	public Medico(){
+	public Medico(int idx, string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass, string turno, string idConsult)
+        : base(idx, apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass) {
 
-	}
+        IDConsultorio = idConsult;
+        Turno = turno;
+    }
 
-	~Medico(){
+    public Medico( string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass, string turno, string idConsult)
+        : base(apellidoM, apellidoP, direc, dni, email, nombre, telF, telM, usuario, pass)
+    {
 
-	}
-
-	/// 
-	/// <param name="IDpaciente"></param>
-	public void AgregarPaciente(Paciente IDpaciente){
-
-	}
-
-	public void AgregarReporte(){
-
-	}
-
-	public void ConsularAgenda(){
-
-	}
-
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void ConsultarPaciente(Paciente IDPaciente){
-
-	}
-
-	public void ConsultarPacientes(){
-
-	}
-
-	public void ConsultarPresupuesto(){
-
-	}
-
-	public void ConsultarTrabajosPorPaciente(){
-
-	}
+        IDConsultorio = idConsult;
+        Turno = turno;
+    }
 
 }//end Medico

@@ -15,22 +15,37 @@ using System.IO;
 
 public class Persona {
 
-    public string idPersona { set; get; }
+    public int IdPersona { set; get; }
     public string ApellidoM { set; get; }
 	public string ApellidoP { set; get; }
     public string Direccion { set; get; }
-    public string DNI { set; get; }
     public string Email { set; get; }
     public string Nombre { set; get; }
     public string TelefonoFijo { set; get; }
     public string TelefonoMovil { set; get; }
 
-    public Persona(){
+    public Persona( int idx, string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM ){
 
-	}
+        IdPersona = idx;
+        ApellidoM = apellidoM;
+        ApellidoP = apellidoP;
+        Direccion = direc;
+        Email = email;
+        Nombre = nombre;
+        TelefonoFijo = telF;
+        TelefonoMovil = telM;
+    }
 
-	~Persona(){
+    public Persona( string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM)
+    {
 
-	}
+        ApellidoM = apellidoM;
+        ApellidoP = apellidoP;
+        Direccion = direc;
+        Email = email;
+        Nombre = nombre;
+        TelefonoFijo = telF;
+        TelefonoMovil = telM;
+    }
 
 }//end Persona

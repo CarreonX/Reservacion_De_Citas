@@ -15,20 +15,34 @@ using System.IO;
 
 public class Receta {
 
-    public string idReceta { get; set; }
-    public string Fecha { set; get; }
-    public string IDMedico { set; get; }
-    public string IDPaciente { set; get; }
+    public int IdReceta { get; set; }
+    public DateOnly Fecha { set; get; }
+    public int IDMedico { set; get; }
+    public int IDPaciente { set; get; }
     public string Indicaciones { set; get; }
+    public int IdMedicamentosRecetados { get; set; }
     public List<Medicamento> Medicamentos { set; get; }
-    public ControlReceta m_ControlReceta;
 
-	public Receta(){
+	public Receta( int idx, DateOnly fesha, int idmed, int idpac, string indic, int idmedicrec ){
 
-	}
+        IdReceta = idx;
+        Fecha = fesha;
+        IDMedico = idmed;
+        IDPaciente = idpac;
+        Indicaciones = indic;
+        IdMedicamentosRecetados = idmedicrec;
+        Medicamentos = new List<Medicamento>();
+    }
 
-	~Receta(){
+    public Receta( DateOnly fesha, int idmed, int idpac, string indic, int idmedicrec)
+    {
 
-	}
+        Fecha = fesha;
+        IDMedico = idmed;
+        IDPaciente = idpac;
+        Indicaciones = indic;
+        IdMedicamentosRecetados = idmedicrec;
+        Medicamentos = new List<Medicamento>();
+    }
 
 }//end Receta

@@ -6,50 +6,50 @@
 //  Original author: carre
 ///////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Reflection.Metadata;
-using System.Diagnostics;
-using System.Data;
 using MySql.Data.MySqlClient;
+using System.Data;
 
 
 
-public static class ValidarUsuario {
+public class ValidarUsuario {
 
-	static MySqlCommand cmd = new MySqlCommand();
-    static MySqlConnection conn = new MySqlConnection();
-	static MySqlDataReader dr;
+	public MySqlCommand cmd = new MySqlCommand();
+    public MySqlConnection conn = new MySqlConnection();
+	public MySqlDataReader dr;
 
-	static string server = "192.168.1.74";
-	static string user = "prueba";
-    static string pwd = "Ztklwc1438";
-    static string database = "dbClinica_Dental";
+    string server = "192.168.1.74";
+	string user = "nuevoUsuario";
+    string pwd = "1234";
+    string database = "dbClinica_Dental";
 
-	public static int indice = -1;
-    public static string tipo = "null";
-    public static string mensaje = "";
+	public int indice = -1;
+    public string tipo = "null";
+    public string mensaje = "";
 
-	private static void conectar()
+	public void conectar()
 	{
 		conn.ConnectionString = $"Server={server};Database={database}; Uid={user};Pwd={pwd}";
 		conn.Open();
     }
 
-    private static  void desconectar()
+    public void desconectar()
 	{
 		conn.Close();
     }
 
-    public static bool validarUsuario(string nUsuario, string pass)
+    public bool validar(string nUsuario, string pass)
     {
         bool bandera = false;
 
         // admin_, secre_, denta_ : sufijos para los nombres de usuario
 
-        string nueva = nUsuario.Substring(0, 4);
+        string nueva = "";
+
+        if ( nUsuario.Length > 0)
+        {
+            nueva = nUsuario.Substring(0, 4);
+        }
+        
 
         switch (nueva)
         {
@@ -72,7 +72,7 @@ public static class ValidarUsuario {
 
                     if (dr.Read())
                     {
-                        indice = dr.GetInt32(0);
+                        indice = Convert.ToInt32(dr["idx"]);
                         tipo = "admin";
                         bandera = true;
                     }
@@ -83,6 +83,10 @@ public static class ValidarUsuario {
                 }
                 finally
                 {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                    }
                     desconectar();
                 }
                 break;
@@ -106,7 +110,7 @@ public static class ValidarUsuario {
                     dr = cmd.ExecuteReader();
                     if (dr.Read())
                     {
-                        indice = dr.GetInt32(0);
+                        indice = Convert.ToInt32(dr["idx"]);
                         tipo = "secre";
                         bandera = true;
                     }
@@ -117,6 +121,10 @@ public static class ValidarUsuario {
                 }
                 finally
                 {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                    }
                     desconectar();
 
                 }
@@ -127,7 +135,7 @@ public static class ValidarUsuario {
                 try
                 {
                     conectar();
-                    cmd = new MySqlCommand("uspValidarDentista", conn);
+                    cmd = new MySqlCommand("uspValidarMedico", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     MySqlParameter a_usuario = new MySqlParameter("p_usuario", MySqlDbType.VarChar, 15);
@@ -141,7 +149,7 @@ public static class ValidarUsuario {
                     dr = cmd.ExecuteReader();
                     if (dr.Read())
                     {
-                        dr.GetInt32(0);
+                        indice = Convert.ToInt32(dr["idx"]);
                         tipo = "dent";
                         bandera = true;
                     }
@@ -152,79 +160,18 @@ public static class ValidarUsuario {
                 }
                 finally
                 {
+                    if (dr != null)
+                    {
+                        dr.Close();
+                    }
                     desconectar();
                 }
                 break;
-        }
-        if (dr != null)
-        {
-            dr.Close();
+
+            default:
+                mensaje = "El nombre de usuario no es correcto";
+                break;
         }
         return bandera;
     }
-    /*
-    public ValidarUsuario( string nUsuario, string pass ){
-
-            if( indice > -1)
-                {
-                    switch( tipo)
-                    {
-                        case "admin":
-                            try
-                            {
-                                conectar();
-                                cmd = new MySqlCommand("uspConsultarAdministrador", conn);
-                                cmd.CommandType = CommandType.StoredProcedure;
-
-                                MySqlParameter a_usuario = new MySqlParameter("p_idx", MySqlDbType.Int32);
-                                a_usuario.Value = indice;
-                                cmd.Parameters.Add(a_usuario);
-
-                                dr = cmd.ExecuteReader();
-
-                                Administrador administrador = new Administrador();
-                                if (dr.Read())
-                                {
-                                    administrador.idPersona = dr[0].ToString();
-                                    administrador.ApellidoM = dr[1].ToString();
-                                    administrador.ApellidoP = dr[2].ToString();
-                                    administrador.Direccion = dr[3].ToString();
-                                    administrador.DNI = dr[4].ToString();
-                                    administrador.Email = dr[5].ToString();
-                                    administrador.Nombre = dr[6].ToString();
-                                    administrador.TelefonoFijo = dr[7].ToString();
-                                    administrador.TelefonoMovil = dr[8].ToString();
-                                    administrador.NombreUsuario = dr[9].ToString();
-                                    administrador.Password = dr[10].ToString();
-                                }
-                            }
-
-                            break;
-                        case "secre":
-                            Console.WriteLine("Bienvenido Secretaria");
-                            break;
-                        case "dent":
-                            Console.WriteLine("Bienvenido Dentista");
-                            break;
-                    }
-                
-            ConsultarUsuario( nUsuario, pass );
-    }
-	
-
-	public static void CargarFormulario(){
-
-	}
-
-	public static Usuario ConsultarUsuario(string NombreUsuario, string password){
-
-
-		return null;
-	}
-
-	public bool GetAutorización(){
-
-		return false;
-	}*/
-
 }//end ValidarUsuario

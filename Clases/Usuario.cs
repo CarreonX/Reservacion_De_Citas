@@ -10,21 +10,31 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using System.Transactions;
 
 
 public class Usuario : Persona {
 
-	public string NombreUsuario { set; get; }
+    public string DNI { get; set; }
+    public string NombreUsuario { set; get; }
     public string Password { set; get; }
 
 
-	public Usuario(){
+	public Usuario(int idx, string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass )
+		: base (idx, apellidoM, apellidoP, direc, email, nombre, telF, telM) {
 
-	}
+        NombreUsuario = usuario;
+        Password = pass;
+        DNI = dni;
+    }
 
-	~Usuario(){
+    public Usuario( string apellidoM, string apellidoP, string direc, string dni, string email, string nombre, string telF, string telM, string usuario, string pass)
+        : base( apellidoM, apellidoP, direc, email, nombre, telF, telM)
+    {
 
-	}
+        NombreUsuario = usuario;
+        Password = pass;
+        DNI = dni;
+    }
 
 }//end Usuario

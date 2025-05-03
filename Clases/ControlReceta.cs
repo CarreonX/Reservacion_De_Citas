@@ -10,49 +10,348 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 
 public class ControlReceta {
 
-	public ControlMedico m_ControlMedico;
-
-	public ControlReceta(){
-
-	}
-
-	~ControlReceta(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlReceta(){
 
 	}
 
-	public void AgregarReceta(){
+	public bool AgregarReceta(Receta receta){
 
-	}
+		bool bandera = false;
 
-	/// 
-	/// <param name="IDReceta"></param>
-	public void ConsultarReceta(string IDReceta){
+		try
+		{
+			validarUsuario.conectar();
+			validarUsuario.cmd = new MySqlCommand("usp_AgregarReceta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter paramFecha = new MySqlParameter("r_fecha", MySqlDbType.Date );
+			paramFecha.Value = receta.Fecha;
+            validarUsuario.cmd.Parameters.Add(paramFecha);
 
-	/// 
-	/// <param name="idDentista"></param>
-	public List<Receta> ConsultarRecetas(string idDentista){
+            MySqlParameter paramIDMedico = new MySqlParameter("r_idMedico", MySqlDbType.Int32);
+            paramIDMedico.Value = receta.IDMedico;
+            validarUsuario.cmd.Parameters.Add(paramIDMedico);
 
-		return null;
-	}
+            MySqlParameter paramIDPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            paramIDPaciente.Value = receta.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(paramIDPaciente);
 
-	/// 
-	/// <param name="IDReceta"></param>
-	public bool EliminarReceta(string IDReceta){
+            MySqlParameter paramIndicaciones = new MySqlParameter("r_indicaciones", MySqlDbType.VarChar);
+            paramIndicaciones.Value = receta.Indicaciones;
+            validarUsuario.cmd.Parameters.Add(paramIndicaciones);
 
-		return false;
-	}
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
-	/// 
-	/// <param name="IDReceta"></param>
-	public void ModificarReceta(string IDReceta){
+	public Receta ConsultarReceta( int IDReceta){
 
-	}
+        Receta receta = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ConsultarReceta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIDReceta = new MySqlParameter("r_idReceta", MySqlDbType.Int32);
+            paramIDReceta.Value = IDReceta;
+            validarUsuario.cmd.Parameters.Add(paramIDReceta);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                receta = new Receta(
+                    Convert.ToInt32( validarUsuario.dr["idx"]),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    validarUsuario.dr["indicaciones"].ToString(),
+                    Convert.ToInt32(validarUsuario.dr["idTratamiento"])
+                );
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return receta;
+    }
+
+	public List<Receta> ConsultarRecetasPorMedico( int idDentista){
+
+        List<Receta> recetas = new List<Receta>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ConsultarRecetasPorMedico", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIDMedico = new MySqlParameter("r_idMedico", MySqlDbType.Int32);
+            paramIDMedico.Value = idDentista;
+            validarUsuario.cmd.Parameters.Add(paramIDMedico);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Receta receta = new Receta(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    validarUsuario.dr["indicaciones"].ToString(),
+                    Convert.ToInt32(validarUsuario.dr["idTratamiento"])
+                );
+                recetas.Add(receta);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return recetas;
+    }
+
+    public List<Receta> ConsultarRecetasPorPaciente(int idPaciente )
+    {
+        List<Receta> recetas = new List<Receta>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ConsultarRecetasPorPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIDPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            paramIDPaciente.Value = idPaciente;
+            validarUsuario.cmd.Parameters.Add(paramIDPaciente);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Receta receta = new Receta(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    validarUsuario.dr["indicaciones"].ToString(),
+                    Convert.ToInt32(validarUsuario.dr["idTratamiento"])
+                );
+                recetas.Add(receta);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return recetas;
+
+    }
+
+    public List<Receta> ConsultarRecetasPorFecha( DateOnly fecha)
+    {
+        List<Receta> recetas = new List<Receta>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ConsultarRecetasPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramFecha = new MySqlParameter("r_fecha", MySqlDbType.Date);
+            paramFecha.Value = fecha;
+            validarUsuario.cmd.Parameters.Add(paramFecha);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Receta receta = new Receta(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    validarUsuario.dr["indicaciones"].ToString(),
+                    Convert.ToInt32(validarUsuario.dr["idTratamiento"])
+                );
+                recetas.Add(receta);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return recetas;
+    }
+
+    public List<Receta> ConsultarRecetas()
+    {
+        List<Receta> recetas = new List<Receta>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ConsultarRecetas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Receta receta = new Receta(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    DateOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("fecha"))),
+                    Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                    Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                    validarUsuario.dr["indicaciones"].ToString(),
+                    Convert.ToInt32(validarUsuario.dr["idTratamiento"])
+                );
+                recetas.Add(receta);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return recetas;
+    }
+
+    public bool EliminarReceta( int IDReceta){
+
+		bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_EliminarReceta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIDReceta = new MySqlParameter("r_idx", MySqlDbType.Int32);
+            paramIDReceta.Value = IDReceta;
+            validarUsuario.cmd.Parameters.Add(paramIDReceta);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarReceta( Receta receta ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("usp_ModificarReceta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter paramIDReceta = new MySqlParameter("r_idx", MySqlDbType.Int32);
+            paramIDReceta.Value = receta.IdReceta;
+            validarUsuario.cmd.Parameters.Add(paramIDReceta);
+
+            MySqlParameter paramFecha = new MySqlParameter("r_fecha", MySqlDbType.Date);
+            paramFecha.Value = receta.Fecha;
+            validarUsuario.cmd.Parameters.Add(paramFecha);
+
+            MySqlParameter paramIDMedico = new MySqlParameter("r_idMedico", MySqlDbType.Int32);
+            paramIDMedico.Value = receta.IDMedico;
+            validarUsuario.cmd.Parameters.Add(paramIDMedico);
+
+            MySqlParameter paramIDPaciente = new MySqlParameter("r_idPaciente", MySqlDbType.Int32);
+            paramIDPaciente.Value = receta.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(paramIDPaciente);
+
+            MySqlParameter paramIndicaciones = new MySqlParameter("r_indicaciones", MySqlDbType.VarChar);
+            paramIndicaciones.Value = receta.Indicaciones;
+            validarUsuario.cmd.Parameters.Add(paramIndicaciones);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlReceta

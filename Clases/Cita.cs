@@ -15,25 +15,43 @@ using System.IO;
 
 public class Cita {
 
-    public string IDCita { set; get; }
+    public int IDCita { set; get; }
     public byte Duracion { set; get; }
     public string Estado { set; get; }
-    public string Fecha { set; get; }
-    public string FechaDeGeneracion { set; get; }
-    public string Hora { set; get; }
-    public string IDMedico { set; get; }
-    public string IDPaciente { set; get; }
+    public DateOnly Fecha { set; get; }
+    public DateOnly FechaDeGeneracion { set; get; }
+    public TimeOnly Hora { set; get; }
+    public int IDMedico { set; get; }
+    public int IDPaciente { set; get; }
     public string MotivoDeCita { set; get; }
     public string Nota { set; get; }
 
     public ControlCita m_ControlCita;
 
-	public Cita(){
+	public Cita( int idcita, byte dur, string edo, DateOnly date, DateOnly dategeneracion, TimeOnly hour, int idmedico, int idpaciente, string motivo, string nota ){
+        IDCita = idcita;
+        Duracion = dur;
+        Estado = edo;
+        Fecha = date;
+        FechaDeGeneracion = dategeneracion;
+        Hora = hour;
+        IDMedico = idmedico;
+        IDPaciente = idpaciente;
+        MotivoDeCita = motivo;
+        Nota = nota;
+    }
 
-	}
-
-	~Cita(){
-
-	}
+    public Cita( byte dur, string edo, DateOnly date, DateOnly dategeneracion, TimeOnly hour, int idmedico, int idpaciente, string motivo, string nota)
+    {
+        Duracion = dur;
+        Estado = edo;
+        Fecha = date;
+        FechaDeGeneracion = dategeneracion;
+        Hora = hour;
+        IDMedico = idmedico;
+        IDPaciente = idpaciente;
+        MotivoDeCita = motivo;
+        Nota = nota;
+    }
 
 }//end Cita

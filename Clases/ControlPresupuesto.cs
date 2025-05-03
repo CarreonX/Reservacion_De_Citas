@@ -10,41 +10,275 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlPresupuesto {
 
-	public ControlReporte m_ControlReporte;
-
-	public ControlPresupuesto(){
-
-	}
-
-	~ControlPresupuesto(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlPresupuesto(){
 
 	}
 
-	public void AgregarPresupuesto(){
+	public bool AgregarPresupuesto( Presupuesto presupuesto ){
 
-	}
+		bool bandera = false;
 
-	/// 
-	/// <param name="IDPresupuesto"></param>
-	public void ConsultarPresupuesto(string IDPresupuesto){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarPresupuesto", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter t_horaFecha = new MySqlParameter("p_horaFecha", MySqlDbType.DateTime);
+            t_horaFecha.Value = presupuesto.HoraFechaPresupuesto;
+            validarUsuario.cmd.Parameters.Add(t_horaFecha);
 
-	public void ConsultarPresupuestos(){
+            MySqlParameter t_idMedico = new MySqlParameter("p_idMedico", MySqlDbType.Int32);
+            t_idMedico.Value = presupuesto.IDMedico;
+            validarUsuario.cmd.Parameters.Add(t_idMedico);
 
-	}
+            MySqlParameter t_idPaciente = new MySqlParameter("p_idPaciente", MySqlDbType.Int32);
+            t_idPaciente.Value = presupuesto.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(t_idPaciente);
 
-	public void EliminarPresupuesto(){
+            MySqlParameter t_idTratamiento = new MySqlParameter("p_idTratamiento", MySqlDbType.Int32);
+            t_idTratamiento.Value = presupuesto.IDTratamaiento;
+            validarUsuario.cmd.Parameters.Add(t_idTratamiento);
 
-	}
+            MySqlParameter t_tipoTrabajo = new MySqlParameter("p_tipoTrabajo", MySqlDbType.VarChar, 50);
+            t_tipoTrabajo.Value = presupuesto.TipoTrabajo;
+            validarUsuario.cmd.Parameters.Add(t_tipoTrabajo);
 
-	public void ModificarPresupuesto(){
+            MySqlParameter t_ubicacionBoca = new MySqlParameter("p_ubicacionBoca", MySqlDbType.VarChar, 50);
+            t_ubicacionBoca.Value = presupuesto.UbicacionBoca;
+            validarUsuario.cmd.Parameters.Add(t_ubicacionBoca);
 
-	}
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public Presupuesto ConsultarPresupuesto( int p_idx ){
+
+        Presupuesto presupuesto = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPresupuesto", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            t_idx.Value = p_idx;
+            validarUsuario.cmd.Parameters.Add(t_idx);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                presupuesto = new Presupuesto(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToDateTime(validarUsuario.dr["fecha"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                Convert.ToInt32(validarUsuario.dr["idTratamiento"]),
+                validarUsuario.dr["tipoTrabajo"].ToString(),
+                validarUsuario.dr["ubicacionBoca"].ToString()
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return presupuesto;
+    }
+
+	public List<Presupuesto> ConsultarPresupuestos(){
+
+        List<Presupuesto> listaPresupuestos = new List<Presupuesto>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPresupuestos", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Presupuesto presupuesto = new Presupuesto(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToDateTime(validarUsuario.dr["fecha"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                Convert.ToInt32(validarUsuario.dr["idTratamiento"]),
+                validarUsuario.dr["tipoTrabajo"].ToString(),
+                validarUsuario.dr["ubicacionBoca"].ToString()
+                );
+                listaPresupuestos.Add(presupuesto);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+            return listaPresupuestos;
+    }
+
+    public List<Presupuesto> ConsultarPresupuestosPorFecha( DateOnly x_fecha )
+    {
+        List<Presupuesto> listaPresupuestos = new List<Presupuesto>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPresupuestosPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_fecha = new MySqlParameter("p_fecha", MySqlDbType.Date);
+            t_fecha.Value = x_fecha;
+            validarUsuario.cmd.Parameters.Add(t_fecha);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Presupuesto presupuesto = new Presupuesto(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToDateTime(validarUsuario.dr["fecha"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                Convert.ToInt32(validarUsuario.dr["idTratamiento"]),
+                validarUsuario.dr["tipoTrabajo"].ToString(),
+                validarUsuario.dr["ubicacionBoca"].ToString()
+                );
+                listaPresupuestos.Add(presupuesto);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaPresupuestos;
+    }
+
+	public bool EliminarPresupuesto( int p_idx ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarPresupuesto", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            t_idx.Value = p_idx;
+            validarUsuario.cmd.Parameters.Add(t_idx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarPresupuesto( Presupuesto presupuesto ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarPresupuesto", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idx = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            t_idx.Value = presupuesto.HoraFechaPresupuesto;
+            validarUsuario.cmd.Parameters.Add(t_idx);
+
+            MySqlParameter t_horaFecha = new MySqlParameter("p_horaFecha", MySqlDbType.DateTime);
+            t_horaFecha.Value = presupuesto.HoraFechaPresupuesto;
+            validarUsuario.cmd.Parameters.Add(t_horaFecha);
+
+            MySqlParameter t_idMedico = new MySqlParameter("p_idMedico", MySqlDbType.Int32);
+            t_idMedico.Value = presupuesto.IDMedico;
+            validarUsuario.cmd.Parameters.Add(t_idMedico);
+
+            MySqlParameter t_idPaciente = new MySqlParameter("p_idPaciente", MySqlDbType.Int32);
+            t_idPaciente.Value = presupuesto.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(t_idPaciente);
+
+            MySqlParameter t_idTratamiento = new MySqlParameter("p_idTratamiento", MySqlDbType.Int32);
+            t_idTratamiento.Value = presupuesto.IDTratamaiento;
+            validarUsuario.cmd.Parameters.Add(t_idTratamiento);
+
+            MySqlParameter t_tipoTrabajo = new MySqlParameter("p_tipoTrabajo", MySqlDbType.VarChar, 50);
+            t_tipoTrabajo.Value = presupuesto.TipoTrabajo;
+            validarUsuario.cmd.Parameters.Add(t_tipoTrabajo);
+
+            MySqlParameter t_ubicacionBoca = new MySqlParameter("p_ubicacionBoca", MySqlDbType.VarChar, 50);
+            t_ubicacionBoca.Value = presupuesto.UbicacionBoca;
+            validarUsuario.cmd.Parameters.Add(t_ubicacionBoca);
+
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlPresupuesto

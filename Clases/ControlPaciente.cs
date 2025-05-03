@@ -10,64 +10,296 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySql.Data.MySqlClient;
+using System.Data;
+using System.Globalization;
 
 
 
 public class ControlPaciente {
 
-	public ControlMedico m_ControlMedico;
-
-	public ControlPaciente(){
-
-	}
-
-	~ControlPaciente(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlPaciente(){
 
 	}
 
-	/// 
-	/// <param name="paciente"></param>
-	public void AgregarPaciente(Paciente paciente){
 
+	public bool AgregarPaciente(Paciente paciente){
+
+		bool bandera = false;
+
+		try
+		{
+			validarUsuario.conectar();
+			validarUsuario.cmd = new MySqlCommand("uspAgregarPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+			MySqlParameter p_appelidoM = new MySqlParameter("p_apellidoM", MySqlDbType.VarChar, 15 );
+            p_appelidoM.Value = paciente.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(p_appelidoM);
+
+            MySqlParameter p_apellidoP = new MySqlParameter("p_apellidoP", MySqlDbType.VarChar, 15);
+            p_apellidoP.Value = paciente.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(p_apellidoP);
+
+            MySqlParameter p_direccion = new MySqlParameter("p_direccion", MySqlDbType.VarChar, 500);
+            p_direccion.Value = paciente.Direccion;
+            validarUsuario.cmd.Parameters.Add(p_direccion);
+
+            MySqlParameter p_email = new MySqlParameter("p_email", MySqlDbType.VarChar, 50);
+            p_email.Value = paciente.Email;
+            validarUsuario.cmd.Parameters.Add(p_email);
+
+            MySqlParameter p_nombre = new MySqlParameter("p_nombre", MySqlDbType.VarChar, 15);
+            p_nombre.Value = paciente.Nombre;
+            validarUsuario.cmd.Parameters.Add(p_nombre);
+
+            MySqlParameter p_telF = new MySqlParameter("p_telefonoFijo", MySqlDbType.VarChar, 15);
+            p_telF.Value = paciente.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(p_telF);
+
+            MySqlParameter p_telM = new MySqlParameter("p_telefonoMovil", MySqlDbType.VarChar, 15);
+            p_telM.Value = paciente.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(p_telM);
+
+            MySqlParameter p_fechaNac = new MySqlParameter("p_fechaNacimiento", MySqlDbType.Date);
+            p_fechaNac.Value = paciente.FechaNacimiento;
+            validarUsuario.cmd.Parameters.Add(p_fechaNac);
+
+            MySqlParameter p_idPreguntasHistoria = new MySqlParameter("p_idRespuestasClinicas", MySqlDbType.Int32);
+            p_idPreguntasHistoria.Value = paciente.IDPreguntasHistoria;
+            validarUsuario.cmd.Parameters.Add(p_idPreguntasHistoria);
+
+            MySqlParameter p_notas = new MySqlParameter("p_notas", MySqlDbType.VarChar, 50);
+            p_notas.Value = paciente.Notas;
+            validarUsuario.cmd.Parameters.Add(p_notas);
+
+            MySqlParameter p_peso = new MySqlParameter("p_peso", MySqlDbType.Float);
+            p_peso.Value = paciente.Peso;
+            validarUsuario.cmd.Parameters.Add(p_peso);
+
+            MySqlParameter p_talla = new MySqlParameter("p_talla", MySqlDbType.Float);
+            p_talla.Value = paciente.Talla;
+            validarUsuario.cmd.Parameters.Add(p_talla);
+
+            if(validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.conn.Close();
+        }
+        return bandera;
+    }
+
+	public Paciente ConsultarPaciente( int IDPaciente){
+
+        Paciente paciente = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter p_idPaciente = new MySqlParameter("p_idPaciente", MySqlDbType.Int32);
+            p_idPaciente.Value = IDPaciente;
+            validarUsuario.cmd.Parameters.Add(p_idPaciente);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            if (validarUsuario.dr.Read())
+            {
+                paciente = new Paciente(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                validarUsuario.dr["apellidoM"].ToString(),
+                validarUsuario.dr["apellidoP"].ToString(),
+                validarUsuario.dr["direccion"].ToString(),
+                validarUsuario.dr["email"].ToString(),
+                validarUsuario.dr["nombre"].ToString(),
+                validarUsuario.dr["telefonoFijo"].ToString(),
+                validarUsuario.dr["telefonoMovil"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaNacimiento"])),
+                Convert.ToInt32(validarUsuario.dr["idRespuestasClinicas"]),
+                validarUsuario.dr["notas"].ToString(),
+                float.Parse(validarUsuario.dr["peso"].ToString(), CultureInfo.InvariantCulture),
+                float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture)
+                );
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.conn.Close();
+        }
+        return paciente;
+    }
+
+	public List<Paciente> ConsultarPacientes( int idDentista){
+
+		List<Paciente> listaPacientes = new List<Paciente>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPacientes", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter p_idDentista = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            p_idDentista.Value = idDentista;
+            validarUsuario.cmd.Parameters.Add(p_idDentista);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                Paciente paciente = new Paciente(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["apellidoM"].ToString(),
+                    validarUsuario.dr["apellidoP"].ToString(),
+                    validarUsuario.dr["direccion"].ToString(),
+                    validarUsuario.dr["email"].ToString(),
+                    validarUsuario.dr["nombre"].ToString(),
+                    validarUsuario.dr["telefonoFijo"].ToString(),
+                    validarUsuario.dr["telefonoMovil"].ToString(),
+                    DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaNacimiento"])),
+                    Convert.ToInt32(validarUsuario.dr["idRespuestasClinicas"]),
+                    validarUsuario.dr["notas"].ToString(),
+                    float.Parse(validarUsuario.dr["peso"].ToString(), CultureInfo.InvariantCulture),
+                    float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture)
+                    );
+                listaPacientes.Add(paciente);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.conn.Close();
+        }
+        return listaPacientes;
+    }
+
+	public bool EliminarPaciente( int IDPaciente){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter p_idPaciente = new MySqlParameter("p_idx", MySqlDbType.Int32);
+            p_idPaciente.Value = IDPaciente;
+            validarUsuario.cmd.Parameters.Add(p_idPaciente);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.conn.Close();
+        }
+        return bandera;
 	}
 
-	/// 
-	/// <param name="paciente"></param>
-	public void CargarPaciente(Paciente paciente){
+	public bool ModificarPaciente( Paciente paciente ){
 
-	}
+        bool bandera = false;
 
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void ConsultarPaciente(string IDPaciente){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	}
+            MySqlParameter p_appelidoM = new MySqlParameter("p_apellidoM", MySqlDbType.VarChar, 15);
+            p_appelidoM.Value = paciente.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(p_appelidoM);
 
-	/// 
-	/// <param name="idDentista"></param>
-	public List<Paciente> ConsultarPacientes(string idDentista){
+            MySqlParameter p_apellidoP = new MySqlParameter("p_apellidoP", MySqlDbType.VarChar, 15);
+            p_apellidoP.Value = paciente.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(p_apellidoP);
 
-		return null;
-	}
+            MySqlParameter p_direccion = new MySqlParameter("p_direccion", MySqlDbType.VarChar, 500);
+            p_direccion.Value = paciente.Direccion;
+            validarUsuario.cmd.Parameters.Add(p_direccion);
 
-	/// 
-	/// <param name="IDPaciente"></param>
-	public bool EliminarPaciente(string IDPaciente){
+            MySqlParameter p_email = new MySqlParameter("p_email", MySqlDbType.VarChar, 50);
+            p_email.Value = paciente.Email;
+            validarUsuario.cmd.Parameters.Add(p_email);
 
-		return false;
-	}
+            MySqlParameter p_nombre = new MySqlParameter("p_nombre", MySqlDbType.VarChar, 15);
+            p_nombre.Value = paciente.Nombre;
+            validarUsuario.cmd.Parameters.Add(p_nombre);
 
-	/// 
-	/// <param name="paciente"></param>
-	public bool GuardarPaciente(Paciente paciente){
+            MySqlParameter p_telF = new MySqlParameter("p_telefonoFijo", MySqlDbType.VarChar, 15);
+            p_telF.Value = paciente.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(p_telF);
 
-		return false;
-	}
+            MySqlParameter p_telM = new MySqlParameter("p_telefonoMovil", MySqlDbType.VarChar, 15);
+            p_telM.Value = paciente.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(p_telM);
 
-	/// 
-	/// <param name="IDPaciente"></param>
-	public void ModificarPaciente(string IDPaciente){
+            MySqlParameter p_fechaNac = new MySqlParameter("p_fechaNacimiento", MySqlDbType.Date);
+            p_fechaNac.Value = paciente.FechaNacimiento;
+            validarUsuario.cmd.Parameters.Add(p_fechaNac);
 
-	}
+            MySqlParameter p_idPreguntasHistoria = new MySqlParameter("p_idRespuestasClinicas", MySqlDbType.Int32);
+            p_idPreguntasHistoria.Value = paciente.IDPreguntasHistoria;
+            validarUsuario.cmd.Parameters.Add(p_idPreguntasHistoria);
+
+            MySqlParameter p_notas = new MySqlParameter("p_notas", MySqlDbType.VarChar, 50);
+            p_notas.Value = paciente.Notas;
+            validarUsuario.cmd.Parameters.Add(p_notas);
+
+            MySqlParameter p_peso = new MySqlParameter("p_peso", MySqlDbType.Float);
+            p_peso.Value = paciente.Peso;
+            validarUsuario.cmd.Parameters.Add(p_peso);
+
+            MySqlParameter p_talla = new MySqlParameter("p_talla", MySqlDbType.Float);
+            p_talla.Value = paciente.Talla;
+            validarUsuario.cmd.Parameters.Add(p_talla);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.conn.Close();
+        }
+
+        return bandera;
+    }
 
 }//end ControlPaciente

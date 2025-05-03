@@ -10,62 +10,351 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySql.Data.MySqlClient;
+using System.Reflection.PortableExecutable;
+using System.Data;
 
 
 
 public class ControlCita {
 
-	public Reporte m_Reporte;
-
-	public ControlCita(){
-
-	}
-
-	~ControlCita(){
+	private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlCita(){
 
 	}
 
-	/// 
-	/// <param name="cita"></param>
-	public void CargarCita(Cita cita){
+	public Cita ConsultarCita( int IDCita){
 
+		Cita cita = null;
+        try
+		{
+			validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand( "uspConsultarCita", validarUsuario.conn );
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+			MySqlParameter c_cita = new MySqlParameter("c_idx", MySqlDbType.Int32);
+            c_cita.Value = IDCita;
+            validarUsuario.cmd.Parameters.Add(c_cita);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if(validarUsuario.dr.Read())
+            {
+                cita = new Cita(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToByte(validarUsuario.dr["duracion"]),
+                validarUsuario.dr["estado"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaCita"])),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaDeGeneracion"])),
+                TimeOnly.FromTimeSpan((TimeSpan)validarUsuario.dr["hora"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                validarUsuario.dr["motivoDeCita"].ToString(),
+                validarUsuario.dr["nota"].ToString()
+                );
+            }
+        }
+        catch( MySqlException ex)
+        {
+            validarUsuario.mensaje =  ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return cita;
 	}
 
-	/// 
-	/// <param name="IDCita"></param>
-	public Cita ConsultarCita(string IDCita){
+	public List<Cita> ConsultarCitasPorMedico( int idDentista){
 
-		return null;
+		List<Cita> citas = new List<Cita>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCitas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter c_dentista = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            c_dentista.Value = idDentista;
+            validarUsuario.cmd.Parameters.Add(c_dentista);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while(validarUsuario.dr.Read())
+            {
+                citas.Add(new Cita(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToByte(validarUsuario.dr["duracion"]),
+                validarUsuario.dr["estado"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaCita"])),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaDeGeneracion"])),
+                TimeOnly.FromTimeSpan((TimeSpan)validarUsuario.dr["hora"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                validarUsuario.dr["motivoDeCita"].ToString(),
+                validarUsuario.dr["nota"].ToString() ));
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return citas;
 	}
 
-	/// 
-	/// <param name="idDentista"></param>
-	public List<Cita> ConsultarCitas(string idDentista){
+    public List<Cita> ConsultarCitasPorFecha(DateOnly fecha)
+    {
+        List<Cita> citas = new List<Cita>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCitasPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-		return null;
-	}
+            MySqlParameter c_fecha = new MySqlParameter("c_fecha", MySqlDbType.Date);
+            c_fecha.Value = fecha;
+            validarUsuario.cmd.Parameters.Add(c_fecha);
 
-	public void CrearCita(){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                citas.Add(new Cita(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToByte(validarUsuario.dr["duracion"]),
+                validarUsuario.dr["estado"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaCita"])),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaDeGeneracion"])),
+                TimeOnly.FromTimeSpan((TimeSpan)validarUsuario.dr["hora"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                validarUsuario.dr["motivoDeCita"].ToString(),
+                validarUsuario.dr["nota"].ToString()));
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return citas;
+    }
 
-	}
+    public List<Cita> ConsultarCitas()
+    {
+        List<Cita> citas = new List<Cita>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCitas", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	/// 
-	/// <param name="IDCita"></param>
-	public void EliminarCita(string IDCita){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
 
-	}
+            while (validarUsuario.dr.Read())
+            {
+                citas.Add(new Cita(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToByte(validarUsuario.dr["duracion"]),
+                validarUsuario.dr["estado"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaCita"])),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaDeGeneracion"])),
+                TimeOnly.FromTimeSpan((TimeSpan)validarUsuario.dr["hora"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                validarUsuario.dr["motivoDeCita"].ToString(),
+                validarUsuario.dr["nota"].ToString()));
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+            return citas;
+    }
 
-	/// 
-	/// <param name="Cita"></param>
-	public bool GuardarCita( Cita cita ){
+    public bool EliminarCita( int IDCita){
+        
+        bool bandera = false;
 
-		return false;
-	}
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarCita", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	/// 
-	/// <param name="cita"></param>
-	public void ModificarCita(Cita cita){
+            MySqlParameter c_cita = new MySqlParameter("c_idx", MySqlDbType.Int32);
+            c_cita.Value = IDCita;
+            validarUsuario.cmd.Parameters.Add(c_cita);
 
-	}
+            if( validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool AgregarCita( Cita cita ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarCita", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter c_duracion = new MySqlParameter("c_duracion", MySqlDbType.Int32);
+            c_duracion.Value = cita.Duracion;
+            validarUsuario.cmd.Parameters.Add(c_duracion);
+
+            MySqlParameter c_estado = new MySqlParameter("c_estado", MySqlDbType.VarChar);
+            c_estado.Value = cita.Estado;
+            validarUsuario.cmd.Parameters.Add(c_estado);
+
+            MySqlParameter c_fecha = new MySqlParameter("c_fechaCita", MySqlDbType.Date);
+            c_fecha.Value = cita.Fecha;
+            validarUsuario.cmd.Parameters.Add(c_fecha);
+
+            MySqlParameter c_fechaGen = new MySqlParameter("c_fechaDeGeneracion", MySqlDbType.Date);
+            c_fechaGen.Value = cita.FechaDeGeneracion;
+            validarUsuario.cmd.Parameters.Add(c_fechaGen);
+
+            MySqlParameter c_hora = new MySqlParameter("c_hora", MySqlDbType.Time);
+            c_hora.Value = cita.Hora;
+            validarUsuario.cmd.Parameters.Add(c_hora);
+
+            MySqlParameter c_idmedico = new MySqlParameter("c_idMedico", MySqlDbType.Int32);
+            c_idmedico.Value = cita.IDMedico;
+            validarUsuario.cmd.Parameters.Add(c_idmedico);
+
+            MySqlParameter c_idpaciente = new MySqlParameter("c_idPaciente", MySqlDbType.Int32);
+            c_idpaciente.Value = cita.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(c_idpaciente);
+
+            MySqlParameter c_motivo = new MySqlParameter("c_motivoDeCita", MySqlDbType.Text);
+            c_motivo.Value = cita.MotivoDeCita;
+            validarUsuario.cmd.Parameters.Add(c_motivo);
+
+            MySqlParameter c_nota = new MySqlParameter("c_nota", MySqlDbType.Text);
+            c_nota.Value = cita.Nota;
+            validarUsuario.cmd.Parameters.Add(c_nota);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarCita( Cita cita){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarCita", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter c_cita = new MySqlParameter("c_idx", MySqlDbType.Int32);
+            c_cita.Value = cita.IDCita;
+            validarUsuario.cmd.Parameters.Add(c_cita);
+
+            MySqlParameter c_duracion = new MySqlParameter("c_duracion", MySqlDbType.Int32);
+            c_duracion.Value = cita.Duracion;
+            validarUsuario.cmd.Parameters.Add(c_duracion);
+
+            MySqlParameter c_estado = new MySqlParameter("c_estado", MySqlDbType.VarChar);
+            c_estado.Value = cita.Estado;
+            validarUsuario.cmd.Parameters.Add(c_estado);
+
+            MySqlParameter c_fecha = new MySqlParameter("c_fechaCita", MySqlDbType.Date);
+            c_fecha.Value = cita.Fecha;
+            validarUsuario.cmd.Parameters.Add(c_fecha);
+
+            MySqlParameter c_fechaGen = new MySqlParameter("c_fechaDeGeneracion", MySqlDbType.Date);
+            c_fechaGen.Value = cita.FechaDeGeneracion;
+            validarUsuario.cmd.Parameters.Add(c_fechaGen);
+
+            MySqlParameter c_hora = new MySqlParameter("c_hora", MySqlDbType.Time);
+            c_hora.Value = cita.Hora;
+            validarUsuario.cmd.Parameters.Add(c_hora);
+
+            MySqlParameter c_idmedico = new MySqlParameter("c_idMedico", MySqlDbType.Int32);
+            c_idmedico.Value = cita.IDMedico;
+            validarUsuario.cmd.Parameters.Add(c_idmedico);
+
+            MySqlParameter c_idpaciente = new MySqlParameter("c_idPaciente", MySqlDbType.Int32);
+            c_idpaciente.Value = cita.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(c_idpaciente);
+
+            MySqlParameter c_motivo = new MySqlParameter("c_motivoDeCita", MySqlDbType.Text);
+            c_motivo.Value = cita.MotivoDeCita;
+            validarUsuario.cmd.Parameters.Add(c_motivo);
+
+            MySqlParameter c_nota = new MySqlParameter("c_nota", MySqlDbType.Text);
+            c_nota.Value = cita.Nota;
+            validarUsuario.cmd.Parameters.Add(c_nota);
+
+            if( validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlCita

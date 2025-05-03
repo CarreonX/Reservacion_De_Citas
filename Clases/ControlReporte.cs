@@ -10,33 +10,146 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 
 public class ControlReporte {
 
-	public ControlMedico m_ControlMedico;
-
-	public ControlReporte(){
-
-	}
-
-	~ControlReporte(){
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlReporte(){
 
 	}
 
-	public void AgregarReporte(){
+	public bool AgregarReporte( Reporte reporte ){
 
+		bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarReporte", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_fecha = new MySqlParameter("r_fecha", MySqlDbType.Date);
+            t_fecha.Value = reporte.Fecha;
+            validarUsuario.cmd.Parameters.Add(t_fecha);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
+	public List<Reporte> ConsultarReportes(){
 
-	public void ConsultarReportes(){
+        List<Reporte> listaReportes = new List<Reporte>();
 
-	}
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarReportes", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-	/// 
-	/// <param name="IDReporte"></param>
-	public void EliminarReporte(string IDReporte){
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
 
+            while (validarUsuario.dr.Read())
+            {
+                Reporte reporte = new Reporte
+                (
+                    Convert.ToInt32(validarUsuario.dr["idReporte"]),
+                    DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fecha"]))
+                );
+                listaReportes.Add(reporte);
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if(validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return listaReportes;
+    }
+
+    public Reporte ConsultarReporte( DateOnly r_fecha)
+    {
+        Reporte reporte = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarReportesPorFecha", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_fecha = new MySqlParameter("r_fecha", MySqlDbType.Date);
+            t_fecha.Value = r_fecha;
+            validarUsuario.cmd.Parameters.Add(t_fecha);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                reporte = new Reporte
+                (
+                    Convert.ToInt32(validarUsuario.dr["idReporte"]),
+                    DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fecha"]))
+                );
+            }
+        }
+        catch (Exception ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if(validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return null;
+    }
+	public bool EliminarReporte( int r_idx ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarReporte", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter t_idx = new MySqlParameter("r_idx", MySqlDbType.Int32);
+            t_idx.Value = r_idx;
+            validarUsuario.cmd.Parameters.Add(t_idx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+                bandera = true;
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
 }//end ControlReporte

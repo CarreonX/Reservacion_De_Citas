@@ -10,47 +10,268 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using MySql.Data.MySqlClient;
+using Clases;
 
 
 
 public class ControlMedicamento {
 
 	public Reporte m_Reporte;
+    private ValidarUsuario validarUsuario = new ValidarUsuario();
 
-	public ControlMedicamento(){
-
-	}
-
-	~ControlMedicamento(){
+    public ControlMedicamento(){
 
 	}
 
-	public void AgregarMedicamento(){
+	public bool AgregarMedicamento( Medicamento medicamento ){
+		bool bandera = false;
 
+		try
+		{
+			validarUsuario.conectar();
+			validarUsuario.cmd = new MySqlCommand("uspAgregarMedicamento", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+			MySqlParameter m_cantidad = new MySqlParameter("m_cantidad", MySqlDbType.Int32 );
+            m_cantidad.Value = medicamento.Cantidad;
+            validarUsuario.cmd.Parameters.Add(m_cantidad);
+
+            MySqlParameter m_divicionPisoEstante = new MySqlParameter("m_divicionPiso", MySqlDbType.VarChar);
+            m_divicionPisoEstante.Value = medicamento.DivicionPisoEstante;
+            validarUsuario.cmd.Parameters.Add(m_divicionPisoEstante);
+
+            MySqlParameter m_estante = new MySqlParameter("m_estante", MySqlDbType.VarChar);
+            m_estante.Value = medicamento.Estante;
+            validarUsuario.cmd.Parameters.Add(m_estante);
+
+            MySqlParameter m_nombre = new MySqlParameter("m_nombre", MySqlDbType.VarChar);
+            m_nombre.Value = medicamento.Nombre;
+            validarUsuario.cmd.Parameters.Add(m_nombre);
+
+            MySqlParameter m_pisoEstante = new MySqlParameter("m_pisoEstante", MySqlDbType.Int32);
+            m_pisoEstante.Value = medicamento.PisoEstante;
+            validarUsuario.cmd.Parameters.Add(m_pisoEstante);
+
+            MySqlParameter m_precio = new MySqlParameter("m_precio", MySqlDbType.Float);
+            m_precio.Value = medicamento.Precio;
+            validarUsuario.cmd.Parameters.Add(m_precio);
+
+            MySqlParameter m_seccion = new MySqlParameter("m_seccion", MySqlDbType.VarChar);
+            m_seccion.Value = medicamento.Seccion;
+            validarUsuario.cmd.Parameters.Add(m_seccion);
+
+            MySqlParameter m_unidadMedida = new MySqlParameter("m_unidadMedida", MySqlDbType.VarChar);
+            m_unidadMedida.Value = medicamento.UnidadDeMedida;
+            validarUsuario.cmd.Parameters.Add(m_unidadMedida);
+
+            if(validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public Medicamento ConsultarMedicamento( int IDMedicamento ){
+
+        Medicamento medicamento = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarMedicamento", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            MySqlParameter m_idMedicamento = new MySqlParameter("m_idMedicamento", MySqlDbType.Int32);
+            m_idMedicamento.Value = IDMedicamento;
+            validarUsuario.cmd.Parameters.Add(m_idMedicamento);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if (validarUsuario.dr.Read())
+            {
+                medicamento = new Medicamento(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    Convert.ToInt32(validarUsuario.dr["cantidad"]),
+                    Convert.ToString(validarUsuario.dr["divicionPiso"]),
+                    Convert.ToString(validarUsuario.dr["estante"]),
+                    Convert.ToString(validarUsuario.dr["nombre"]),
+                    Convert.ToInt32(validarUsuario.dr["pisoEstante"]),
+                    Convert.ToSingle(validarUsuario.dr["precio"]),
+                    Convert.ToString(validarUsuario.dr["seccion"]),
+                    Convert.ToString(validarUsuario.dr["unidadDeMedida"])
+                );
+            }
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return medicamento;
+    }
+
+	public List<Medicamento> ConsultarMedicamentos(){
+
+        List<Medicamento> medicamentos = new List<Medicamento>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarMedicamentos", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                Medicamento medicamento = new Medicamento(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    Convert.ToInt32(validarUsuario.dr["cantidad"]),
+                    Convert.ToString(validarUsuario.dr["divicionPiso"]),
+                    Convert.ToString(validarUsuario.dr["estante"]),
+                    Convert.ToString(validarUsuario.dr["nombre"]),
+                    Convert.ToInt32(validarUsuario.dr["pisoEstante"]),
+                    Convert.ToSingle(validarUsuario.dr["precio"]),
+                    Convert.ToString(validarUsuario.dr["seccion"]),
+                    Convert.ToString(validarUsuario.dr["unidadDeMedida"])
+                );
+                medicamentos.Add(medicamento);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return medicamentos;
+    }
+	public bool EliminarMediacamento( int IDMedicamento){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarMedicamento", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            MySqlParameter m_idMedicamento = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            m_idMedicamento.Value = IDMedicamento;
+            validarUsuario.cmd.Parameters.Add(m_idMedicamento);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
+
+	public bool ModificarMedicamento( int idx ){
+
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarMedicamento", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            MySqlParameter m_idx = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            m_idx.Value = idx;
+            validarUsuario.cmd.Parameters.Add(m_idx);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
-	/// 
-	/// <param name="IDMedicamento"></param>
-	public void ConsultarMedicamento(string IDMedicamento){
+	public bool VenderMedicamento( Venta venta ){
+		
+        bool bandera = false;
 
-	}
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarVenta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-	public void ConsultarMedicamentos(){
+            MySqlParameter v_cantidad = new MySqlParameter("v_cantidad", MySqlDbType.Int32);
+            v_cantidad.Value = venta.Cantidad;
+            validarUsuario.cmd.Parameters.Add(v_cantidad);
 
-	}
+            MySqlParameter v_nombreP = new MySqlParameter("v_nombreProducto", MySqlDbType.VarChar);
+            v_nombreP.Value = venta.NombreProducto;
+            validarUsuario.cmd.Parameters.Add( v_nombreP );
 
-	/// 
-	/// <param name="IDMedicamento"></param>
-	public void EliminarMediacamento(string IDMedicamento){
+            MySqlParameter v_precio = new MySqlParameter("v_precio", MySqlDbType.Float);
+            v_precio.Value = venta.Precio;
+            validarUsuario.cmd.Parameters.Add(v_precio);
 
-	}
+            MySqlParameter v_idPaciente = new MySqlParameter("v_idPaciente", MySqlDbType.Int32);
+            v_nombreP.Value = venta.IDPaciente;
+            validarUsuario.cmd.Parameters.Add(v_idPaciente);
 
-	public void ModificarMedicamento(){
+            MySqlParameter v_idCaja = new MySqlParameter("v_idCajaRegistradora", MySqlDbType.Int32);
+            v_idCaja.Value = venta.IDCajaRegistradora;
+            validarUsuario.cmd.Parameters.Add(v_idCaja);
 
-	}
-
-	public void VenderMedicamento(){
-
-	}
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+    }
 
 }//end ControlMedicamento

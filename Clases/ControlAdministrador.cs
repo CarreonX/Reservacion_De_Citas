@@ -10,47 +10,271 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-
-
+using MySql.Data.MySqlClient;
+using System.Data;
 
 public class ControlAdministrador {
 
-	public ControlAdministrador(){
+    public ValidarUsuario validarUsuario = new ValidarUsuario();
+    public ControlAdministrador(){
 
 	}
 
-	~ControlAdministrador(){
+	public bool AgregarAdministrador( Administrador administrador ){
 
+		bool bandera = false;
+
+		try
+		{
+			validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspAgregarAdministrador", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+			MySqlParameter a_apellidoM = new MySqlParameter("a_apellidoM", MySqlDbType.VarChar, 15);
+            a_apellidoM.Value = administrador.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(a_apellidoM);
+
+            MySqlParameter a_apellidoP = new MySqlParameter("a_apellidoP", MySqlDbType.VarChar, 15);
+            a_apellidoP.Value = administrador.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(a_apellidoP);
+
+			MySqlParameter a_direccion = new MySqlParameter("a_direccion", MySqlDbType.VarChar, 500);
+            a_direccion.Value = administrador.Direccion;
+            validarUsuario.cmd.Parameters.Add(a_direccion);
+
+			MySqlParameter a_DNI = new MySqlParameter("a_DNI", MySqlDbType.VarChar, 30);
+            a_DNI.Value = administrador.DNI;
+            validarUsuario.cmd.Parameters.Add(a_DNI);
+
+            MySqlParameter a_email = new MySqlParameter("a_email", MySqlDbType.VarChar, 50);
+            a_email.Value = administrador.Email;
+            validarUsuario.cmd.Parameters.Add(a_email);
+
+            MySqlParameter a_nombre = new MySqlParameter("a_nombre", MySqlDbType.VarChar, 15);
+            a_nombre.Value = administrador.Nombre;
+            validarUsuario.cmd.Parameters.Add(a_nombre);
+
+            MySqlParameter a_telefono = new MySqlParameter("a_telefonoFijo", MySqlDbType.VarChar, 15);
+            a_telefono.Value = administrador.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(a_telefono);
+
+            MySqlParameter a_telefonoMovil = new MySqlParameter("a_telefonoMovil", MySqlDbType.VarChar, 15);
+            a_telefonoMovil.Value = administrador.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(a_telefonoMovil);
+
+            MySqlParameter a_usuario = new MySqlParameter("a_usuario", MySqlDbType.VarChar, 15);
+            a_usuario.Value = administrador.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(a_usuario);
+
+            MySqlParameter a_contrasena = new MySqlParameter("a_password", MySqlDbType.VarChar, 20);
+            a_contrasena.Value = administrador.Password;
+            validarUsuario.cmd.Parameters.Add(a_contrasena);
+
+            if( validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
+	}
+	public Administrador ConsultarAdministrador( int a_idx ){
+
+        Administrador administrador = null;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarAdministrador", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter b_idx = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            b_idx.Value = a_idx;
+            validarUsuario.cmd.Parameters.Add(b_idx);
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            if (validarUsuario.dr.Read())
+            {
+                administrador = new Administrador(
+                 Convert.ToInt32(validarUsuario.dr["idx"]),
+                 validarUsuario.dr["apellidoM"].ToString(),
+                 validarUsuario.dr["apellidoP"].ToString(),
+                 validarUsuario.dr["direccion"].ToString(),
+                 validarUsuario.dr["DNI"].ToString(),
+                 validarUsuario.dr["email"].ToString(),
+                 validarUsuario.dr["nombre"].ToString(),
+                 validarUsuario.dr["telefonoFijo"].ToString(),
+                 validarUsuario.dr["telefonoMovil"].ToString(),
+                 validarUsuario.dr["usuario"].ToString(),
+                 validarUsuario.dr["password"].ToString()
+             );
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return administrador;
+    }
+
+	public List<Administrador> ConsultarAdministradores(){
+
+        List<Administrador> administradores = new List<Administrador>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarAdministradores", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            while (validarUsuario.dr.Read())
+            {
+                Administrador administrador = new Administrador(
+                 Convert.ToInt32(validarUsuario.dr["idx"]),
+                 validarUsuario.dr["apellidoM"].ToString(),
+                 validarUsuario.dr["apellidoP"].ToString(),
+                 validarUsuario.dr["direccion"].ToString(),
+                 validarUsuario.dr["DNI"].ToString(),
+                 validarUsuario.dr["email"].ToString(),
+                 validarUsuario.dr["nombre"].ToString(),
+                 validarUsuario.dr["telefonoFijo"].ToString(),
+                 validarUsuario.dr["telefonoMovil"].ToString(),
+                 validarUsuario.dr["usuario"].ToString(),
+                 validarUsuario.dr["password"].ToString()
+                );
+                administradores.Add(administrador);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return administradores;
 	}
 
-	public void AgregarAdministrador(){
+	public bool EliminarAdministrador( int a_idx ){
 
+        bool bandera = false;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspEliminarAdministrador", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            MySqlParameter a_idxParam = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            a_idxParam.Value = a_idx;
+            validarUsuario.cmd.Parameters.Add(a_idxParam);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
-	/// 
-	/// <param name="id"></param>
-	public Administrador ConsultarAdministrador( int id){
+	public bool ModificarAdministrador( Administrador administrador ){
 
-		return null;
-	}
+		bool bandera = false;
 
-	public List<Administrador> ConsultarAdministradorers(){
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspModificarAdministrador", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-		return null;
-	}
+            MySqlParameter a_idx = new MySqlParameter("a_idx", MySqlDbType.Int32);
+            a_idx.Value = administrador.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(a_idx);
 
-	/// 
-	/// <param name="id"></param>
-	public bool EliminarAdministrador(String id){
+            MySqlParameter a_apellidoM = new MySqlParameter("a_apellidoM", MySqlDbType.VarChar, 15);
+            a_apellidoM.Value = administrador.ApellidoM;
+            validarUsuario.cmd.Parameters.Add(a_apellidoM);
 
-		return false;
-	}
+            MySqlParameter a_apellidoP = new MySqlParameter("a_apellidoP", MySqlDbType.VarChar, 15);
+            a_apellidoP.Value = administrador.ApellidoP;
+            validarUsuario.cmd.Parameters.Add(a_apellidoP);
 
-	/// 
-	/// <param name="id"></param>
-	public bool ModificarAdministrador(String id){
+            MySqlParameter a_direccion = new MySqlParameter("a_direccion", MySqlDbType.VarChar, 500);
+            a_direccion.Value = administrador.Direccion;
+            validarUsuario.cmd.Parameters.Add(a_direccion);
 
-		return false;
+            MySqlParameter a_DNI = new MySqlParameter("a_DNI", MySqlDbType.VarChar, 30);
+            a_DNI.Value = administrador.DNI;
+            validarUsuario.cmd.Parameters.Add(a_DNI);
+
+            MySqlParameter a_email = new MySqlParameter("a_email", MySqlDbType.VarChar, 50);
+            a_email.Value = administrador.Email;
+            validarUsuario.cmd.Parameters.Add(a_email);
+
+            MySqlParameter a_nombre = new MySqlParameter("a_nombre", MySqlDbType.VarChar, 15);
+            a_nombre.Value = administrador.Nombre;
+            validarUsuario.cmd.Parameters.Add(a_nombre);
+
+            MySqlParameter a_telefono = new MySqlParameter("a_telefonoFijo", MySqlDbType.VarChar, 15);
+            a_telefono.Value = administrador.TelefonoFijo;
+            validarUsuario.cmd.Parameters.Add(a_telefono);
+
+            MySqlParameter a_telefonoMovil = new MySqlParameter("a_telefonoMovil", MySqlDbType.VarChar, 15);
+            a_telefonoMovil.Value = administrador.TelefonoMovil;
+            validarUsuario.cmd.Parameters.Add(a_telefonoMovil);
+
+            MySqlParameter a_usuario = new MySqlParameter("a_usuario", MySqlDbType.VarChar, 15);
+            a_usuario.Value = administrador.NombreUsuario;
+            validarUsuario.cmd.Parameters.Add(a_usuario);
+
+            MySqlParameter a_contrasena = new MySqlParameter("a_password", MySqlDbType.VarChar, 20);
+            a_contrasena.Value = administrador.Password;
+            validarUsuario.cmd.Parameters.Add(a_contrasena);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
+            {
+                bandera = true;
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            validarUsuario.desconectar();
+        }
+        return bandera;
 	}
 
 }//end ControlAdministrador
