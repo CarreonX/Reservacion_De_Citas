@@ -28,35 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtApellidoM = new TextBox();
+            txtEstadoCita = new TextBox();
             label4 = new Label();
-            txtApellidoP = new TextBox();
+            txtFechaSolicitud = new TextBox();
             label3 = new Label();
-            txtNombre = new TextBox();
+            txtFechaCita = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            textBox1 = new TextBox();
+            txtDuracion = new TextBox();
             label5 = new Label();
-            textBox2 = new TextBox();
+            txtHora = new TextBox();
             label6 = new Label();
-            textBox3 = new TextBox();
+            txtodontologo = new TextBox();
             label7 = new Label();
-            textBox4 = new TextBox();
+            txtPaciente = new TextBox();
             label8 = new Label();
-            textBox5 = new TextBox();
+            txtMotivo = new TextBox();
             label9 = new Label();
-            textBox6 = new TextBox();
+            txtIdCita = new TextBox();
             label10 = new Label();
-            textBox7 = new TextBox();
+            txtNotas = new TextBox();
             label11 = new Label();
             SuspendLayout();
             // 
-            // txtApellidoM
+            // txtEstadoCita
             // 
-            txtApellidoM.Location = new Point(117, 201);
-            txtApellidoM.Name = "txtApellidoM";
-            txtApellidoM.Size = new Size(174, 27);
-            txtApellidoM.TabIndex = 60;
+            txtEstadoCita.Location = new Point(117, 201);
+            txtEstadoCita.Name = "txtEstadoCita";
+            txtEstadoCita.Size = new Size(174, 27);
+            txtEstadoCita.TabIndex = 60;
             // 
             // label4
             // 
@@ -67,12 +67,12 @@
             label4.TabIndex = 59;
             label4.Text = "Estado:";
             // 
-            // txtApellidoP
+            // txtFechaSolicitud
             // 
-            txtApellidoP.Location = new Point(672, 156);
-            txtApellidoP.Name = "txtApellidoP";
-            txtApellidoP.Size = new Size(174, 27);
-            txtApellidoP.TabIndex = 58;
+            txtFechaSolicitud.Location = new Point(672, 156);
+            txtFechaSolicitud.Name = "txtFechaSolicitud";
+            txtFechaSolicitud.Size = new Size(174, 27);
+            txtFechaSolicitud.TabIndex = 58;
             // 
             // label3
             // 
@@ -83,12 +83,12 @@
             label3.TabIndex = 57;
             label3.Text = "Fecha de solicitud:";
             // 
-            // txtNombre
+            // txtFechaCita
             // 
-            txtNombre.Location = new Point(117, 149);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(174, 27);
-            txtNombre.TabIndex = 56;
+            txtFechaCita.Location = new Point(117, 149);
+            txtFechaCita.Name = "txtFechaCita";
+            txtFechaCita.Size = new Size(174, 27);
+            txtFechaCita.TabIndex = 56;
             // 
             // label2
             // 
@@ -109,12 +109,12 @@
             label1.TabIndex = 54;
             label1.Text = "Cita";
             // 
-            // textBox1
+            // txtDuracion
             // 
-            textBox1.Location = new Point(392, 201);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(174, 27);
-            textBox1.TabIndex = 62;
+            txtDuracion.Location = new Point(392, 201);
+            txtDuracion.Name = "txtDuracion";
+            txtDuracion.Size = new Size(174, 27);
+            txtDuracion.TabIndex = 62;
             // 
             // label5
             // 
@@ -125,12 +125,12 @@
             label5.TabIndex = 61;
             label5.Text = "Duración:";
             // 
-            // textBox2
+            // txtHora
             // 
-            textBox2.Location = new Point(672, 201);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(174, 27);
-            textBox2.TabIndex = 64;
+            txtHora.Location = new Point(672, 201);
+            txtHora.Name = "txtHora";
+            txtHora.Size = new Size(174, 27);
+            txtHora.TabIndex = 64;
             // 
             // label6
             // 
@@ -141,12 +141,12 @@
             label6.TabIndex = 63;
             label6.Text = "Hora:";
             // 
-            // textBox3
+            // txtodontologo
             // 
-            textBox3.Location = new Point(114, 254);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(312, 27);
-            textBox3.TabIndex = 66;
+            txtodontologo.Location = new Point(114, 254);
+            txtodontologo.Name = "txtodontologo";
+            txtodontologo.Size = new Size(312, 27);
+            txtodontologo.TabIndex = 66;
             // 
             // label7
             // 
@@ -157,12 +157,12 @@
             label7.TabIndex = 65;
             label7.Text = "Odontologo:";
             // 
-            // textBox4
+            // txtPaciente
             // 
-            textBox4.Location = new Point(547, 254);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(299, 27);
-            textBox4.TabIndex = 68;
+            txtPaciente.Location = new Point(547, 254);
+            txtPaciente.Name = "txtPaciente";
+            txtPaciente.Size = new Size(299, 27);
+            txtPaciente.TabIndex = 68;
             // 
             // label8
             // 
@@ -173,14 +173,14 @@
             label8.TabIndex = 67;
             label8.Text = "Paciente:";
             // 
-            // textBox5
+            // txtMotivo
             // 
-            textBox5.Location = new Point(117, 304);
-            textBox5.Multiline = true;
-            textBox5.Name = "textBox5";
-            textBox5.ScrollBars = ScrollBars.Vertical;
-            textBox5.Size = new Size(729, 71);
-            textBox5.TabIndex = 70;
+            txtMotivo.Location = new Point(117, 304);
+            txtMotivo.Multiline = true;
+            txtMotivo.Name = "txtMotivo";
+            txtMotivo.ScrollBars = ScrollBars.Vertical;
+            txtMotivo.Size = new Size(729, 71);
+            txtMotivo.TabIndex = 70;
             // 
             // label9
             // 
@@ -191,12 +191,13 @@
             label9.TabIndex = 69;
             label9.Text = "Motivo:";
             // 
-            // textBox6
+            // txtIdCita
             // 
-            textBox6.Location = new Point(119, 98);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(289, 27);
-            textBox6.TabIndex = 72;
+            txtIdCita.Location = new Point(119, 98);
+            txtIdCita.Name = "txtIdCita";
+            txtIdCita.ReadOnly = true;
+            txtIdCita.Size = new Size(289, 27);
+            txtIdCita.TabIndex = 72;
             // 
             // label10
             // 
@@ -207,14 +208,14 @@
             label10.TabIndex = 71;
             label10.Text = "Folio Cita:";
             // 
-            // textBox7
+            // txtNotas
             // 
-            textBox7.Location = new Point(117, 381);
-            textBox7.Multiline = true;
-            textBox7.Name = "textBox7";
-            textBox7.ScrollBars = ScrollBars.Vertical;
-            textBox7.Size = new Size(729, 79);
-            textBox7.TabIndex = 74;
+            txtNotas.Location = new Point(117, 381);
+            txtNotas.Multiline = true;
+            txtNotas.Name = "txtNotas";
+            txtNotas.ScrollBars = ScrollBars.Vertical;
+            txtNotas.Size = new Size(729, 79);
+            txtNotas.TabIndex = 74;
             // 
             // label11
             // 
@@ -230,25 +231,25 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            Controls.Add(textBox7);
+            Controls.Add(txtNotas);
             Controls.Add(label11);
-            Controls.Add(textBox6);
+            Controls.Add(txtIdCita);
             Controls.Add(label10);
-            Controls.Add(textBox5);
+            Controls.Add(txtMotivo);
             Controls.Add(label9);
-            Controls.Add(textBox4);
+            Controls.Add(txtPaciente);
             Controls.Add(label8);
-            Controls.Add(textBox3);
+            Controls.Add(txtodontologo);
             Controls.Add(label7);
-            Controls.Add(textBox2);
+            Controls.Add(txtHora);
             Controls.Add(label6);
-            Controls.Add(textBox1);
+            Controls.Add(txtDuracion);
             Controls.Add(label5);
-            Controls.Add(txtApellidoM);
+            Controls.Add(txtEstadoCita);
             Controls.Add(label4);
-            Controls.Add(txtApellidoP);
+            Controls.Add(txtFechaSolicitud);
             Controls.Add(label3);
-            Controls.Add(txtNombre);
+            Controls.Add(txtFechaCita);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucCita";
@@ -259,27 +260,26 @@
         }
 
         #endregion
-
-        private TextBox txtApellidoM;
         private Label label4;
-        private TextBox txtApellidoP;
         private Label label3;
-        private TextBox txtNombre;
         private Label label2;
         private Label label1;
-        private TextBox textBox1;
         private Label label5;
-        private TextBox textBox2;
         private Label label6;
-        private TextBox textBox3;
         private Label label7;
-        private TextBox textBox4;
         private Label label8;
-        private TextBox textBox5;
         private Label label9;
-        private TextBox textBox6;
         private Label label10;
-        private TextBox textBox7;
         private Label label11;
+        public TextBox txtIdCita;
+        public TextBox txtEstadoCita;
+        public TextBox txtFechaSolicitud;
+        public TextBox txtFechaCita;
+        public TextBox txtDuracion;
+        public TextBox txtHora;
+        public TextBox txtodontologo;
+        public TextBox txtPaciente;
+        public TextBox txtMotivo;
+        public TextBox txtNotas;
     }
 }

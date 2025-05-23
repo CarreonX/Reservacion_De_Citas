@@ -43,11 +43,11 @@
             txtPrecio = new TextBox();
             txtEstante = new TextBox();
             txtSeccion = new TextBox();
+            txtDivicion = new TextBox();
+            txtPiso = new TextBox();
             txtCantidad = new TextBox();
             txtUnidadMedida = new TextBox();
             txtSubTotal = new TextBox();
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
             label10 = new Label();
             label11 = new Label();
             SuspendLayout();
@@ -55,8 +55,8 @@
             // label13
             // 
             label13.AutoSize = true;
-            label13.BackColor = SystemColors.ActiveCaption;
-            label13.ForeColor = Color.FromArgb(0, 0, 64);
+            label13.BackColor = SystemColors.WindowFrame;
+            label13.ForeColor = Color.Black;
             label13.Location = new Point(450, 281);
             label13.Name = "label13";
             label13.Size = new Size(39, 20);
@@ -66,8 +66,8 @@
             // label8
             // 
             label8.AutoSize = true;
-            label8.BackColor = SystemColors.ActiveCaption;
-            label8.ForeColor = Color.FromArgb(0, 0, 64);
+            label8.BackColor = SystemColors.WindowFrame;
+            label8.ForeColor = Color.Black;
             label8.Location = new Point(259, 446);
             label8.Name = "label8";
             label8.Size = new Size(68, 20);
@@ -77,8 +77,8 @@
             // label9
             // 
             label9.AutoSize = true;
-            label9.BackColor = SystemColors.ActiveCaption;
-            label9.ForeColor = Color.FromArgb(0, 0, 64);
+            label9.BackColor = SystemColors.WindowFrame;
+            label9.ForeColor = Color.Black;
             label9.Location = new Point(599, 203);
             label9.Name = "label9";
             label9.Size = new Size(63, 20);
@@ -88,8 +88,8 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.BackColor = SystemColors.ActiveCaption;
-            label5.ForeColor = Color.FromArgb(0, 0, 64);
+            label5.BackColor = SystemColors.WindowFrame;
+            label5.ForeColor = Color.Black;
             label5.Location = new Point(17, 203);
             label5.Name = "label5";
             label5.Size = new Size(53, 20);
@@ -99,8 +99,8 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.BackColor = SystemColors.ActiveCaption;
-            label6.ForeColor = Color.FromArgb(0, 0, 64);
+            label6.BackColor = SystemColors.WindowFrame;
+            label6.ForeColor = Color.Black;
             label6.Location = new Point(422, 121);
             label6.Name = "label6";
             label6.Size = new Size(67, 20);
@@ -110,8 +110,8 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.BackColor = SystemColors.ActiveCaption;
-            label7.ForeColor = Color.FromArgb(0, 0, 64);
+            label7.BackColor = SystemColors.WindowFrame;
+            label7.ForeColor = Color.Black;
             label7.Location = new Point(31, 117);
             label7.Name = "label7";
             label7.Size = new Size(27, 20);
@@ -121,8 +121,8 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.BackColor = SystemColors.ActiveCaption;
-            label4.ForeColor = Color.FromArgb(0, 0, 64);
+            label4.BackColor = SystemColors.WindowFrame;
+            label4.ForeColor = Color.Black;
             label4.Location = new Point(303, 203);
             label4.Name = "label4";
             label4.Size = new Size(60, 20);
@@ -141,8 +141,8 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.BackColor = SystemColors.ActiveCaption;
-            label2.ForeColor = Color.FromArgb(0, 0, 64);
+            label2.BackColor = SystemColors.WindowFrame;
+            label2.ForeColor = Color.Black;
             label2.Location = new Point(94, 284);
             label2.Name = "label2";
             label2.Size = new Size(66, 20);
@@ -152,9 +152,9 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.BackColor = SystemColors.ActiveCaption;
+            label1.BackColor = SystemColors.WindowFrame;
             label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.FromArgb(0, 0, 64);
+            label1.ForeColor = Color.Black;
             label1.Location = new Point(354, 35);
             label1.Name = "label1";
             label1.Size = new Size(198, 38);
@@ -163,7 +163,7 @@
             // 
             // txtId
             // 
-            txtId.BackColor = Color.LightBlue;
+            txtId.BackColor = SystemColors.ButtonFace;
             txtId.BorderStyle = BorderStyle.None;
             txtId.Location = new Point(64, 116);
             txtId.Name = "txtId";
@@ -173,7 +173,7 @@
             // 
             // txtNombre
             // 
-            txtNombre.BackColor = Color.LightBlue;
+            txtNombre.BackColor = SystemColors.ButtonFace;
             txtNombre.BorderStyle = BorderStyle.None;
             txtNombre.Location = new Point(495, 118);
             txtNombre.Name = "txtNombre";
@@ -182,16 +182,17 @@
             // 
             // txtPrecio
             // 
-            txtPrecio.BackColor = Color.LightBlue;
+            txtPrecio.BackColor = SystemColors.ButtonFace;
             txtPrecio.BorderStyle = BorderStyle.None;
             txtPrecio.Location = new Point(76, 200);
             txtPrecio.Name = "txtPrecio";
             txtPrecio.Size = new Size(206, 20);
             txtPrecio.TabIndex = 113;
+            txtPrecio.TextChanged += txtPrecio_TextChanged;
             // 
             // txtEstante
             // 
-            txtEstante.BackColor = Color.LightBlue;
+            txtEstante.BackColor = SystemColors.ButtonFace;
             txtEstante.BorderStyle = BorderStyle.None;
             txtEstante.Location = new Point(369, 200);
             txtEstante.Name = "txtEstante";
@@ -200,63 +201,65 @@
             // 
             // txtSeccion
             // 
-            txtSeccion.BackColor = Color.LightBlue;
+            txtSeccion.BackColor = SystemColors.ButtonFace;
             txtSeccion.BorderStyle = BorderStyle.None;
             txtSeccion.Location = new Point(668, 200);
             txtSeccion.Name = "txtSeccion";
             txtSeccion.Size = new Size(200, 20);
             txtSeccion.TabIndex = 115;
             // 
+            // txtDivicion
+            // 
+            txtDivicion.BackColor = SystemColors.ButtonFace;
+            txtDivicion.BorderStyle = BorderStyle.None;
+            txtDivicion.Location = new Point(172, 278);
+            txtDivicion.Name = "txtDivicion";
+            txtDivicion.Size = new Size(188, 20);
+            txtDivicion.TabIndex = 116;
+            // 
+            // txtPiso
+            // 
+            txtPiso.BackColor = SystemColors.ButtonFace;
+            txtPiso.BorderStyle = BorderStyle.None;
+            txtPiso.Location = new Point(508, 277);
+            txtPiso.Name = "txtPiso";
+            txtPiso.Size = new Size(212, 20);
+            txtPiso.TabIndex = 117;
+            // 
             // txtCantidad
             // 
-            txtCantidad.BackColor = Color.LightBlue;
+            txtCantidad.BackColor = SystemColors.ButtonFace;
             txtCantidad.BorderStyle = BorderStyle.None;
-            txtCantidad.Location = new Point(172, 278);
+            txtCantidad.Location = new Point(192, 370);
             txtCantidad.Name = "txtCantidad";
-            txtCantidad.Size = new Size(188, 20);
-            txtCantidad.TabIndex = 116;
+            txtCantidad.Size = new Size(171, 20);
+            txtCantidad.TabIndex = 118;
+            txtCantidad.TextChanged += txtCantidad_TextChanged;
             // 
             // txtUnidadMedida
             // 
-            txtUnidadMedida.BackColor = Color.LightBlue;
+            txtUnidadMedida.BackColor = SystemColors.ButtonFace;
             txtUnidadMedida.BorderStyle = BorderStyle.None;
-            txtUnidadMedida.Location = new Point(508, 277);
+            txtUnidadMedida.Location = new Point(546, 370);
             txtUnidadMedida.Name = "txtUnidadMedida";
-            txtUnidadMedida.Size = new Size(212, 20);
-            txtUnidadMedida.TabIndex = 117;
+            txtUnidadMedida.Size = new Size(244, 20);
+            txtUnidadMedida.TabIndex = 119;
             // 
             // txtSubTotal
             // 
-            txtSubTotal.BackColor = Color.LightBlue;
+            txtSubTotal.BackColor = SystemColors.ButtonFace;
             txtSubTotal.BorderStyle = BorderStyle.None;
-            txtSubTotal.Location = new Point(192, 370);
+            txtSubTotal.Location = new Point(333, 443);
             txtSubTotal.Name = "txtSubTotal";
-            txtSubTotal.Size = new Size(171, 20);
-            txtSubTotal.TabIndex = 118;
-            // 
-            // textBox1
-            // 
-            textBox1.BackColor = Color.LightBlue;
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Location = new Point(546, 370);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(244, 20);
-            textBox1.TabIndex = 119;
-            // 
-            // textBox2
-            // 
-            textBox2.BackColor = Color.LightBlue;
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Location = new Point(333, 443);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(244, 20);
-            textBox2.TabIndex = 120;
+            txtSubTotal.ReadOnly = true;
+            txtSubTotal.Size = new Size(244, 20);
+            txtSubTotal.TabIndex = 120;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.BackColor = SystemColors.ActiveCaption;
-            label10.ForeColor = Color.FromArgb(0, 0, 64);
+            label10.BackColor = SystemColors.WindowFrame;
+            label10.ForeColor = Color.Black;
             label10.Location = new Point(404, 373);
             label10.Name = "label10";
             label10.Size = new Size(136, 20);
@@ -266,8 +269,8 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.BackColor = SystemColors.ActiveCaption;
-            label11.ForeColor = Color.FromArgb(0, 0, 64);
+            label11.BackColor = SystemColors.WindowFrame;
+            label11.ForeColor = Color.Black;
             label11.Location = new Point(119, 373);
             label11.Name = "label11";
             label11.Size = new Size(72, 20);
@@ -278,14 +281,14 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
+            BackColor = SystemColors.WindowFrame;
             Controls.Add(label11);
             Controls.Add(label10);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
             Controls.Add(txtSubTotal);
             Controls.Add(txtUnidadMedida);
             Controls.Add(txtCantidad);
+            Controls.Add(txtPiso);
+            Controls.Add(txtDivicion);
             Controls.Add(txtSeccion);
             Controls.Add(txtEstante);
             Controls.Add(txtPrecio);
@@ -319,17 +322,17 @@
         private Label label3;
         private Label label2;
         private Label label1;
-        private TextBox txtId;
-        private TextBox txtNombre;
-        private TextBox txtPrecio;
-        private TextBox txtEstante;
-        private TextBox txtSeccion;
-        private TextBox txtCantidad;
-        private TextBox txtUnidadMedida;
-        private TextBox txtSubTotal;
-        private TextBox textBox1;
-        private TextBox textBox2;
         private Label label10;
         private Label label11;
+        public TextBox txtId;
+        public TextBox txtNombre;
+        public TextBox txtPrecio;
+        public TextBox txtEstante;
+        public TextBox txtSeccion;
+        public TextBox txtDivicion;
+        public TextBox txtPiso;
+        public TextBox txtCantidad;
+        public TextBox txtUnidadMedida;
+        public TextBox txtSubTotal;
     }
 }

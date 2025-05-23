@@ -17,7 +17,7 @@ public class ValidarUsuario {
     public MySqlConnection conn = new MySqlConnection();
 	public MySqlDataReader dr;
 
-    string server = "192.168.1.74";
+    string server = "192.168.1.72";
 	string user = "nuevoUsuario";
     string pwd = "1234";
     string database = "dbClinica_Dental";

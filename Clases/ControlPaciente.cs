@@ -82,7 +82,11 @@ public class ControlPaciente {
             p_talla.Value = paciente.Talla;
             validarUsuario.cmd.Parameters.Add(p_talla);
 
-            if(validarUsuario.cmd.ExecuteNonQuery() > 0)
+            MySqlParameter p_alergias = new MySqlParameter("p_alergias", MySqlDbType.Text);
+            p_alergias.Value = paciente.Alergias;
+            validarUsuario.cmd.Parameters.Add(p_alergias);
+
+            if (validarUsuario.cmd.ExecuteNonQuery() > 0)
             {
                 bandera = true;
             }
@@ -128,7 +132,8 @@ public class ControlPaciente {
                 Convert.ToInt32(validarUsuario.dr["idRespuestasClinicas"]),
                 validarUsuario.dr["notas"].ToString(),
                 float.Parse(validarUsuario.dr["peso"].ToString(), CultureInfo.InvariantCulture),
-                float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture)
+                float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture),
+                validarUsuario.dr["alergias"].ToString()
                 );
             }
         }
@@ -177,7 +182,8 @@ public class ControlPaciente {
                     Convert.ToInt32(validarUsuario.dr["idRespuestasClinicas"]),
                     validarUsuario.dr["notas"].ToString(),
                     float.Parse(validarUsuario.dr["peso"].ToString(), CultureInfo.InvariantCulture),
-                    float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture)
+                    float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture),
+                    validarUsuario.dr["alergias"].ToString()
                     );
                 listaPacientes.Add(paciente);
             }
@@ -195,6 +201,38 @@ public class ControlPaciente {
             validarUsuario.conn.Close();
         }
         return listaPacientes;
+    }
+
+    public int UltimoRegistro()
+    {
+        int numero = -1;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspObtenerUltimoRegistro", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+
+            if( validarUsuario.dr.Read())
+            {
+                numero = int.Parse(validarUsuario.dr["idx"].ToString());
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return numero;
     }
 
 	public bool EliminarPaciente( int IDPaciente){
@@ -222,7 +260,7 @@ public class ControlPaciente {
         }
         finally
         {
-            validarUsuario.conn.Close();
+            validarUsuario.desconectar();
         }
         return bandera;
 	}
@@ -285,6 +323,10 @@ public class ControlPaciente {
             p_talla.Value = paciente.Talla;
             validarUsuario.cmd.Parameters.Add(p_talla);
 
+            MySqlParameter p_alergias = new MySqlParameter("p_alergias", MySqlDbType.Text);
+            p_alergias.Value = paciente.Alergias;
+            validarUsuario.cmd.Parameters.Add(p_alergias);
+
             if (validarUsuario.cmd.ExecuteNonQuery() > 0)
             {
                 bandera = true;
@@ -296,7 +338,7 @@ public class ControlPaciente {
         }
         finally
         {
-            validarUsuario.conn.Close();
+            validarUsuario.desconectar();
         }
 
         return bandera;

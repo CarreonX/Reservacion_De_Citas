@@ -10,11 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Clases;
 
 
 
 public class Receta {
 
+    ControlTratamiento controlTratamiento = new ControlTratamiento();
     public int IdReceta { get; set; }
     public DateOnly Fecha { set; get; }
     public int IDMedico { set; get; }
@@ -36,13 +38,15 @@ public class Receta {
 
     public Receta( DateOnly fesha, int idmed, int idpac, string indic, int idmedicrec)
     {
-
         Fecha = fesha;
         IDMedico = idmed;
         IDPaciente = idpac;
         Indicaciones = indic;
         IdMedicamentosRecetados = idmedicrec;
         Medicamentos = new List<Medicamento>();
+
+        //crear Tratamiento y guardar en la base de datos
+
     }
 
 }//end Receta

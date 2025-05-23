@@ -1,6 +1,6 @@
 ﻿namespace Formularios
 {
-    partial class frmAlmacen
+    partial class frmPacientes
     {
         /// <summary>
         /// Required designer variable.
@@ -28,70 +28,55 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label2 = new Label();
-            dgvConsultas = new DataGridView();
+            label1 = new Label();
+            lblMensajeBusqueda = new Label();
             panel1 = new Panel();
-            btnGuardar = new Button();
             btnModificar = new Button();
             btnEliminar = new Button();
             btnAgregar = new Button();
-            lblMensajeBusqueda = new Label();
+            dgvPacientes = new DataGridView();
             cbBusqueda = new ComboBox();
             label3 = new Label();
-            flpConsulta = new FlowLayoutPanel();
-            ((System.ComponentModel.ISupportInitialize)dgvConsultas).BeginInit();
+            ucPaciente1 = new Controles.ucPaciente();
             panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvPacientes).BeginInit();
             SuspendLayout();
             // 
-            // label2
+            // label1
             // 
-            label2.Anchor = AnchorStyles.None;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(346, 25);
-            label2.Name = "label2";
-            label2.Size = new Size(131, 38);
-            label2.TabIndex = 2;
-            label2.Text = "Almacen";
+            label1.Anchor = AnchorStyles.None;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(592, 39);
+            label1.Name = "label1";
+            label1.Size = new Size(139, 38);
+            label1.TabIndex = 3;
+            label1.Text = "Pacientes";
             // 
-            // dgvConsultas
+            // lblMensajeBusqueda
             // 
-            dgvConsultas.Anchor = AnchorStyles.None;
-            dgvConsultas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvConsultas.Location = new Point(10, 238);
-            dgvConsultas.Name = "dgvConsultas";
-            dgvConsultas.RowHeadersWidth = 51;
-            dgvConsultas.Size = new Size(1067, 489);
-            dgvConsultas.TabIndex = 92;
-            dgvConsultas.CellClick += dgvConsultas_CellClick;
+            lblMensajeBusqueda.Anchor = AnchorStyles.None;
+            lblMensajeBusqueda.AutoSize = true;
+            lblMensajeBusqueda.FlatStyle = FlatStyle.Flat;
+            lblMensajeBusqueda.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblMensajeBusqueda.ForeColor = SystemColors.InactiveCaption;
+            lblMensajeBusqueda.Location = new Point(559, 105);
+            lblMensajeBusqueda.Name = "lblMensajeBusqueda";
+            lblMensajeBusqueda.Size = new Size(208, 23);
+            lblMensajeBusqueda.TabIndex = 13;
+            lblMensajeBusqueda.Text = "Solo se aceptan numeros";
+            lblMensajeBusqueda.Visible = false;
             // 
             // panel1
             // 
             panel1.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            panel1.Controls.Add(btnGuardar);
             panel1.Controls.Add(btnModificar);
             panel1.Controls.Add(btnEliminar);
             panel1.Controls.Add(btnAgregar);
-            panel1.Location = new Point(755, 13);
+            panel1.Location = new Point(1079, 396);
             panel1.Name = "panel1";
-            panel1.Size = new Size(250, 212);
-            panel1.TabIndex = 91;
-            // 
-            // btnGuardar
-            // 
-            btnGuardar.Dock = DockStyle.Top;
-            btnGuardar.FlatAppearance.BorderSize = 0;
-            btnGuardar.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
-            btnGuardar.FlatAppearance.MouseOverBackColor = Color.Silver;
-            btnGuardar.FlatStyle = FlatStyle.Flat;
-            btnGuardar.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnGuardar.Location = new Point(0, 150);
-            btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(250, 50);
-            btnGuardar.TabIndex = 3;
-            btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
-            btnGuardar.Click += btnGuardar_Click;
+            panel1.Size = new Size(250, 157);
+            panel1.TabIndex = 11;
             // 
             // btnModificar
             // 
@@ -141,29 +126,25 @@
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
-            // lblMensajeBusqueda
+            // dgvPacientes
             // 
-            lblMensajeBusqueda.Anchor = AnchorStyles.None;
-            lblMensajeBusqueda.AutoSize = true;
-            lblMensajeBusqueda.FlatStyle = FlatStyle.Flat;
-            lblMensajeBusqueda.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMensajeBusqueda.ForeColor = SystemColors.InactiveCaption;
-            lblMensajeBusqueda.Location = new Point(476, 114);
-            lblMensajeBusqueda.Name = "lblMensajeBusqueda";
-            lblMensajeBusqueda.Size = new Size(208, 23);
-            lblMensajeBusqueda.TabIndex = 90;
-            lblMensajeBusqueda.Text = "Solo se aceptan numeros";
-            lblMensajeBusqueda.Visible = false;
+            dgvPacientes.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvPacientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvPacientes.Location = new Point(12, 154);
+            dgvPacientes.Name = "dgvPacientes";
+            dgvPacientes.RowHeadersWidth = 51;
+            dgvPacientes.Size = new Size(1343, 213);
+            dgvPacientes.TabIndex = 10;
             // 
             // cbBusqueda
             // 
             cbBusqueda.Anchor = AnchorStyles.None;
             cbBusqueda.BackColor = SystemColors.ButtonFace;
             cbBusqueda.FormattingEnabled = true;
-            cbBusqueda.Location = new Point(96, 113);
+            cbBusqueda.Location = new Point(179, 104);
             cbBusqueda.Name = "cbBusqueda";
             cbBusqueda.Size = new Size(364, 28);
-            cbBusqueda.TabIndex = 89;
+            cbBusqueda.TabIndex = 9;
             cbBusqueda.TextChanged += cbBusqueda_TextChanged;
             // 
             // label3
@@ -171,57 +152,54 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(22, 118);
+            label3.Location = new Point(105, 109);
             label3.Name = "label3";
             label3.Size = new Size(68, 23);
-            label3.TabIndex = 88;
+            label3.TabIndex = 8;
             label3.Text = "Buscar:";
             // 
-            // flpConsulta
+            // ucPaciente1
             // 
-            flpConsulta.AutoScroll = true;
-            flpConsulta.Dock = DockStyle.Bottom;
-            flpConsulta.FlowDirection = FlowDirection.TopDown;
-            flpConsulta.Location = new Point(0, 233);
-            flpConsulta.Name = "flpConsulta";
-            flpConsulta.Size = new Size(1083, 524);
-            flpConsulta.TabIndex = 87;
-            flpConsulta.Visible = false;
+            ucPaciente1.Anchor = AnchorStyles.None;
+            ucPaciente1.BackColor = SystemColors.WindowFrame;
+            ucPaciente1.Location = new Point(96, 382);
+            ucPaciente1.Name = "ucPaciente1";
+            ucPaciente1.Size = new Size(902, 877);
+            ucPaciente1.TabIndex = 14;
             // 
-            // frmAlmacen
+            // frmPacientes
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
-            ClientSize = new Size(1083, 757);
-            Controls.Add(dgvConsultas);
-            Controls.Add(panel1);
+            ClientSize = new Size(1367, 1102);
+            Controls.Add(ucPaciente1);
             Controls.Add(lblMensajeBusqueda);
+            Controls.Add(panel1);
+            Controls.Add(dgvPacientes);
             Controls.Add(cbBusqueda);
             Controls.Add(label3);
-            Controls.Add(flpConsulta);
-            Controls.Add(label2);
+            Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "frmAlmacen";
-            Text = "frmAlmacen";
-            ((System.ComponentModel.ISupportInitialize)dgvConsultas).EndInit();
+            Name = "frmPacientes";
+            Text = "frmPacientes";
             panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvPacientes).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label2;
-        private DataGridView dgvConsultas;
+        private Label label1;
+        private Label lblMensajeBusqueda;
         private Panel panel1;
-        private Button btnGuardar;
         private Button btnModificar;
         private Button btnEliminar;
         private Button btnAgregar;
-        private Label lblMensajeBusqueda;
+        private DataGridView dgvPacientes;
         private ComboBox cbBusqueda;
         private Label label3;
-        private FlowLayoutPanel flpConsulta;
+        private Controles.ucPaciente ucPaciente1;
     }
 }

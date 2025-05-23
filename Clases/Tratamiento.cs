@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Clases
 {
-    class Tratamiento
+    public class Tratamiento
     {
         public int IdReceta { get; set; }
         public int Cantidad { get; set; }

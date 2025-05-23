@@ -22,10 +22,11 @@ public class Paciente : Persona {
     public float Talla { set; get; }
     public int Edad { get; set; }
     public float IMC { get; set; }
+    public string Alergias { get; set; }
 
     public ControlPaciente m_ControlPaciente;
 
-	public Paciente(int idx, string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla)
+	public Paciente(int idx, string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla, string alergias)
         : base(idx, apellidoM, apellidoP, direc, email, nombre, telF, telM ) 
     { 
 
@@ -34,11 +35,12 @@ public class Paciente : Persona {
         Notas = notas;
         Peso = peso;
         Talla = talla;
+        Alergias = alergias;
         Edad = CalcularEdad();
         IMC = CalcularIMC();
     }
 
-    public Paciente(string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla)
+    public Paciente(string apellidoM, string apellidoP, string direc, string email, string nombre, string telF, string telM, DateOnly nacimiento, int idRespestas, string notas, float peso, float talla, string alergias )
         : base(apellidoM, apellidoP, direc, email, nombre, telF, telM) 
     {
         FechaNacimiento = nacimiento;
@@ -46,6 +48,7 @@ public class Paciente : Persona {
         Notas = notas;
         Peso = peso;
         Talla = talla;
+        Alergias = alergias;
         Edad = CalcularEdad();
         IMC = CalcularIMC();
     }

@@ -158,6 +158,49 @@ public class ControlCita {
         return citas;
     }
 
+    public List<Cita> ConsultarCitasPorPaciente( int idPaciente )
+    {
+        List<Cita> citas = new List<Cita>();
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarCitasPorPaciente", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+            MySqlParameter c_paciente = new MySqlParameter("c_idPaciente", MySqlDbType.Int32);
+            c_paciente.Value = idPaciente; 
+            validarUsuario.cmd.Parameters.Add(c_paciente);
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                citas.Add(new Cita(
+                Convert.ToInt32(validarUsuario.dr["idx"]),
+                Convert.ToByte(validarUsuario.dr["duracion"]),
+                validarUsuario.dr["estado"].ToString(),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaCita"])),
+                DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaDeGeneracion"])),
+                TimeOnly.FromTimeSpan((TimeSpan)validarUsuario.dr["hora"]),
+                Convert.ToInt32(validarUsuario.dr["idMedico"]),
+                Convert.ToInt32(validarUsuario.dr["idPaciente"]),
+                validarUsuario.dr["motivoDeCita"].ToString(),
+                validarUsuario.dr["nota"].ToString()));
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return citas;
+    }
+
     public List<Cita> ConsultarCitas()
     {
         List<Cita> citas = new List<Cita>();

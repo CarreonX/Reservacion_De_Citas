@@ -73,7 +73,7 @@ namespace Formularios
 
         private void btnCitas_Click(object sender, EventArgs e)
         {
-            abrirFormularioHijo(new frmPrueba(0));
+            //abrirFormularioHijo(new frmPrueba(0));
             ocultarSubMenu( panelSubMenuReportes );
         }
 

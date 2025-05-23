@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Clases
 {
-    class ControlTratamiento
+    public class ControlTratamiento
     {
         private ValidarUsuario validarUsuario = new ValidarUsuario();
         public ControlTratamiento()
@@ -33,9 +34,13 @@ namespace Clases
                 t_nombre.Value = tratamiento.Nombre;
                 validarUsuario.cmd.Parameters.Add(t_nombre);
 
-                MySqlParameter t_precio = new MySqlParameter("mr_precio", MySqlDbType.Float);
+                MySqlParameter t_precio = new MySqlParameter("mr_precioUnitario", MySqlDbType.Float);
                 t_precio.Value = tratamiento.PrecioUnitario;
                 validarUsuario.cmd.Parameters.Add(t_precio);
+
+                MySqlParameter t_idReceta = new MySqlParameter("mr_idReceta", MySqlDbType.Int32);
+                t_precio.Value = tratamiento.IdReceta;
+                validarUsuario.cmd.Parameters.Add(t_idReceta);
 
                 if (validarUsuario.cmd.ExecuteNonQuery() > 0)
                 {
@@ -75,9 +80,13 @@ namespace Clases
                 t_nombre.Value = tratamiento.Nombre;
                 validarUsuario.cmd.Parameters.Add(t_nombre);
 
-                MySqlParameter t_precio = new MySqlParameter("mr_precio", MySqlDbType.Float);
+                MySqlParameter t_precio = new MySqlParameter("mr_precioUnitario", MySqlDbType.Float);
                 t_precio.Value = tratamiento.PrecioUnitario;
                 validarUsuario.cmd.Parameters.Add(t_precio);
+
+                MySqlParameter t_idReceta = new MySqlParameter("mr_idReceta", MySqlDbType.Int32);
+                t_precio.Value = tratamiento.IdReceta;
+                validarUsuario.cmd.Parameters.Add(t_idReceta);
 
                 if (validarUsuario.cmd.ExecuteNonQuery() > 0)
                 {
@@ -106,6 +115,7 @@ namespace Clases
                 MySqlParameter t_idx = new MySqlParameter("mr_idx", MySqlDbType.Int32);
                 t_idx.Value = mr_idx;
                 validarUsuario.cmd.Parameters.Add(t_idx);
+
                 if (validarUsuario.cmd.ExecuteNonQuery() > 0)
                 {
                     bandera = true;
@@ -125,7 +135,8 @@ namespace Clases
 
         public List<Tratamiento> ConsultarTratamiento( int r_idx )
         {
-            List<Tratamiento> lista = new List<Tratamiento>();
+            List<Tratamiento> tratamiento = new List<Tratamiento>();
+
             try
             {
                 validarUsuario.conectar();
@@ -139,13 +150,13 @@ namespace Clases
                 validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
                 while (validarUsuario.dr.Read())
                 {
-                    Tratamiento tratamiento = new Tratamiento(
+                    Tratamiento nuevoTratamiento = new Tratamiento(
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
                     Convert.ToInt32(validarUsuario.dr["cantidad"]),
                     Convert.ToString(validarUsuario.dr["nombre"]),
                     Convert.ToSingle(validarUsuario.dr["precioUnitario"])
                     );
-                    lista.Add(tratamiento);
+                    tratamiento.Add(nuevoTratamiento);
                 }
             }
             catch (Exception ex)
@@ -160,7 +171,7 @@ namespace Clases
                 }
                 validarUsuario.desconectar();
             }
-            return lista;
+            return tratamiento;
         }
 
         public List<Tratamiento> ConsultarTratamientos()

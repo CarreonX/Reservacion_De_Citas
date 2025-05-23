@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            txtTurno = new TextBox();
+            txtPeso = new TextBox();
             label10 = new Label();
             txtTelefonoMovil = new TextBox();
             label8 = new Label();
@@ -36,7 +36,7 @@
             label9 = new Label();
             txtEmail = new TextBox();
             label5 = new Label();
-            txtDNI = new TextBox();
+            txtId = new TextBox();
             label6 = new Label();
             txtDireccion = new TextBox();
             label7 = new Label();
@@ -47,31 +47,31 @@
             txtNombre = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            textBox1 = new TextBox();
+            txtTalla = new TextBox();
             label11 = new Label();
-            textBox2 = new TextBox();
+            txtEdad = new TextBox();
             label12 = new Label();
-            textBox3 = new TextBox();
+            txtNotasMedicas = new TextBox();
             label13 = new Label();
-            dataGridView1 = new DataGridView();
+            gdvPreguntasHC = new DataGridView();
             label14 = new Label();
-            textBox4 = new TextBox();
+            txtAlergias = new TextBox();
             label15 = new Label();
             label16 = new Label();
-            dateTimePicker1 = new DateTimePicker();
+            dtpFechaNacimiento = new DateTimePicker();
             label17 = new Label();
             label18 = new Label();
-            textBox5 = new TextBox();
+            txtIMC = new TextBox();
             label19 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)gdvPreguntasHC).BeginInit();
             SuspendLayout();
             // 
-            // txtTurno
+            // txtPeso
             // 
-            txtTurno.Location = new Point(672, 279);
-            txtTurno.Name = "txtTurno";
-            txtTurno.Size = new Size(125, 27);
-            txtTurno.TabIndex = 86;
+            txtPeso.Location = new Point(672, 279);
+            txtPeso.Name = "txtPeso";
+            txtPeso.Size = new Size(125, 27);
+            txtPeso.TabIndex = 86;
             // 
             // label10
             // 
@@ -133,21 +133,22 @@
             label5.TabIndex = 79;
             label5.Text = "Email:";
             // 
-            // txtDNI
+            // txtId
             // 
-            txtDNI.Location = new Point(557, 131);
-            txtDNI.Name = "txtDNI";
-            txtDNI.Size = new Size(305, 27);
-            txtDNI.TabIndex = 78;
+            txtId.Location = new Point(557, 131);
+            txtId.Name = "txtId";
+            txtId.ReadOnly = true;
+            txtId.Size = new Size(305, 27);
+            txtId.TabIndex = 78;
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(505, 134);
+            label6.Location = new Point(513, 134);
             label6.Name = "label6";
-            label6.Size = new Size(38, 20);
+            label6.Size = new Size(27, 20);
             label6.TabIndex = 77;
-            label6.Text = "DNI:";
+            label6.Text = "ID:";
             // 
             // txtDireccion
             // 
@@ -224,12 +225,12 @@
             label1.TabIndex = 68;
             label1.Text = "Paciente";
             // 
-            // textBox1
+            // txtTalla
             // 
-            textBox1.Location = new Point(672, 317);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(125, 27);
-            textBox1.TabIndex = 88;
+            txtTalla.Location = new Point(672, 317);
+            txtTalla.Name = "txtTalla";
+            txtTalla.Size = new Size(125, 27);
+            txtTalla.TabIndex = 88;
             // 
             // label11
             // 
@@ -240,13 +241,13 @@
             label11.TabIndex = 87;
             label11.Text = "Talla:";
             // 
-            // textBox2
+            // txtEdad
             // 
-            textBox2.Location = new Point(472, 365);
-            textBox2.Name = "textBox2";
-            textBox2.ReadOnly = true;
-            textBox2.Size = new Size(103, 27);
-            textBox2.TabIndex = 90;
+            txtEdad.Location = new Point(472, 365);
+            txtEdad.Name = "txtEdad";
+            txtEdad.ReadOnly = true;
+            txtEdad.Size = new Size(103, 27);
+            txtEdad.TabIndex = 90;
             // 
             // label12
             // 
@@ -257,14 +258,14 @@
             label12.TabIndex = 89;
             label12.Text = "Edad:";
             // 
-            // textBox3
+            // txtNotasMedicas
             // 
-            textBox3.Location = new Point(126, 400);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.ScrollBars = ScrollBars.Vertical;
-            textBox3.Size = new Size(357, 117);
-            textBox3.TabIndex = 92;
+            txtNotasMedicas.Location = new Point(126, 400);
+            txtNotasMedicas.Multiline = true;
+            txtNotasMedicas.Name = "txtNotasMedicas";
+            txtNotasMedicas.ScrollBars = ScrollBars.Vertical;
+            txtNotasMedicas.Size = new Size(357, 117);
+            txtNotasMedicas.TabIndex = 92;
             // 
             // label13
             // 
@@ -275,14 +276,14 @@
             label13.TabIndex = 91;
             label13.Text = "Notas Medica:";
             // 
-            // dataGridView1
+            // gdvPreguntasHC
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(11, 551);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(859, 185);
-            dataGridView1.TabIndex = 93;
+            gdvPreguntasHC.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            gdvPreguntasHC.Location = new Point(11, 551);
+            gdvPreguntasHC.Name = "gdvPreguntasHC";
+            gdvPreguntasHC.RowHeadersWidth = 51;
+            gdvPreguntasHC.Size = new Size(859, 185);
+            gdvPreguntasHC.TabIndex = 93;
             // 
             // label14
             // 
@@ -293,14 +294,14 @@
             label14.TabIndex = 94;
             label14.Text = "Preguntas de Historia Clinica:";
             // 
-            // textBox4
+            // txtAlergias
             // 
-            textBox4.Location = new Point(595, 418);
-            textBox4.Multiline = true;
-            textBox4.Name = "textBox4";
-            textBox4.ScrollBars = ScrollBars.Vertical;
-            textBox4.Size = new Size(238, 99);
-            textBox4.TabIndex = 96;
+            txtAlergias.Location = new Point(595, 418);
+            txtAlergias.Multiline = true;
+            txtAlergias.Name = "txtAlergias";
+            txtAlergias.ScrollBars = ScrollBars.Vertical;
+            txtAlergias.Size = new Size(238, 99);
+            txtAlergias.TabIndex = 96;
             // 
             // label15
             // 
@@ -320,12 +321,12 @@
             label16.TabIndex = 97;
             label16.Text = "Fecha Nacimiento:";
             // 
-            // dateTimePicker1
+            // dtpFechaNacimiento
             // 
-            dateTimePicker1.Location = new Point(172, 218);
-            dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(299, 27);
-            dateTimePicker1.TabIndex = 98;
+            dtpFechaNacimiento.Location = new Point(172, 218);
+            dtpFechaNacimiento.Name = "dtpFechaNacimiento";
+            dtpFechaNacimiento.Size = new Size(299, 27);
+            dtpFechaNacimiento.TabIndex = 98;
             // 
             // label17
             // 
@@ -345,13 +346,13 @@
             label18.TabIndex = 99;
             label18.Text = "Kg.";
             // 
-            // textBox5
+            // txtIMC
             // 
-            textBox5.Location = new Point(672, 365);
-            textBox5.Name = "textBox5";
-            textBox5.ReadOnly = true;
-            textBox5.Size = new Size(103, 27);
-            textBox5.TabIndex = 102;
+            txtIMC.Location = new Point(672, 365);
+            txtIMC.Name = "txtIMC";
+            txtIMC.ReadOnly = true;
+            txtIMC.Size = new Size(103, 27);
+            txtIMC.TabIndex = 102;
             // 
             // label19
             // 
@@ -366,24 +367,24 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
-            Controls.Add(textBox5);
+            BackColor = SystemColors.WindowFrame;
+            Controls.Add(txtIMC);
             Controls.Add(label19);
             Controls.Add(label17);
             Controls.Add(label18);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(dtpFechaNacimiento);
             Controls.Add(label16);
-            Controls.Add(textBox4);
+            Controls.Add(txtAlergias);
             Controls.Add(label15);
             Controls.Add(label14);
-            Controls.Add(dataGridView1);
-            Controls.Add(textBox3);
+            Controls.Add(gdvPreguntasHC);
+            Controls.Add(txtNotasMedicas);
             Controls.Add(label13);
-            Controls.Add(textBox2);
+            Controls.Add(txtEdad);
             Controls.Add(label12);
-            Controls.Add(textBox1);
+            Controls.Add(txtTalla);
             Controls.Add(label11);
-            Controls.Add(txtTurno);
+            Controls.Add(txtPeso);
             Controls.Add(label10);
             Controls.Add(txtTelefonoMovil);
             Controls.Add(label8);
@@ -391,7 +392,7 @@
             Controls.Add(label9);
             Controls.Add(txtEmail);
             Controls.Add(label5);
-            Controls.Add(txtDNI);
+            Controls.Add(txtId);
             Controls.Add(label6);
             Controls.Add(txtDireccion);
             Controls.Add(label7);
@@ -404,47 +405,46 @@
             Controls.Add(label1);
             Name = "ucPaciente";
             Size = new Size(884, 749);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)gdvPreguntasHC).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox txtTurno;
         private Label label10;
-        private TextBox txtTelefonoMovil;
         private Label label8;
-        private TextBox txtTelefonoFijo;
         private Label label9;
-        private TextBox txtEmail;
         private Label label5;
-        private TextBox txtDNI;
         private Label label6;
-        private TextBox txtDireccion;
         private Label label7;
-        private TextBox txtApellidoM;
         private Label label4;
-        private TextBox txtApellidoP;
         private Label label3;
-        private TextBox txtNombre;
         private Label label2;
         private Label label1;
-        private TextBox textBox1;
         private Label label11;
-        private TextBox textBox2;
         private Label label12;
-        private TextBox textBox3;
         private Label label13;
-        private DataGridView dataGridView1;
+        private DataGridView gdvPreguntasHC;
         private Label label14;
-        private TextBox textBox4;
         private Label label15;
         private Label label16;
-        private DateTimePicker dateTimePicker1;
         private Label label17;
         private Label label18;
-        private TextBox textBox5;
         private Label label19;
+        public TextBox txtPeso;
+        public TextBox txtTelefonoMovil;
+        public TextBox txtTelefonoFijo;
+        public TextBox txtEmail;
+        public TextBox txtId;
+        public TextBox txtDireccion;
+        public TextBox txtApellidoM;
+        public TextBox txtApellidoP;
+        public TextBox txtNombre;
+        public TextBox txtTalla;
+        public TextBox txtEdad;
+        public TextBox txtNotasMedicas;
+        public TextBox txtAlergias;
+        public DateTimePicker dtpFechaNacimiento;
+        public TextBox txtIMC;
     }
 }

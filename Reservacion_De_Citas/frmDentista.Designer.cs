@@ -82,6 +82,7 @@
             btnRecetas.Text = "Recetas";
             btnRecetas.TextAlign = ContentAlignment.MiddleLeft;
             btnRecetas.UseVisualStyleBackColor = true;
+            btnRecetas.Click += btnRecetas_Click;
             // 
             // btnPresupuestos
             // 
@@ -97,6 +98,7 @@
             btnPresupuestos.Text = "Presupuestos";
             btnPresupuestos.TextAlign = ContentAlignment.MiddleLeft;
             btnPresupuestos.UseVisualStyleBackColor = true;
+            btnPresupuestos.Click += btnPresupuestos_Click;
             // 
             // btnPreguntasHC
             // 
@@ -112,6 +114,7 @@
             btnPreguntasHC.Text = "Preguntas de Historial Clinico";
             btnPreguntasHC.TextAlign = ContentAlignment.MiddleLeft;
             btnPreguntasHC.UseVisualStyleBackColor = true;
+            btnPreguntasHC.Click += btnPreguntasHC_Click;
             // 
             // btnPacientes
             // 
@@ -127,6 +130,7 @@
             btnPacientes.Text = "Pacientes";
             btnPacientes.TextAlign = ContentAlignment.MiddleLeft;
             btnPacientes.UseVisualStyleBackColor = true;
+            btnPacientes.Click += btnPacientes_Click;
             // 
             // btnMedicamentos
             // 
@@ -142,6 +146,7 @@
             btnMedicamentos.Text = "Medicamentos";
             btnMedicamentos.TextAlign = ContentAlignment.MiddleLeft;
             btnMedicamentos.UseVisualStyleBackColor = true;
+            btnMedicamentos.Click += btnMedicamentos_Click;
             // 
             // btnConsultas
             // 
@@ -157,6 +162,7 @@
             btnConsultas.Text = "Consultas";
             btnConsultas.TextAlign = ContentAlignment.MiddleLeft;
             btnConsultas.UseVisualStyleBackColor = true;
+            btnConsultas.Click += btnConsultas_Click;
             // 
             // btnCitas
             // 
@@ -172,6 +178,7 @@
             btnCitas.Text = "Citas";
             btnCitas.TextAlign = ContentAlignment.MiddleLeft;
             btnCitas.UseVisualStyleBackColor = true;
+            btnCitas.Click += btnCitas_Click;
             // 
             // btnCerrarSesion
             // 
@@ -220,6 +227,7 @@
             // 
             // panelFormulario
             // 
+            panelFormulario.BackColor = SystemColors.WindowFrame;
             panelFormulario.Controls.Add(lblHoraFecha);
             panelFormulario.Controls.Add(lblFechaHota);
             panelFormulario.Controls.Add(lblBienvenida);
@@ -233,7 +241,7 @@
             // 
             lblHoraFecha.AutoSize = true;
             lblHoraFecha.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblHoraFecha.Location = new Point(316, 62);
+            lblHoraFecha.Location = new Point(278, 28);
             lblHoraFecha.Name = "lblHoraFecha";
             lblHoraFecha.Size = new Size(96, 38);
             lblHoraFecha.TabIndex = 2;

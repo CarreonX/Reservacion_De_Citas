@@ -1,6 +1,6 @@
 ﻿namespace Formularios
 {
-    partial class frmAlmacen
+    partial class frmRecetas
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label2 = new Label();
+            label1 = new Label();
             dgvConsultas = new DataGridView();
             panel1 = new Panel();
             btnGuardar = new Button();
@@ -43,25 +43,25 @@
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // label2
+            // label1
             // 
-            label2.Anchor = AnchorStyles.None;
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(346, 25);
-            label2.Name = "label2";
-            label2.Size = new Size(131, 38);
-            label2.TabIndex = 2;
-            label2.Text = "Almacen";
+            label1.Anchor = AnchorStyles.None;
+            label1.AutoSize = true;
+            label1.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(499, 34);
+            label1.Name = "label1";
+            label1.Size = new Size(115, 38);
+            label1.TabIndex = 3;
+            label1.Text = "Recetas";
             // 
             // dgvConsultas
             // 
             dgvConsultas.Anchor = AnchorStyles.None;
             dgvConsultas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvConsultas.Location = new Point(10, 238);
+            dgvConsultas.Location = new Point(23, 240);
             dgvConsultas.Name = "dgvConsultas";
             dgvConsultas.RowHeadersWidth = 51;
-            dgvConsultas.Size = new Size(1067, 489);
+            dgvConsultas.Size = new Size(1230, 554);
             dgvConsultas.TabIndex = 92;
             dgvConsultas.CellClick += dgvConsultas_CellClick;
             // 
@@ -72,7 +72,7 @@
             panel1.Controls.Add(btnModificar);
             panel1.Controls.Add(btnEliminar);
             panel1.Controls.Add(btnAgregar);
-            panel1.Location = new Point(755, 13);
+            panel1.Location = new Point(1003, 22);
             panel1.Name = "panel1";
             panel1.Size = new Size(250, 212);
             panel1.TabIndex = 91;
@@ -148,7 +148,7 @@
             lblMensajeBusqueda.FlatStyle = FlatStyle.Flat;
             lblMensajeBusqueda.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblMensajeBusqueda.ForeColor = SystemColors.InactiveCaption;
-            lblMensajeBusqueda.Location = new Point(476, 114);
+            lblMensajeBusqueda.Location = new Point(489, 116);
             lblMensajeBusqueda.Name = "lblMensajeBusqueda";
             lblMensajeBusqueda.Size = new Size(208, 23);
             lblMensajeBusqueda.TabIndex = 90;
@@ -160,7 +160,7 @@
             cbBusqueda.Anchor = AnchorStyles.None;
             cbBusqueda.BackColor = SystemColors.ButtonFace;
             cbBusqueda.FormattingEnabled = true;
-            cbBusqueda.Location = new Point(96, 113);
+            cbBusqueda.Location = new Point(109, 115);
             cbBusqueda.Name = "cbBusqueda";
             cbBusqueda.Size = new Size(364, 28);
             cbBusqueda.TabIndex = 89;
@@ -171,7 +171,7 @@
             label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.Location = new Point(22, 118);
+            label3.Location = new Point(35, 120);
             label3.Name = "label3";
             label3.Size = new Size(68, 23);
             label3.TabIndex = 88;
@@ -182,28 +182,28 @@
             flpConsulta.AutoScroll = true;
             flpConsulta.Dock = DockStyle.Bottom;
             flpConsulta.FlowDirection = FlowDirection.TopDown;
-            flpConsulta.Location = new Point(0, 233);
+            flpConsulta.Location = new Point(0, 300);
             flpConsulta.Name = "flpConsulta";
-            flpConsulta.Size = new Size(1083, 524);
+            flpConsulta.Size = new Size(1278, 524);
             flpConsulta.TabIndex = 87;
             flpConsulta.Visible = false;
             // 
-            // frmAlmacen
+            // frmRecetas
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
-            ClientSize = new Size(1083, 757);
+            ClientSize = new Size(1278, 824);
             Controls.Add(dgvConsultas);
             Controls.Add(panel1);
             Controls.Add(lblMensajeBusqueda);
             Controls.Add(cbBusqueda);
             Controls.Add(label3);
             Controls.Add(flpConsulta);
-            Controls.Add(label2);
+            Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.None;
-            Name = "frmAlmacen";
-            Text = "frmAlmacen";
+            Name = "frmRecetas";
+            Text = "frmRecetas";
             ((System.ComponentModel.ISupportInitialize)dgvConsultas).EndInit();
             panel1.ResumeLayout(false);
             ResumeLayout(false);
@@ -212,7 +212,7 @@
 
         #endregion
 
-        private Label label2;
+        private Label label1;
         private DataGridView dgvConsultas;
         private Panel panel1;
         private Button btnGuardar;

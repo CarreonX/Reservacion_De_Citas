@@ -16,23 +16,23 @@ namespace Formularios
         public ControlCita controlCita = new ControlCita();
         public ControlConsulta controlConsulta = new ControlConsulta();
         List<Cita> listaCitas = new List<Cita>();
-        List<Cita>  todasLasCitas = new List<Cita>();
+        List<Cita> todasLasCitas = new List<Cita>();
         List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
         List<ConsultaMedica> todasLasConsultas = new List<ConsultaMedica>();
         public int IdDentista { get; set; }
         public string TipoUsuario { get; set; }
 
-        public frmAgenda( int idx, string tipo )
+        public frmAgenda(int idx, string tipo)
         {
             InitializeComponent();
-            llenarListas( false);
+            llenarListas(false);
             IdDentista = idx;
             TipoUsuario = tipo;
         }
 
-        public void llenarListas( bool bandera )
+        public void llenarListas(bool bandera)
         {
-            switch( TipoUsuario )
+            switch (TipoUsuario)
             {
                 case "dent":
                     todasLasCitas = controlCita.ConsultarCitasPorMedico(IdDentista);
@@ -50,7 +50,7 @@ namespace Formularios
                     else
                     {
                         string fechaFormato = monthCalendar1.SelectionStart.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
                         listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
                     }
@@ -62,14 +62,14 @@ namespace Formularios
                         // formato para fechaHora : yyyy-MM-dd HH:mm:ss
 
                         string fechaFormato = DateTime.Now.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
                         listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
                     }
                     else
                     {
                         string fechaFormato = monthCalendar1.SelectionStart.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
                         listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
                         listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
                     }
@@ -78,9 +78,10 @@ namespace Formularios
                     break;
             }
         }
-
+        /*
         private void llenarDGVs()
         {
+            
             dgvCitas.Rows.Clear();
             dgvConsultas.Rows.Clear();
 
@@ -101,9 +102,9 @@ namespace Formularios
                 lblNoConsultas.Visible = true;
             }
             llenarCalendario(listaCitas, listaConsultas);
-        }
+        }*/
 
-        public void llenarCalendario( List<Cita> listaCitas, List<ConsultaMedica> consultasMedicas)
+        public void llenarCalendario(List<Cita> listaCitas, List<ConsultaMedica> consultasMedicas)
         {
             DateTime[] fechasCitas = new DateTime[listaCitas.Count + consultasMedicas.Count];
             foreach (Cita cita in listaCitas)
@@ -120,7 +121,12 @@ namespace Formularios
         private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
         {
             llenarListas(true);
-            llenarDGVs();
+            //llenarDGVs();
+        }
+
+        private void frmAgenda_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

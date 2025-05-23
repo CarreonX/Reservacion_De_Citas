@@ -28,32 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox6 = new TextBox();
+            txtId = new TextBox();
             label10 = new Label();
             label9 = new Label();
-            textBox4 = new TextBox();
+            txtMontoTotal = new TextBox();
             label8 = new Label();
-            textBox3 = new TextBox();
+            txtTipoTrabajo = new TextBox();
             label7 = new Label();
-            textBox1 = new TextBox();
+            txtPaciente = new TextBox();
             label5 = new Label();
-            txtApellidoM = new TextBox();
+            txtOdontologo = new TextBox();
             label4 = new Label();
-            txtNombre = new TextBox();
+            txtFechaHora = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            dataGridView1 = new DataGridView();
-            textBox2 = new TextBox();
+            dgvTratamiento = new DataGridView();
+            txtUbicacionBoca = new TextBox();
             label3 = new Label();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTratamiento).BeginInit();
             SuspendLayout();
             // 
-            // textBox6
+            // txtId
             // 
-            textBox6.Location = new Point(133, 83);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(289, 27);
-            textBox6.TabIndex = 93;
+            txtId.Location = new Point(133, 83);
+            txtId.Name = "txtId";
+            txtId.ReadOnly = true;
+            txtId.Size = new Size(289, 27);
+            txtId.TabIndex = 93;
             // 
             // label10
             // 
@@ -74,12 +75,13 @@
             label9.TabIndex = 90;
             label9.Text = "Tratamiento:";
             // 
-            // textBox4
+            // txtMontoTotal
             // 
-            textBox4.Location = new Point(599, 388);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(261, 27);
-            textBox4.TabIndex = 89;
+            txtMontoTotal.Location = new Point(599, 388);
+            txtMontoTotal.Name = "txtMontoTotal";
+            txtMontoTotal.ReadOnly = true;
+            txtMontoTotal.Size = new Size(261, 27);
+            txtMontoTotal.TabIndex = 89;
             // 
             // label8
             // 
@@ -90,12 +92,12 @@
             label8.TabIndex = 88;
             label8.Text = "Monto Total $:";
             // 
-            // textBox3
+            // txtTipoTrabajo
             // 
-            textBox3.Location = new Point(144, 388);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(296, 27);
-            textBox3.TabIndex = 87;
+            txtTipoTrabajo.Location = new Point(144, 388);
+            txtTipoTrabajo.Name = "txtTipoTrabajo";
+            txtTipoTrabajo.Size = new Size(296, 27);
+            txtTipoTrabajo.TabIndex = 87;
             // 
             // label7
             // 
@@ -106,12 +108,13 @@
             label7.TabIndex = 86;
             label7.Text = "Tipo de trabajo:";
             // 
-            // textBox1
+            // txtPaciente
             // 
-            textBox1.Location = new Point(534, 152);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(326, 27);
-            textBox1.TabIndex = 83;
+            txtPaciente.Location = new Point(534, 152);
+            txtPaciente.Name = "txtPaciente";
+            txtPaciente.ReadOnly = true;
+            txtPaciente.Size = new Size(326, 27);
+            txtPaciente.TabIndex = 83;
             // 
             // label5
             // 
@@ -122,12 +125,13 @@
             label5.TabIndex = 82;
             label5.Text = "Paciente:";
             // 
-            // txtApellidoM
+            // txtOdontologo
             // 
-            txtApellidoM.Location = new Point(131, 152);
-            txtApellidoM.Name = "txtApellidoM";
-            txtApellidoM.Size = new Size(319, 27);
-            txtApellidoM.TabIndex = 81;
+            txtOdontologo.Location = new Point(131, 152);
+            txtOdontologo.Name = "txtOdontologo";
+            txtOdontologo.ReadOnly = true;
+            txtOdontologo.Size = new Size(319, 27);
+            txtOdontologo.TabIndex = 81;
             // 
             // label4
             // 
@@ -138,12 +142,13 @@
             label4.TabIndex = 80;
             label4.Text = "Odontologo:";
             // 
-            // txtNombre
+            // txtFechaHora
             // 
-            txtNombre.Location = new Point(133, 119);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(416, 27);
-            txtNombre.TabIndex = 77;
+            txtFechaHora.Location = new Point(133, 119);
+            txtFechaHora.Name = "txtFechaHora";
+            txtFechaHora.ReadOnly = true;
+            txtFechaHora.Size = new Size(416, 27);
+            txtFechaHora.TabIndex = 77;
             // 
             // label2
             // 
@@ -164,23 +169,23 @@
             label1.TabIndex = 75;
             label1.Text = "Presupuesto";
             // 
-            // dataGridView1
+            // dgvTratamiento
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(131, 185);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(729, 179);
-            dataGridView1.TabIndex = 94;
+            dgvTratamiento.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvTratamiento.Location = new Point(131, 185);
+            dgvTratamiento.Name = "dgvTratamiento";
+            dgvTratamiento.RowHeadersWidth = 51;
+            dgvTratamiento.Size = new Size(729, 179);
+            dgvTratamiento.TabIndex = 94;
             // 
-            // textBox2
+            // txtUbicacionBoca
             // 
-            textBox2.Location = new Point(210, 433);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.ScrollBars = ScrollBars.Vertical;
-            textBox2.Size = new Size(650, 57);
-            textBox2.TabIndex = 96;
+            txtUbicacionBoca.Location = new Point(210, 433);
+            txtUbicacionBoca.Multiline = true;
+            txtUbicacionBoca.Name = "txtUbicacionBoca";
+            txtUbicacionBoca.ScrollBars = ScrollBars.Vertical;
+            txtUbicacionBoca.Size = new Size(650, 57);
+            txtUbicacionBoca.TabIndex = 96;
             // 
             // label3
             // 
@@ -195,48 +200,48 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
-            Controls.Add(textBox2);
+            BackColor = SystemColors.WindowFrame;
+            Controls.Add(txtUbicacionBoca);
             Controls.Add(label3);
-            Controls.Add(dataGridView1);
-            Controls.Add(textBox6);
+            Controls.Add(dgvTratamiento);
+            Controls.Add(txtId);
             Controls.Add(label10);
             Controls.Add(label9);
-            Controls.Add(textBox4);
+            Controls.Add(txtMontoTotal);
             Controls.Add(label8);
-            Controls.Add(textBox3);
+            Controls.Add(txtTipoTrabajo);
             Controls.Add(label7);
-            Controls.Add(textBox1);
+            Controls.Add(txtPaciente);
             Controls.Add(label5);
-            Controls.Add(txtApellidoM);
+            Controls.Add(txtOdontologo);
             Controls.Add(label4);
-            Controls.Add(txtNombre);
+            Controls.Add(txtFechaHora);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucPresupuesto";
             Size = new Size(884, 500);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvTratamiento).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private TextBox textBox6;
+        private TextBox txtId;
         private Label label10;
         private Label label9;
-        private TextBox textBox4;
+        private TextBox txtMontoTotal;
         private Label label8;
-        private TextBox textBox3;
+        private TextBox txtTipoTrabajo;
         private Label label7;
-        private TextBox textBox1;
+        private TextBox txtPaciente;
         private Label label5;
-        private TextBox txtApellidoM;
+        private TextBox txtOdontologo;
         private Label label4;
-        private TextBox txtNombre;
+        private TextBox txtFechaHora;
         private Label label2;
         private Label label1;
-        private DataGridView dataGridView1;
-        private TextBox textBox2;
+        private DataGridView dgvTratamiento;
+        private TextBox txtUbicacionBoca;
         private Label label3;
     }
 }
