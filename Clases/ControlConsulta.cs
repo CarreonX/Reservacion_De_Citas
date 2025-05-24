@@ -57,6 +57,14 @@ public class ControlConsulta {
             cm_motivoConsulta.Value = consulta.MotivoDeConsulta;
             validarUsuario.cmd.Parameters.Add(cm_motivoConsulta);
 
+            MySqlParameter cm_hora = new MySqlParameter("cm_hora", MySqlDbType.Time);
+            cm_hora.Value = consulta.Hora;
+            validarUsuario.cmd.Parameters.Add(cm_hora);
+
+            MySqlParameter cm_duracion = new MySqlParameter("cm_duracion", MySqlDbType.Date);
+            cm_duracion.Value = consulta.Duracion;
+            validarUsuario.cmd.Parameters.Add(cm_duracion);
+
             if (validarUsuario.cmd.ExecuteNonQuery() > 0)
             {
                 bandera = true;
@@ -92,7 +100,9 @@ public class ControlConsulta {
                     Convert.ToInt32(validarUsuario.dr["idMedico"]),
                     Convert.ToInt32(validarUsuario.dr["idPaciente"]),
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
-                    validarUsuario.dr["motivoConsulta"].ToString()
+                    validarUsuario.dr["motivoConsulta"].ToString(),
+                    TimeOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("hora"))),
+                    Convert.ToByte(validarUsuario.dr["duracion"])
                 );
                 listaConsultas.Add(consulta);
             }
@@ -138,7 +148,9 @@ public class ControlConsulta {
                     Convert.ToInt32(validarUsuario.dr["idMedico"]),
                     Convert.ToInt32(validarUsuario.dr["idPaciente"]),
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
-                    validarUsuario.dr["motivoConsulta"].ToString()
+                    validarUsuario.dr["motivoConsulta"].ToString(),
+                    TimeOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("hora"))),
+                    Convert.ToByte(validarUsuario.dr["duracion"])
                 );
                 listaConsultas.Add(consulta);
             }
@@ -184,7 +196,9 @@ public class ControlConsulta {
                     Convert.ToInt32(validarUsuario.dr["idMedico"]),
                     Convert.ToInt32(validarUsuario.dr["idPaciente"]),
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
-                    validarUsuario.dr["motivoConsulta"].ToString()
+                    validarUsuario.dr["motivoConsulta"].ToString(),
+                    TimeOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("hora"))),
+                    byte.Parse(validarUsuario.dr["duracion"].ToString())
                 );
                 listaConsultas.Add(consulta);
             }
@@ -230,7 +244,9 @@ public class ControlConsulta {
                     Convert.ToInt32(validarUsuario.dr["idMedico"]),
                     Convert.ToInt32(validarUsuario.dr["idPaciente"]),
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
-                    validarUsuario.dr["motivoConsulta"].ToString()
+                    validarUsuario.dr["motivoConsulta"].ToString(),
+                    TimeOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("hora"))),
+                    byte.Parse(validarUsuario.dr["duracion"].ToString())
                 );
                 listaConsultas.Add(consulta);
             }
@@ -274,7 +290,8 @@ public class ControlConsulta {
                     Convert.ToInt32(validarUsuario.dr["idMedico"]),
                     Convert.ToInt32(validarUsuario.dr["idPaciente"]),
                     Convert.ToInt32(validarUsuario.dr["idReceta"]),
-                    validarUsuario.dr["motivoConsulta"].ToString()
+                    validarUsuario.dr["motivoConsulta"].ToString(), TimeOnly.FromDateTime(validarUsuario.dr.GetDateTime(validarUsuario.dr.GetOrdinal("hora"))),
+                    byte.Parse(validarUsuario.dr["duracion"].ToString())
                 );
             }
         }
@@ -359,6 +376,14 @@ public class ControlConsulta {
             MySqlParameter cm_motivoConsulta = new MySqlParameter("cm_motivoConsulta", MySqlDbType.Text);
             cm_motivoConsulta.Value = consulta.MotivoDeConsulta;
             validarUsuario.cmd.Parameters.Add(cm_motivoConsulta);
+
+            MySqlParameter cm_hora = new MySqlParameter("cm_hora", MySqlDbType.Time);
+            cm_hora.Value = consulta.Hora;
+            validarUsuario.cmd.Parameters.Add(cm_hora);
+
+            MySqlParameter cm_duracion = new MySqlParameter("cm_duracion", MySqlDbType.Date);
+            cm_duracion.Value = consulta.Duracion;
+            validarUsuario.cmd.Parameters.Add(cm_duracion);
 
             if (validarUsuario.cmd.ExecuteNonQuery() > 0)
             {

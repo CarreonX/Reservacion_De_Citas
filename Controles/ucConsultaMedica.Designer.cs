@@ -45,6 +45,9 @@
             txtMotivoConsulta = new TextBox();
             txtIDReceta = new TextBox();
             dtpFechaConsulta = new DateTimePicker();
+            txtDuracion = new TextBox();
+            label10 = new Label();
+            label11 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -191,11 +194,40 @@
             dtpFechaConsulta.Size = new Size(308, 27);
             dtpFechaConsulta.TabIndex = 40;
             // 
+            // txtDuracion
+            // 
+            txtDuracion.Location = new Point(704, 178);
+            txtDuracion.Name = "txtDuracion";
+            txtDuracion.ScrollBars = ScrollBars.Vertical;
+            txtDuracion.Size = new Size(186, 27);
+            txtDuracion.TabIndex = 42;
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(627, 178);
+            label10.Name = "label10";
+            label10.Size = new Size(72, 20);
+            label10.TabIndex = 41;
+            label10.Text = "Duración:";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(890, 181);
+            label11.Name = "label11";
+            label11.Size = new Size(65, 20);
+            label11.TabIndex = 43;
+            label11.Text = "minutos.";
+            // 
             // ucConsultaMedica
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
+            Controls.Add(label11);
+            Controls.Add(txtDuracion);
+            Controls.Add(label10);
             Controls.Add(dtpFechaConsulta);
             Controls.Add(txtIDReceta);
             Controls.Add(txtMotivoConsulta);
@@ -238,5 +270,8 @@
         public TextBox txtMotivoConsulta;
         public TextBox txtIDReceta;
         public DateTimePicker dtpFechaConsulta;
+        public TextBox txtDuracion;
+        private Label label10;
+        private Label label11;
     }
 }

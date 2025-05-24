@@ -28,30 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox7 = new TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucReceta));
+            txtIndicaciones = new TextBox();
             label11 = new Label();
-            textBox6 = new TextBox();
+            txtIdReceta = new TextBox();
             label10 = new Label();
             label9 = new Label();
-            textBox4 = new TextBox();
             label8 = new Label();
-            textBox3 = new TextBox();
+            txtOdontologo = new TextBox();
             label7 = new Label();
-            txtNombre = new TextBox();
+            txtFecha = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            dataGridView1 = new DataGridView();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            dgvMedicamentos = new DataGridView();
+            cbPaciente = new ComboBox();
+            flpTratamiento = new FlowLayoutPanel();
+            btnAtras = new Button();
+            ((System.ComponentModel.ISupportInitialize)dgvMedicamentos).BeginInit();
+            flpTratamiento.SuspendLayout();
             SuspendLayout();
             // 
-            // textBox7
+            // txtIndicaciones
             // 
-            textBox7.Location = new Point(131, 386);
-            textBox7.Multiline = true;
-            textBox7.Name = "textBox7";
-            textBox7.ScrollBars = ScrollBars.Vertical;
-            textBox7.Size = new Size(729, 91);
-            textBox7.TabIndex = 95;
+            txtIndicaciones.Location = new Point(131, 386);
+            txtIndicaciones.Multiline = true;
+            txtIndicaciones.Name = "txtIndicaciones";
+            txtIndicaciones.ScrollBars = ScrollBars.Vertical;
+            txtIndicaciones.Size = new Size(729, 91);
+            txtIndicaciones.TabIndex = 95;
             // 
             // label11
             // 
@@ -62,17 +66,18 @@
             label11.TabIndex = 94;
             label11.Text = "Indicaciones:";
             // 
-            // textBox6
+            // txtIdReceta
             // 
-            textBox6.Location = new Point(131, 103);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(289, 27);
-            textBox6.TabIndex = 93;
+            txtIdReceta.Location = new Point(128, 103);
+            txtIdReceta.Name = "txtIdReceta";
+            txtIdReceta.ReadOnly = true;
+            txtIdReceta.Size = new Size(304, 27);
+            txtIdReceta.TabIndex = 93;
             // 
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(32, 106);
+            label10.Location = new Point(22, 109);
             label10.Name = "label10";
             label10.Size = new Size(94, 20);
             label10.TabIndex = 92;
@@ -87,13 +92,6 @@
             label9.TabIndex = 90;
             label9.Text = "Medicamentos:";
             // 
-            // textBox4
-            // 
-            textBox4.Location = new Point(553, 155);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(299, 27);
-            textBox4.TabIndex = 89;
-            // 
             // label8
             // 
             label8.AutoSize = true;
@@ -103,12 +101,13 @@
             label8.TabIndex = 88;
             label8.Text = "Paciente:";
             // 
-            // textBox3
+            // txtOdontologo
             // 
-            textBox3.Location = new Point(120, 155);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(312, 27);
-            textBox3.TabIndex = 87;
+            txtOdontologo.Location = new Point(128, 155);
+            txtOdontologo.Name = "txtOdontologo";
+            txtOdontologo.ReadOnly = true;
+            txtOdontologo.Size = new Size(304, 27);
+            txtOdontologo.TabIndex = 87;
             // 
             // label7
             // 
@@ -119,21 +118,22 @@
             label7.TabIndex = 86;
             label7.Text = "Odontologo:";
             // 
-            // txtNombre
+            // txtFecha
             // 
-            txtNombre.Location = new Point(553, 106);
-            txtNombre.Name = "txtNombre";
-            txtNombre.Size = new Size(307, 27);
-            txtNombre.TabIndex = 77;
+            txtFecha.Location = new Point(553, 106);
+            txtFecha.Name = "txtFecha";
+            txtFecha.ReadOnly = true;
+            txtFecha.Size = new Size(307, 27);
+            txtFecha.TabIndex = 77;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(446, 109);
+            label2.Location = new Point(497, 110);
             label2.Name = "label2";
-            label2.Size = new Size(101, 20);
+            label2.Size = new Size(50, 20);
             label2.TabIndex = 76;
-            label2.Text = "Fecha de Cita:";
+            label2.Text = "Fecha:";
             // 
             // label1
             // 
@@ -145,54 +145,94 @@
             label1.TabIndex = 75;
             label1.Text = "Receta";
             // 
-            // dataGridView1
+            // dgvMedicamentos
             // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Location = new Point(128, 204);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowHeadersWidth = 51;
-            dataGridView1.Size = new Size(732, 176);
-            dataGridView1.TabIndex = 96;
+            dgvMedicamentos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvMedicamentos.Location = new Point(128, 204);
+            dgvMedicamentos.Name = "dgvMedicamentos";
+            dgvMedicamentos.RowHeadersWidth = 51;
+            dgvMedicamentos.Size = new Size(732, 176);
+            dgvMedicamentos.TabIndex = 96;
+            dgvMedicamentos.CellContentClick += dgvMedicamentos_CellContentClick;
+            dgvMedicamentos.Click += dgvMedicamentos_Click;
+            // 
+            // cbPaciente
+            // 
+            cbPaciente.FormattingEnabled = true;
+            cbPaciente.Location = new Point(553, 152);
+            cbPaciente.Name = "cbPaciente";
+            cbPaciente.Size = new Size(307, 28);
+            cbPaciente.TabIndex = 97;
+            cbPaciente.SelectedIndexChanged += cbPaciente_SelectedIndexChanged;
+            cbPaciente.TextChanged += cbPaciente_TextChanged;
+            // 
+            // flpTratamiento
+            // 
+            flpTratamiento.Controls.Add(btnAtras);
+            flpTratamiento.Location = new Point(0, 0);
+            flpTratamiento.Name = "flpTratamiento";
+            flpTratamiento.Size = new Size(384, 97);
+            flpTratamiento.TabIndex = 98;
+            flpTratamiento.Visible = false;
+            // 
+            // btnAtras
+            // 
+            btnAtras.FlatAppearance.BorderSize = 0;
+            btnAtras.FlatAppearance.MouseDownBackColor = Color.FromArgb(224, 224, 224);
+            btnAtras.FlatAppearance.MouseOverBackColor = Color.Silver;
+            btnAtras.FlatStyle = FlatStyle.Flat;
+            btnAtras.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAtras.Image = (Image)resources.GetObject("btnAtras.Image");
+            btnAtras.Location = new Point(3, 3);
+            btnAtras.Name = "btnAtras";
+            btnAtras.Size = new Size(64, 61);
+            btnAtras.TabIndex = 103;
+            btnAtras.UseVisualStyleBackColor = true;
+            btnAtras.Visible = false;
+            btnAtras.Click += btnAtras_Click_1;
             // 
             // ucReceta
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
-            Controls.Add(dataGridView1);
-            Controls.Add(textBox7);
+            BackColor = SystemColors.WindowFrame;
+            Controls.Add(flpTratamiento);
+            Controls.Add(cbPaciente);
+            Controls.Add(dgvMedicamentos);
+            Controls.Add(txtIndicaciones);
             Controls.Add(label11);
-            Controls.Add(textBox6);
+            Controls.Add(txtIdReceta);
             Controls.Add(label10);
             Controls.Add(label9);
-            Controls.Add(textBox4);
             Controls.Add(label8);
-            Controls.Add(textBox3);
+            Controls.Add(txtOdontologo);
             Controls.Add(label7);
-            Controls.Add(txtNombre);
+            Controls.Add(txtFecha);
             Controls.Add(label2);
             Controls.Add(label1);
             Name = "ucReceta";
             Size = new Size(884, 500);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvMedicamentos).EndInit();
+            flpTratamiento.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-
-        private TextBox textBox7;
         private Label label11;
-        private TextBox textBox6;
         private Label label10;
         private Label label9;
-        private TextBox textBox4;
         private Label label8;
-        private TextBox textBox3;
+        private TextBox txtOdontologo;
         private Label label7;
-        private TextBox txtNombre;
+        private TextBox txtFecha;
         private Label label2;
         private Label label1;
-        private DataGridView dataGridView1;
+        private DataGridView dgvMedicamentos;
+        private ComboBox cbPaciente;
+        private FlowLayoutPanel flpTratamiento;
+        private Button btnAtras;
+        public TextBox txtIndicaciones;
+        public TextBox txtIdReceta;
     }
 }

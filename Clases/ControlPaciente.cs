@@ -152,7 +152,59 @@ public class ControlPaciente {
         return paciente;
     }
 
-	public List<Paciente> ConsultarPacientes( int idDentista){
+    public List<Paciente> ConsultarPacientesPorNombre(string nombre, int idDentista)
+    {
+        List<Paciente> listaPacientes = new List<Paciente>();
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarPacientesPorNombre", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+            MySqlParameter p_nombre = new MySqlParameter("p_nombre", MySqlDbType.VarChar, 15);
+            p_nombre.Value = nombre;
+            validarUsuario.cmd.Parameters.Add(p_nombre);
+            MySqlParameter p_idDentista = new MySqlParameter("m_idx", MySqlDbType.Int32);
+            p_idDentista.Value = idDentista;
+            validarUsuario.cmd.Parameters.Add(p_idDentista);
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            while (validarUsuario.dr.Read())
+            {
+                Paciente paciente = new Paciente(
+                    Convert.ToInt32(validarUsuario.dr["idx"]),
+                    validarUsuario.dr["apellidoM"].ToString(),
+                    validarUsuario.dr["apellidoP"].ToString(),
+                    validarUsuario.dr["direccion"].ToString(),
+                    validarUsuario.dr["email"].ToString(),
+                    validarUsuario.dr["nombre"].ToString(),
+                    validarUsuario.dr["telefonoFijo"].ToString(),
+                    validarUsuario.dr["telefonoMovil"].ToString(),
+                    DateOnly.FromDateTime(Convert.ToDateTime(validarUsuario.dr["fechaNacimiento"])),
+                    Convert.ToInt32(validarUsuario.dr["idRespuestasClinicas"]),
+                    validarUsuario.dr["notas"].ToString(),
+                    float.Parse(validarUsuario.dr["peso"].ToString(), CultureInfo.InvariantCulture),
+                    float.Parse(validarUsuario.dr["talla"].ToString(), CultureInfo.InvariantCulture),
+                    validarUsuario.dr["alergias"].ToString()
+                );
+                listaPacientes.Add(paciente);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.conn.Close();
+        }
+        return listaPacientes;
+    }
+
+
+    public List<Paciente> ConsultarPacientes( int idDentista){
 
 		List<Paciente> listaPacientes = new List<Paciente>();
 

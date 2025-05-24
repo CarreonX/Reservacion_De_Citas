@@ -31,8 +31,8 @@
             monthCalendar1 = new MonthCalendar();
             label1 = new Label();
             textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
+            txtCitas = new TextBox();
+            txtConsultas = new TextBox();
             SuspendLayout();
             // 
             // monthCalendar1
@@ -64,25 +64,29 @@
             textBox1.Size = new Size(181, 27);
             textBox1.TabIndex = 2;
             // 
-            // textBox2
+            // txtCitas
             // 
-            textBox2.Anchor = AnchorStyles.None;
-            textBox2.BackColor = SystemColors.ScrollBar;
-            textBox2.Location = new Point(362, 458);
-            textBox2.Multiline = true;
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(285, 207);
-            textBox2.TabIndex = 3;
+            txtCitas.Anchor = AnchorStyles.None;
+            txtCitas.BackColor = SystemColors.ScrollBar;
+            txtCitas.Location = new Point(362, 458);
+            txtCitas.Multiline = true;
+            txtCitas.Name = "txtCitas";
+            txtCitas.ReadOnly = true;
+            txtCitas.Size = new Size(285, 207);
+            txtCitas.TabIndex = 3;
+            txtCitas.Visible = false;
             // 
-            // textBox3
+            // txtConsultas
             // 
-            textBox3.Anchor = AnchorStyles.None;
-            textBox3.BackColor = SystemColors.ScrollBar;
-            textBox3.Location = new Point(63, 458);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(275, 207);
-            textBox3.TabIndex = 4;
+            txtConsultas.Anchor = AnchorStyles.None;
+            txtConsultas.BackColor = SystemColors.ScrollBar;
+            txtConsultas.Location = new Point(63, 458);
+            txtConsultas.Multiline = true;
+            txtConsultas.Name = "txtConsultas";
+            txtConsultas.ReadOnly = true;
+            txtConsultas.Size = new Size(275, 207);
+            txtConsultas.TabIndex = 4;
+            txtConsultas.Visible = false;
             // 
             // frmAgenda
             // 
@@ -90,8 +94,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.WindowFrame;
             ClientSize = new Size(842, 736);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
+            Controls.Add(txtConsultas);
+            Controls.Add(txtCitas);
             Controls.Add(textBox1);
             Controls.Add(label1);
             Controls.Add(monthCalendar1);
@@ -108,7 +112,7 @@
         private MonthCalendar monthCalendar1;
         private Label label1;
         private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
+        private TextBox txtCitas;
+        private TextBox txtConsultas;
     }
 }

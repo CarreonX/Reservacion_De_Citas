@@ -45,7 +45,7 @@ namespace Formularios
                 case "Yes":
                     if (idPresupuestoActual > -1)
                     {
-                        if (controlPresupuesto.EliminarPresupuesto(idPresupuestoActual){
+                        if (controlPresupuesto.EliminarPresupuesto(idPresupuestoActual)){
                             MessageBox.Show("El presupuesto se eliminó correctamente", "Eliminar Presupuesto", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else

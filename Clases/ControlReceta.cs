@@ -278,6 +278,35 @@ public class ControlReceta {
         return recetas;
     }
 
+    public int ConsultarIDUltimaReceta()
+    {
+        int idx = -1;
+
+        try
+        {
+            validarUsuario.conectar();
+            validarUsuario.cmd = new MySqlCommand("uspConsultarIDUltimaReceta", validarUsuario.conn);
+            validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
+            validarUsuario.dr = validarUsuario.cmd.ExecuteReader();
+            if (validarUsuario.dr.Read())
+            {
+                idx = Convert.ToInt32(validarUsuario.dr["idx"]);
+            }
+        }
+        catch (MySqlException ex)
+        {
+            validarUsuario.mensaje = ex.Message;
+        }
+        finally
+        {
+            if (validarUsuario.dr != null)
+            {
+                validarUsuario.dr.Close();
+            }
+            validarUsuario.desconectar();
+        }
+        return idx;
+    }
     public bool EliminarReceta( int IDReceta){
 
 		bool bandera = false;

@@ -18,13 +18,15 @@ public class ConsultaMedica {
     public int IDConsulta { set; get; }
     public string Diagnostico { set; get; }
     public DateOnly Fecha { set; get; }
+    public TimeOnly Hora { get; set; }
+    public byte Duracion { get; set; }
     public int IDDentista { set; get; }
     public int IDPaciente { set; get; }
     public int IDProximaCita { set; get; }
     public int IDReceta { set; get; }
     public string MotivoDeConsulta { set; get; }
 
-    public ConsultaMedica( int idConsulta, string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta)
+    public ConsultaMedica( int idConsulta, string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta, TimeOnly hora, byte duracion )
     {
         IDConsulta = idConsulta;
         Diagnostico = diagnostico;
@@ -33,9 +35,11 @@ public class ConsultaMedica {
         IDPaciente = idPaciente;
         IDReceta = idReceta;
         MotivoDeConsulta = motivoDeConsulta;
+        Hora = hora;
+        Duracion = duracion;
     }
 
-    public ConsultaMedica(string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta)
+    public ConsultaMedica(string diagnostico, DateOnly fecha, int idDentista, int idPaciente, int idReceta, string motivoDeConsulta, TimeOnly hora, byte duracion)
     {
         Diagnostico = diagnostico;
         Fecha = fecha;
@@ -43,6 +47,8 @@ public class ConsultaMedica {
         IDPaciente = idPaciente;
         IDReceta = idReceta;
         MotivoDeConsulta = motivoDeConsulta;
+        Hora = hora;
+        Duracion = duracion;
     }
 
 }//end ConsultaMedica

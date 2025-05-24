@@ -140,10 +140,10 @@ namespace Clases
             try
             {
                 validarUsuario.conectar();
-                validarUsuario.cmd = new MySqlCommand("uspConsultarMedicamentoRecetado", validarUsuario.conn);
+                validarUsuario.cmd = new MySqlCommand("uspConsultarTratamiento", validarUsuario.conn);
                 validarUsuario.cmd.CommandType = CommandType.StoredProcedure;
 
-                MySqlParameter t_idx = new MySqlParameter("mr_idx", MySqlDbType.Int32);
+                MySqlParameter t_idx = new MySqlParameter("r_idx", MySqlDbType.Int32);
                 t_idx.Value = r_idx;
                 validarUsuario.cmd.Parameters.Add(t_idx);
 

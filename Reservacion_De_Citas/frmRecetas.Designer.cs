@@ -63,7 +63,6 @@
             dgvConsultas.RowHeadersWidth = 51;
             dgvConsultas.Size = new Size(1230, 554);
             dgvConsultas.TabIndex = 92;
-            dgvConsultas.CellClick += dgvConsultas_CellClick;
             // 
             // panel1
             // 
@@ -150,9 +149,9 @@
             lblMensajeBusqueda.ForeColor = SystemColors.InactiveCaption;
             lblMensajeBusqueda.Location = new Point(489, 116);
             lblMensajeBusqueda.Name = "lblMensajeBusqueda";
-            lblMensajeBusqueda.Size = new Size(208, 23);
+            lblMensajeBusqueda.Size = new Size(284, 23);
             lblMensajeBusqueda.TabIndex = 90;
-            lblMensajeBusqueda.Text = "Solo se aceptan numeros";
+            lblMensajeBusqueda.Text = "Solo se aceptan numeros positivos";
             lblMensajeBusqueda.Visible = false;
             // 
             // cbBusqueda

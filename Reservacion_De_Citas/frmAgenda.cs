@@ -15,113 +15,103 @@ namespace Formularios
     {
         public ControlCita controlCita = new ControlCita();
         public ControlConsulta controlConsulta = new ControlConsulta();
+        public ControlPaciente controlPaciente = new ControlPaciente();
         List<Cita> listaCitas = new List<Cita>();
         List<Cita> todasLasCitas = new List<Cita>();
         List<ConsultaMedica> listaConsultas = new List<ConsultaMedica>();
         List<ConsultaMedica> todasLasConsultas = new List<ConsultaMedica>();
         public int IdDentista { get; set; }
         public string TipoUsuario { get; set; }
+        public DateOnly FechaSeleccionada { get; set; }
 
         public frmAgenda(int idx, string tipo)
         {
             InitializeComponent();
-            llenarListas(false);
-            IdDentista = idx;
-            TipoUsuario = tipo;
-        }
-
-        public void llenarListas(bool bandera)
-        {
-            switch (TipoUsuario)
+            if( idx > -1)
             {
-                case "dent":
-                    todasLasCitas = controlCita.ConsultarCitasPorMedico(IdDentista);
-                    todasLasConsultas = controlConsulta.ConsultarConsultasMedicasPorMedico(IdDentista);
-                    if (!bandera)
-                    {
-                        // formato para fechas: yyyy-MM-dd
-                        // formato para fechaHora : yyyy-MM-dd HH:mm:ss
-
-                        string fechaFormato = DateTime.Now.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                        listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
-                        listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
-                    }
-                    else
-                    {
-                        string fechaFormato = monthCalendar1.SelectionStart.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                        listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
-                        listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
-                    }
-                    break;
-                default:
-                    if (!bandera)
-                    {
-                        // formato para fechas: yyyy-MM-dd
-                        // formato para fechaHora : yyyy-MM-dd HH:mm:ss
-
-                        string fechaFormato = DateTime.Now.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                        listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
-                        listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
-                    }
-                    else
-                    {
-                        string fechaFormato = monthCalendar1.SelectionStart.ToString("yyyy-MM-dd");
-                        DateOnly fecha = DateOnly.ParseExact(fechaFormato, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-                        listaCitas = controlCita.ConsultarCitasPorFecha(fecha);
-                        listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(fecha);
-                    }
-                    todasLasCitas = controlCita.ConsultarCitas();
-                    todasLasConsultas = controlConsulta.ConsultarConsultasMedicas();
-                    break;
-            }
-        }
-        /*
-        private void llenarDGVs()
-        {
-            
-            dgvCitas.Rows.Clear();
-            dgvConsultas.Rows.Clear();
-
-            if( listaCitas.Count > 0)
-            {
-                dgvCitas.DataSource = listaCitas;
+                IdDentista = idx;
+                TipoUsuario = tipo;
+                llenarCalendario( IdDentista );
             }
             else
             {
-                lblNoCitas.Visible = true;
+                llenarCalendario(-1);
             }
-            if( listaConsultas.Count > 0 )
+        }
+
+        public void llenarCalendario(int idx)
+        {
+            if (idx > -1)
             {
-                dgvConsultas.DataSource = listaConsultas;
+                todasLasConsultas = controlConsulta.ConsultarConsultasMedicasPorMedico( idx );
+                todasLasCitas = controlCita.ConsultarCitasPorMedico( idx );
+
+                List<DateTime> fechasCitas = new List<DateTime>();
+                DateTime[] fechas = new DateTime[todasLasCitas.Count + todasLasConsultas.Count];
+                foreach (Cita cita in todasLasCitas)
+                {
+                    fechasCitas.Add(new DateTime(cita.Fecha.Year, cita.Fecha.Month, cita.Fecha.Day));
+                }
+                foreach (ConsultaMedica consulta in todasLasConsultas)
+                {
+                    fechasCitas.Add(new DateTime(consulta.Fecha.Year, consulta.Fecha.Month, consulta.Fecha.Day));
+                }
+                int contador = 0;
+                foreach (DateTime fecha in fechasCitas)
+                {
+                    fechas[contador] = fecha;
+                }
+                monthCalendar1.BoldedDates = fechas;
             }
             else
             {
-                lblNoConsultas.Visible = true;
-            }
-            llenarCalendario(listaCitas, listaConsultas);
-        }*/
+                todasLasConsultas = controlConsulta.ConsultarConsultasMedicas();
+                todasLasCitas = controlCita.ConsultarCitas();
 
-        public void llenarCalendario(List<Cita> listaCitas, List<ConsultaMedica> consultasMedicas)
-        {
-            DateTime[] fechasCitas = new DateTime[listaCitas.Count + consultasMedicas.Count];
-            foreach (Cita cita in listaCitas)
-            {
-                fechasCitas[listaCitas.IndexOf(cita)] = new DateTime(cita.Fecha.Year, cita.Fecha.Month, cita.Fecha.Day);
+                List<DateTime> fechasCitas = new List<DateTime>();
+                DateTime[] fechas = new DateTime[todasLasCitas.Count + todasLasConsultas.Count];
+                foreach (Cita cita in todasLasCitas)
+                {
+                    fechasCitas.Add(new DateTime(cita.Fecha.Year, cita.Fecha.Month, cita.Fecha.Day));
+                }
+                foreach (ConsultaMedica consulta in todasLasConsultas)
+                {
+                    fechasCitas.Add(new DateTime(consulta.Fecha.Year, consulta.Fecha.Month, consulta.Fecha.Day));
+                }
+                int contador = 0;
+                foreach (DateTime fecha in fechasCitas)
+                {
+                    fechas[contador] = fecha;
+                }
+                monthCalendar1.BoldedDates = fechas;
             }
-            foreach (ConsultaMedica consulta in consultasMedicas)
-            {
-                fechasCitas[consultasMedicas.IndexOf(consulta) + listaCitas.Count] = new DateTime(consulta.Fecha.Year, consulta.Fecha.Month, consulta.Fecha.Day);
-            }
-            monthCalendar1.BoldedDates = fechasCitas;
         }
 
         private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
         {
-            llenarListas(true);
-            //llenarDGVs();
+            FechaSeleccionada = DateOnly.FromDateTime(monthCalendar1.SelectionStart);
+            listaCitas = controlCita.ConsultarCitasPorFecha(FechaSeleccionada);
+            listaConsultas = controlConsulta.ConsultarConsultasMedicasPorFecha(FechaSeleccionada);
+
+            string salida = "";
+            if (listaCitas.Count > 0)
+            {
+                foreach (Cita cita in listaCitas)
+                {
+                    Paciente paciente = controlPaciente.ConsultarPaciente(cita.IDPaciente);
+                    salida = string.Format("{5}{0:D}-({1} {2})({3:HH:mm}-{4:HH:mm})\n", cita.IDCita, paciente.Nombre, paciente.ApellidoM, cita.Hora, cita.Hora.AddMinutes(cita.Duracion), salida);
+                }
+                txtCitas.Text = salida;
+            }
+            salida = "";
+            if (listaConsultas.Count > 0)
+            {
+                foreach (ConsultaMedica consulta in listaConsultas)
+                {
+                    Paciente paciente = controlPaciente.ConsultarPaciente(consulta.IDPaciente);
+                    salida = string.Format("{5}{0:D}-({1} {2})({3:HH:mm}-{4:HH:mm})\n", consulta.IDConsulta, paciente.Nombre, paciente.ApellidoM, consulta.Fecha, consulta.Hora, consulta.Hora.AddMinutes(consulta.Duracion));
+                }
+            }
         }
 
         private void frmAgenda_Load(object sender, EventArgs e)

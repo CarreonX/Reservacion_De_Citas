@@ -119,6 +119,7 @@
             // 
             txtServicio.Location = new Point(245, 203);
             txtServicio.Name = "txtServicio";
+            txtServicio.ReadOnly = true;
             txtServicio.Size = new Size(287, 27);
             txtServicio.TabIndex = 96;
             txtServicio.TextChanged += txtServicio_TextChanged;
@@ -135,6 +136,7 @@
             // 
             txtPrecio.Location = new Point(889, 203);
             txtPrecio.Name = "txtPrecio";
+            txtPrecio.ReadOnly = true;
             txtPrecio.Size = new Size(116, 27);
             txtPrecio.TabIndex = 98;
             txtPrecio.TextChanged += txtPrecio_TextChanged;

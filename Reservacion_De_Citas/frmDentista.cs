@@ -99,7 +99,7 @@ namespace Formularios
 
         private void btnRecetas_Click(object sender, EventArgs e)
         {
-            abrirFormularioHijo(new frmRecetas());
+            abrirFormularioHijo(new frmRecetas( Dentista.IdPersona ));
         }
     }
 }

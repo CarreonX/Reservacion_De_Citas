@@ -1,19 +1,17 @@
-﻿using Clases;
-using Microsoft.VisualBasic;
-using System;
-using System.CodeDom;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Clases;
 
-namespace Formularios
+namespace Controles
 {
-    public partial class frmTratamiento : Form
+    public partial class ucTratamiento : UserControl
     {
         List<Medicamento> tratamiento = new List<Medicamento>();
         List<Medicamento> medicamentos = new List<Medicamento>();
@@ -25,10 +23,24 @@ namespace Formularios
         bool matchCantidad = false;
         bool matchPrecio = false;
         int idReceta = -1;
-        public frmTratamiento(int idReceta)
+        public ucTratamiento(int idReceta)
         {
             InitializeComponent();
             this.idReceta = idReceta;
+        }
+
+        public void LlenarInformacion(int idReceta)
+        {
+            List<Tratamiento> tratamiento = new List<Tratamiento>();
+            tratamiento = controlTratamiento.ConsultarTratamiento(idReceta);
+            dgvTratamientos.DataSource = null;
+            dgvTratamientos.DataSource = tratamiento;
+        }
+        public void LimpiarCajas()
+        {
+            txtServicio.Clear();
+            txtCantidad.Clear();
+            txtPrecio.Clear();
         }
 
         private void cbBusqueda_TextChanged(object sender, EventArgs e)
@@ -62,6 +74,17 @@ namespace Formularios
                     cbBusqueda.DroppedDown = true;
                 }
             }
+        }
+
+        private void cbBusqueda_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            idMedicamentoActual = medicamentos[cbBusqueda.SelectedIndex].IDMedicamento;
+            txtServicio.Text = medicamentos[cbBusqueda.SelectedIndex].Nombre;
+            txtPrecio.Text = medicamentos[cbBusqueda.SelectedIndex].Precio.ToString();
+            txtCantidad.Text = "1";
+            btnAgregar.Enabled = true;
+            btnGuardar.Enabled = false;
+            btnQuitar.Enabled = false;
         }
 
         private void txtServicio_TextChanged(object sender, EventArgs e)
@@ -129,27 +152,20 @@ namespace Formularios
             float precio = float.Parse(txtPrecio.Text);
             int cantidad = int.Parse(txtCantidad.Text);
             string nombre = string.Empty;
-            Medicamento medicamento = new Medicamento( cantidad, "null", "null", nombre, -1, precio, "null", "null");
+            Medicamento medicamento = new Medicamento(cantidad, "null", "null", nombre, -1, precio, "null", "null");
             tratamiento.Add(medicamento);
             LimpiarCajas();
-            dataGridView1.DataSource = null;
-            dataGridView1.DataSource = tratamiento;
-        }
-
-        public void LimpiarCajas()
-        {
-            txtServicio.Clear();
-            txtCantidad.Clear();
-            txtPrecio.Clear();
+            dgvTratamientos.DataSource = null;
+            dgvTratamientos.DataSource = tratamiento;
         }
 
         private void btnQuitar_Click(object sender, EventArgs e)
         {
-            if( idMedicamentoActual > -1)
+            if (idMedicamentoActual > -1)
             {
                 tratamiento.RemoveAt(idMedicamentoActual);
-                dataGridView1.DataSource = null;
-                dataGridView1.DataSource = tratamiento;
+                dgvTratamientos.DataSource = null;
+                dgvTratamientos.DataSource = tratamiento;
             }
         }
 
@@ -162,12 +178,12 @@ namespace Formularios
                 foreach (Medicamento medicamento in tratamiento)
                 {
                     Tratamiento nuevoTratamiento = new Tratamiento(idReceta, medicamento.Cantidad, medicamento.Nombre, medicamento.Precio);
-                    if ( controlTratamiento.AgregarTratamiento( nuevoTratamiento))
+                    if (controlTratamiento.AgregarTratamiento(nuevoTratamiento))
                     {
                         contador++;
                     }
                 }
-                MessageBox.Show( contador + " Tratamiento(s) guardado(s) con éxito", "Guardar Tratamiento", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(contador + " Tratamiento(s) guardado(s) con éxito", "Guardar Tratamiento", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -175,12 +191,20 @@ namespace Formularios
             }
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvTratamientos_Click(object sender, EventArgs e)
         {
-            int idColumnIndex = dataGridView1.Columns["id"].Index;
-            if( dataGridView1.CurrentRow != null && dataGridView1.CurrentRow.Cells[idColumnIndex].Value != null)
+            if (tratamiento.Count <= 0 || tratamiento.Count == null)
             {
-                idMedicamentoActual = int.Parse(dataGridView1.CurrentRow.Cells[idColumnIndex].Value.ToString());
+
+            }
+        }
+
+        private void dgvTratamientos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int idColumnIndex = dgvTratamientos.Columns["id"].Index;
+            if (dgvTratamientos.CurrentRow != null && dgvTratamientos.CurrentRow.Cells[idColumnIndex].Value != null)
+            {
+                idMedicamentoActual = int.Parse(dgvTratamientos.CurrentRow.Cells[idColumnIndex].Value.ToString());
                 Medicamento medicamento = tratamiento[idMedicamentoActual];
                 txtServicio.Text = medicamento.Nombre;
                 txtCantidad.Text = medicamento.Cantidad.ToString();
@@ -189,33 +213,6 @@ namespace Formularios
                 btnGuardar.Enabled = true;
                 btnQuitar.Enabled = true;
             }
-        }
-
-        private void btnAtras_Click(object sender, EventArgs e)
-        {
-            if( tratamiento.Count > 0)
-            {
-                string respuesta = MessageBox.Show("¿Desea salir sin guardar los cambios?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question).ToString();
-                if (respuesta == "Yes")
-                {
-                    this.Close();
-                }
-            }
-            else
-            {
-                this.Close();
-            }
-        }
-
-        private void cbBusqueda_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            idMedicamentoActual = medicamentos[cbBusqueda.SelectedIndex].IDMedicamento;
-            txtServicio.Text = medicamentos[cbBusqueda.SelectedIndex].Nombre;
-            txtPrecio.Text = medicamentos[cbBusqueda.SelectedIndex].Precio.ToString();
-            txtCantidad.Text = "1";
-            btnAgregar.Enabled = true;
-            btnGuardar.Enabled = false;
-            btnQuitar.Enabled = false;
         }
     }
 }

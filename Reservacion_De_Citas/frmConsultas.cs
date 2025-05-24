@@ -146,7 +146,9 @@ namespace Formularios
                 int idMed = idMedico;
                 int idPaciente = int.Parse(laConsulta.txtPaciente.Text);
                 int idReceta = int.Parse(laConsulta.txtIDReceta.Text);
-                ConsultaMedica cons = new ConsultaMedica( diagnostico, fecha, idMed, idPaciente, idReceta, motivo );
+                TimeOnly hora = TimeOnly.FromDateTime(laConsulta.dtpFechaConsulta.Value);
+                byte duracion = byte.Parse( laConsulta.txtDuracion.Text);
+                ConsultaMedica cons = new ConsultaMedica( diagnostico, fecha, idMed, idPaciente, idReceta, motivo, hora, duracion );
                 if( controlConsultas.AgregarConsulta( cons))
                 {
                     MessageBox.Show( "Consulta guardada correctamente", "Guardado con éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -170,7 +172,9 @@ namespace Formularios
                 int idPaciente = int.Parse( ucConsulta.txtPaciente.Text );
                 int idReceta = int.Parse(ucConsulta.txtIDReceta.Text );
                 int idx = int.Parse( ucConsulta.txtIDReceta.Text );
-                ConsultaMedica nueva = new ConsultaMedica( idx, diagn, fecha, idMed, idPaciente, idReceta, motivo );
+                TimeOnly hora = TimeOnly.FromDateTime(ucConsulta.dtpFechaConsulta.Value);
+                byte duracion = byte.Parse( ucConsulta.txtDuracion.Text);
+                ConsultaMedica nueva = new ConsultaMedica( idx, diagn, fecha, idMed, idPaciente, idReceta, motivo, hora, duracion);
                 if( controlConsultas.ModificarConsulta( nueva))
                 {
                     MessageBox.Show("Consulta guardada correctamente", "Guardado con éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
